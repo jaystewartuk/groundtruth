@@ -1,0 +1,14 @@
+# groundtruth is a single, standalone package — not a monorepo. This file's
+# top comment purpose is to mark this directory as pnpm's workspace root, so
+# `pnpm install` here stops here instead of walking up and latching onto an
+# ancestor checkout's pnpm-workspace.yaml — this directory happens to live
+# nested inside another repo's .claude/worktrees/ tree on disk.
+
+# esbuild's postinstall only fetches/builds its native binary — required for
+# vitest's transform pipeline to work at all. Trusted: it's a standard,
+# widely-used dependency of the vitest/esbuild ecosystem.
+allowBuilds:
+  esbuild: true
+
+onlyBuiltDependencies:
+  - esbuild

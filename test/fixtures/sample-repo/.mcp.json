@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "app-supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp?project_ref=abc123",
+      "headers": { "Authorization": "Bearer ${SUPABASE_PAT}" }
+    }
+  }
+}

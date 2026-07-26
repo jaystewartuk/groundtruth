@@ -1,0 +1,9 @@
+{
+  "name": "sample-repo",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "verify:push": "pnpm typecheck && pnpm test"
+  }
+}

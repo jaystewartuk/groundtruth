@@ -1,0 +1,74 @@
+// .groundtruth.jsonc — hand-authored assertions extracted from your
+// CLAUDE.md / AGENTS.md. Copy this file to .groundtruth.jsonc at your repo
+// root and edit it. (LLM-based extraction straight from CLAUDE.md is not
+// implemented yet — see the README's roadmap. For now, you write the
+// assertions yourself; the format below is exactly what extraction will
+// produce later, so nothing here becomes throwaway.)
+//
+// Every entry has:
+//   claim   — the sentence from your context file, verbatim, for humans
+//   kind    — one of the 6 supported assertion kinds (README has the full list)
+//   args    — kind-specific arguments (see README for each kind's shape)
+//   source  — "<file>#L<line>" so a failure traces back to the exact sentence
+//
+// These examples are drawn directly from a real audit of a production repo
+// (AgendaProfe) that found exactly these four kinds of drift: a decommissioned
+// vendor's env vars still declared in build tooling, a leftover MCP server
+// config, and — as a sanity check that this file isn't just a list of
+// failures — two claims that were still true and should report as passing.
+{
+  "assertions": [
+    // --- "Do NOT reintroduce a Supabase/Vercel env var" (one entry per var —
+    // extraction will atomize a claim like this into one checkable fact per
+    // named thing, not one assertion trying to cover five vars at once) ---
+    {
+      "claim": "Do NOT reintroduce a Supabase/Vercel code path or env var.",
+      "kind": "env_var_absent",
+      "args": { "name": "SUPABASE_URL" },
+      "source": "CLAUDE.md#L7"
+    },
+    {
+      "claim": "Do NOT reintroduce a Supabase/Vercel code path or env var.",
+      "kind": "env_var_absent",
+      // env_var_absent's default scan targets are turbo.json (globalEnv) and
+      // .env.example. Pass `files` to point at your own layout, e.g. a
+      // config/env/ directory or a specific workflow file's `env:` block.
+      "args": { "name": "VERCEL_ENV", "files": ["turbo.json", ".env.example"] },
+      "source": "CLAUDE.md#L7"
+    },
+
+    // --- "The Supabase project is torn down" — coarsest available check:
+    // path_absent can only assert a whole file doesn't exist, not "this file
+    // exists but must not mention Supabase". That's a real MVP limitation,
+    // not a silent gap — use it for whole-file cases (a leftover config file
+    // for a decommissioned integration) and wait for a future kind for the
+    // finer-grained case. ---
+    {
+      "claim": "The Supabase project is torn down; do not add an MCP server for it.",
+      "kind": "path_absent",
+      "args": { "path": ".mcp.json" },
+      "source": "CLAUDE.md#L8"
+    },
+
+    // --- two claims that are still TRUE, so groundtruth isn't just a list of
+    // failures — it also tells you which of your rules are still load-bearing ---
+    {
+      "claim": "`pnpm verify:push` runs typecheck + unit.",
+      "kind": "script_exists",
+      "args": { "name": "verify:push" },
+      "source": "CLAUDE.md#L9"
+    },
+    {
+      "claim": "`entitlementsFor()` in `src/lib/subscriptions/entitlements.ts` is the single place tier logic is decided.",
+      "kind": "symbol_at_path",
+      "args": { "symbol": "entitlementsFor", "path": "apps/web/src/lib/subscriptions/entitlements.ts" },
+      "source": "CLAUDE.md#L10-11"
+    },
+    {
+      "claim": "`checks.yml` runs on every pull request into `main`.",
+      "kind": "workflow_trigger",
+      "args": { "workflow": "checks.yml", "trigger": "pull_request", "target": "main" },
+      "source": "CLAUDE.md#L12"
+    }
+  ]
+}

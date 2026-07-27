@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "GitHub Pages documentation site for groundtruth.",
   "type": "module",
+  "packageManager": "pnpm@11.13.0",
   "scripts": {
     "dev": "vitepress dev",
     "build": "vitepress build",

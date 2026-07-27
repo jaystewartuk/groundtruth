@@ -4,6 +4,7 @@
   "description": "Verify CLAUDE.md / AGENTS.md against the actual repo — a compiler and CI gate for agent-context assertions.",
   "type": "module",
   "license": "MIT",
+  "packageManager": "pnpm@11.13.0",
   "bin": {
     "groundtruth": "./dist/cli.js"
   },

@@ -1,0 +1,22 @@
+name: Feature request
+description: A new assertion kind, CLI flag, or capability you'd like to see.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What can't you check today?
+      description: Describe the claim in your CLAUDE.md / AGENTS.md you can't currently turn into a groundtruth assertion, or the workflow gap you're hitting.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed shape
+      description: If this is a new assertion kind, what would its `args` look like? See the existing kinds in the assertion-kinds reference for the pattern.
+  - type: checkboxes
+    id: roadmap-check
+    attributes:
+      label: Roadmap check
+      options:
+        - label: I checked the roadmap (https://jaystewart-dev.github.io/groundtruth/project/roadmap) and this isn't already planned.

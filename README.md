@@ -1,6 +1,13 @@
 # groundtruth
 
+[![GitHub stars](https://img.shields.io/github/stars/jaystewart-dev/groundtruth?style=flat-square&color=16a34a)](https://github.com/jaystewart-dev/groundtruth/stargazers)
+[![Latest release](https://img.shields.io/github/v/release/jaystewart-dev/groundtruth?style=flat-square&color=0ea5e9)](https://github.com/jaystewart-dev/groundtruth/releases)
+[![CI](https://img.shields.io/github/actions/workflow/status/jaystewart-dev/groundtruth/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/jaystewart-dev/groundtruth/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/github/license/jaystewart-dev/groundtruth?style=flat-square&color=64748b)](https://github.com/jaystewart-dev/groundtruth/blob/main/LICENSE)
+
 Verify `CLAUDE.md` / `AGENTS.md` against the actual repo.
+
+**[📖 Documentation site →](https://jaystewart-dev.github.io/groundtruth/)**
 
 Agent-context files rot the same way any other doc rots — except nothing
 catches it. Code that lies gets caught by a compiler. Agent context that lies
@@ -124,12 +131,17 @@ commented example (the AgendaProfe findings, encoded as real assertions).
 
 ## Documentation
 
-This README covers install and day-to-day usage. Deeper docs — system
-architecture, why specific tradeoffs were made, per-feature detail, and a
-narrated listening edition for Speechify — live in
-[`docs/`](docs/README.md) and [`docs-listen/`](docs-listen/README.md).
-Start at [`docs/README.md`](docs/README.md) if you're navigating rather
-than reading top to bottom.
+This README covers install and day-to-day usage. For everything else —
+guided quick start, full CLI/assertion-kind reference, architecture
+diagrams, FAQ, and troubleshooting — see the
+**[documentation site](https://jaystewart-dev.github.io/groundtruth/)**
+(source: [`site/`](site/), deploys automatically on every push to `main`
+via [`.github/workflows/deploy-site.yml`](.github/workflows/deploy-site.yml)).
+
+The underlying repo-internal docs the site is built from — system
+architecture, ADRs explaining specific tradeoffs, and a narrated listening
+edition for Speechify — live in [`docs/`](docs/README.md) and
+[`docs-listen/`](docs-listen/README.md).
 
 ## Development
 
@@ -141,6 +153,10 @@ pnpm test       # builds first (pretest), then runs vitest against
                 # real AgendaProfe drift findings
 pnpm typecheck  # tsc --noEmit
 ```
+
+Every push and pull request runs typecheck + test via
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml). See
+[`CONTRIBUTING.md`](CONTRIBUTING.md) before opening a PR.
 
 ## Roadmap
 

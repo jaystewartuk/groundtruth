@@ -84,7 +84,15 @@ tradeoff this bought when `symbol_at_path` was added.
 
 ## Deployment
 
-None yet. Installed by consumers via `pnpm add -D github:jaystewart-dev/groundtruth`
-(root [README § Install](../../README.md#install)) and invoked locally or
-in CI as a shell command. There is no build/release pipeline beyond
-`pnpm build` (tsc → `dist/`); no CD, no hosting, no environments.
+The CLI itself has no deployment: it's installed by consumers via
+`pnpm add -D github:jaystewart-dev/groundtruth` (root
+[README § Install](../../README.md#install)) and invoked locally or in CI
+as a shell command. There is no release pipeline beyond `pnpm build` (tsc
+→ `dist/`) — no tagged releases or npm publish yet, see
+[Release process](https://jaystewart-dev.github.io/groundtruth/project/release-process).
+
+This repository does have one deployed artifact: the documentation site
+at [`site/`](../../site/), a static VitePress build published to GitHub
+Pages via [`.github/workflows/deploy-site.yml`](../../.github/workflows/deploy-site.yml)
+on every push to `main`. It has no server component either — it's static
+HTML/CSS/JS served by GitHub Pages, not a running process.

@@ -1,0 +1,29 @@
+name: Bug report
+description: Something in groundtruth check is wrong — a false pass, a false fail, or a crash.
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you expected `groundtruth check` to report, and what it actually reported.
+    validations:
+      required: true
+  - type: textarea
+    id: assertion
+    attributes:
+      label: The assertion involved
+      description: Paste the relevant entry (or entries) from your .groundtruth.jsonc.
+      render: jsonc
+  - type: input
+    id: version
+    attributes:
+      label: groundtruth version / commit
+      description: Output of `groundtruth --help` header, or the git commit if installed from a local checkout.
+    validations:
+      required: true
+  - type: input
+    id: node-version
+    attributes:
+      label: Node version
+      description: Output of `node -v`

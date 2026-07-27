@@ -122,6 +122,15 @@ commented example (the AgendaProfe findings, encoded as real assertions).
   layer 2 in the roadmap below, and needs an LLM judgment call, not a
   mechanical check.
 
+## Documentation
+
+This README covers install and day-to-day usage. Deeper docs — system
+architecture, why specific tradeoffs were made, per-feature detail, and a
+narrated listening edition for Speechify — live in
+[`docs/`](docs/README.md) and [`docs-listen/`](docs-listen/README.md).
+Start at [`docs/README.md`](docs/README.md) if you're navigating rather
+than reading top to bottom.
+
 ## Development
 
 ```bash

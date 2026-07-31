@@ -5,8 +5,8 @@ import type { AssertionStatus, EnvVarAbsentArgs } from "../types.js";
 // No config/env layout is guessable across arbitrary repos, so the default
 // scan set only covers the two spots almost every JS monorepo actually puts
 // a global/build-time env var declaration: turbo.json's globalEnv and any
-// top-level .env.example. Callers with a repo-specific layout (AgendaProfe's
-// config/env/<env>.<kind>.env, say) should pass `files` explicitly.
+// top-level .env.example. Callers with a repo-specific layout (a per-environment
+// config/env/ directory, say) should pass `files` explicitly.
 const DEFAULT_FILES = ["turbo.json", ".env.example"];
 
 /** True if `name` appears as a JSON string value or object key anywhere in

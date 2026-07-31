@@ -21,7 +21,7 @@ executable assertions and checks them against your working tree — a compiler
 and CI gate for the rules you've written down for your agent to follow.
 
 This project exists because an audit of a real production repo
-([AgendaProfe](https://github.com/jaystewart-dev/agendaprofe)) found four live
+([AgendaProfe](https://agendaprofe.com)) found four live
 instances of exactly this: stale `SUPABASE_*`/`VERCEL_*` env vars still
 declared in build tooling months after both were decommissioned, a leftover
 MCP server config for a torn-down database, and a memory file directly

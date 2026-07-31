@@ -67,7 +67,7 @@ instruction to eventually undo whatever kept it false.
 
 This isn't hypothetical. groundtruth exists because a real audit of a
 production repository
-([AgendaProfe](https://github.com/jaystewart-dev/agendaprofe)) found four
+([AgendaProfe](https://agendaprofe.com)) found four
 live instances of exactly this pattern in one file: two decommissioned
 vendors' environment variables still declared in build tooling months
 after teardown, a leftover MCP server config for a torn-down database, and

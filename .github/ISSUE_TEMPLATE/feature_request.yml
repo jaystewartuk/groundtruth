@@ -19,4 +19,4 @@ body:
     attributes:
       label: Roadmap check
       options:
-        - label: I checked the roadmap (https://jaystewart-dev.github.io/groundtruth/project/roadmap) and this isn't already planned.
+        - label: I checked the roadmap (https://groundtruth.sh/project/roadmap) and this isn't already planned.

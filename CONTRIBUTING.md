@@ -9,7 +9,7 @@ issue rather than guessing.
 For anything beyond a small fix, open an issue first describing what
 you're planning. This project is deliberately narrow in scope right now
 (one command, six assertion kinds, no plugin system) — see the
-[roadmap](https://jaystewart-dev.github.io/groundtruth/project/roadmap)
+[roadmap](https://groundtruth.sh/project/roadmap)
 for what's actually planned, so you don't spend time on something that
 doesn't fit the current direction.
 
@@ -21,14 +21,14 @@ pnpm build
 pnpm test
 ```
 
-Full walkthrough: [Development guide](https://jaystewart-dev.github.io/groundtruth/project/development).
+Full walkthrough: [Development guide](https://groundtruth.sh/project/development).
 
 ## Making a change
 
 1. `pnpm typecheck` and `pnpm test` must both pass. `pnpm test` builds
    first (`pretest`), so a fresh `pnpm test` alone is enough.
 2. Adding an assertion kind follows a fixed 5-step checklist — see
-   [Development → Adding an assertion kind](https://jaystewart-dev.github.io/groundtruth/project/development#adding-an-assertion-kind).
+   [Development → Adding an assertion kind](https://groundtruth.sh/project/development#adding-an-assertion-kind).
    Skipping the registry step is a compile error, not a runtime surprise.
 3. Add fixture coverage under `test/fixtures/sample-repo` for anything
    that touches a checker.

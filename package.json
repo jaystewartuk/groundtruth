@@ -4,6 +4,14 @@
   "description": "Verify CLAUDE.md / AGENTS.md against the actual repo — a compiler and CI gate for agent-context assertions.",
   "type": "module",
   "license": "MIT",
+  "homepage": "https://groundtruth.sh",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaystewart-dev/groundtruth.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jaystewart-dev/groundtruth/issues"
+  },
   "packageManager": "pnpm@11.13.0",
   "bin": {
     "groundtruth": "./dist/cli.js"

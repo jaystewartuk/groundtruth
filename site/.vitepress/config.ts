@@ -1,7 +1,7 @@
 import { defineConfig } from "vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
 
-const SITE_URL = "https://jaystewart-dev.github.io/groundtruth/";
+const SITE_URL = "https://groundtruth.sh/";
 const DESCRIPTION =
   "A compiler and CI gate for your CLAUDE.md / AGENTS.md — turn agent-context claims into checkable assertions and catch drift before an agent acts on a stale rule.";
 
@@ -10,7 +10,7 @@ export default withMermaid(
     title: "groundtruth",
     description: DESCRIPTION,
     lang: "en-US",
-    base: "/groundtruth/",
+    base: "/",
     lastUpdated: true,
     cleanUrls: true,
     sitemap: {
@@ -18,7 +18,7 @@ export default withMermaid(
     },
 
     head: [
-      ["link", { rel: "icon", type: "image/svg+xml", href: "/groundtruth/favicon.svg" }],
+      ["link", { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" }],
       ["meta", { name: "theme-color", content: "#3f6212" }],
       ["meta", { property: "og:type", content: "website" }],
       ["meta", { property: "og:site_name", content: "groundtruth" }],

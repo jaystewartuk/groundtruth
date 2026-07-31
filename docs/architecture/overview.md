@@ -89,7 +89,7 @@ The CLI itself has no deployment: it's installed by consumers via
 [README § Install](../../README.md#install)) and invoked locally or in CI
 as a shell command. There is no release pipeline beyond `pnpm build` (tsc
 → `dist/`) — no tagged releases or npm publish yet, see
-[Release process](https://jaystewart-dev.github.io/groundtruth/project/release-process).
+[Release process](https://groundtruth.sh/project/release-process).
 
 This repository does have one deployed artifact: the documentation site
 at [`site/`](../../site/), a static VitePress build published to GitHub

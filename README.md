@@ -7,7 +7,7 @@
 
 Verify `CLAUDE.md` / `AGENTS.md` against the actual repo.
 
-**[📖 Documentation site →](https://jaystewart-dev.github.io/groundtruth/)**
+**[📖 Documentation site →](https://groundtruth.sh/)**
 
 Agent-context files rot the same way any other doc rots — except nothing
 catches it. Code that lies gets caught by a compiler. Agent context that lies
@@ -134,7 +134,7 @@ commented example (the AgendaProfe findings, encoded as real assertions).
 This README covers install and day-to-day usage. For everything else —
 guided quick start, full CLI/assertion-kind reference, architecture
 diagrams, FAQ, and troubleshooting — see the
-**[documentation site](https://jaystewart-dev.github.io/groundtruth/)**
+**[documentation site](https://groundtruth.sh/)**
 (source: [`site/`](site/), deploys automatically on every push to `main`
 via [`.github/workflows/deploy-site.yml`](.github/workflows/deploy-site.yml)).
 

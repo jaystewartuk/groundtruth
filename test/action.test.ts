@@ -21,6 +21,7 @@ import {
   exitCodeFor,
   extractJson,
   parseSource,
+  sanitizeVersion,
   summaryMarkdown,
 } from "../action/run.mjs";
 
@@ -141,6 +142,20 @@ describe("exitCodeFor", () => {
   it("passes an unverifiable assertion by default, and fails it on request", () => {
     expect(exitCodeFor({ failing: 0, unverifiable: 2 })).toBe(0);
     expect(exitCodeFor({ failing: 0, unverifiable: 2 }, { failOnUnverifiable: true })).toBe(1);
+  });
+});
+
+describe("sanitizeVersion", () => {
+  it("accepts a version and a dist-tag", () => {
+    expect(sanitizeVersion("0.2.0")).toBe("0.2.0");
+    expect(sanitizeVersion(" latest ")).toBe("latest");
+    expect(sanitizeVersion("1.0.0-rc.1")).toBe("1.0.0-rc.1");
+  });
+
+  it("rejects anything that could smuggle an argument or a path into the install", () => {
+    for (const bad of ["", "0.2.0 --registry=http://evil", "../../etc", "a;b", "-9"]) {
+      expect(() => sanitizeVersion(bad)).toThrow();
+    }
   });
 });
 

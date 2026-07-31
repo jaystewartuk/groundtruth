@@ -73,10 +73,10 @@ anything on the hardest, most judgment-dependent layer.
 
 **Decision:** Ship the [GitHub Action](/guide/github-action) as a
 *composite* action — `action.yml` at the repo root plus a
-dependency-free Node runner — that `npx`-installs the published
-`@groundtruth-sh/cli` and shells out to it. Not a bundled JavaScript
-action, not a Docker action, and not a second implementation of the
-checks. The runner deliberately avoids `@actions/core` too: with no
+dependency-free Node runner — that installs the published
+`@groundtruth-sh/cli` to a temp prefix and shells out to it. Not a bundled
+JavaScript action, not a Docker action, and not a second implementation of
+the checks. The runner deliberately avoids `@actions/core` too: with no
 bundling step, that dependency would have to be vendored into the repo.
 
 **Why:** The repo already publishes the thing the Action needs to run, and

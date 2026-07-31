@@ -12,7 +12,7 @@
 // docs/adr/0005-composite-action-wrapping-the-published-cli.md.
 
 import { spawnSync } from "node:child_process";
-import { appendFileSync, writeFileSync } from "node:fs";
+import { appendFileSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, posix, relative, resolve, sep } from "node:path";
 import { argv, env, exit, stdout } from "node:process";
@@ -158,7 +158,7 @@ export function exitCodeFor(summary, { failOnUnverifiable = false } = {}) {
   return 0;
 }
 
-/** stdout may carry npx install chatter ahead of the report. */
+/** Tolerate anything the CLI's runtime might print ahead of the report. */
 export function extractJson(text) {
   const start = text.indexOf("{");
   const end = text.lastIndexOf("}");
@@ -185,6 +185,67 @@ function fail(message) {
   exit(2);
 }
 
+/** Only what can legally appear in a version or dist-tag, so the spec can
+ * never smuggle an argument into the install command or a traversal into
+ * the install path. */
+export function sanitizeVersion(version) {
+  const cleaned = String(version ?? "").trim();
+  if (!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(cleaned)) {
+    throw new Error(
+      `"${cleaned}" is not a usable version for the \`version\` input — ` +
+        `expected something like "0.2.0" or "latest".`,
+    );
+  }
+  return cleaned;
+}
+
+/**
+ * Install the published CLI and return the absolute path to its entrypoint.
+ *
+ * Deliberately not `npx`. npx infers which binary to run from the package
+ * spec, and that inference differs across npm majors: `npx @groundtruth-sh/
+ * cli@x check` resolves the `groundtruth` bin under npm 10 but fails with
+ * "groundtruth: not found" under the npm 11 that ships with Node 24 — which
+ * is what a default GitHub runner has. So: install to a temp prefix, read
+ * the entrypoint out of the installed package's own `bin` field, and run it
+ * with node directly. No inference, no PATH, and nothing written inside the
+ * consumer's checkout where it could dirty their working tree.
+ */
+function installCli(version) {
+  let spec;
+  try {
+    spec = sanitizeVersion(version);
+  } catch (err) {
+    fail(err.message);
+  }
+  const dir = join(env.RUNNER_TEMP || tmpdir(), `groundtruth-cli-${spec}`);
+  const pkg = `@groundtruth-sh/cli@${spec}`;
+
+  const install = spawnSync(
+    "npm",
+    ["install", "--no-save", "--no-audit", "--no-fund", "--loglevel=error", "--prefix", dir, pkg],
+    { encoding: "utf8", shell: false, env },
+  );
+
+  if (install.error) fail(`Could not run npm: ${install.error.message}`);
+  if (install.status !== 0) {
+    fail(`Could not install ${pkg} (npm exited ${install.status}).\n${install.stderr ?? ""}`);
+  }
+
+  const root = join(dir, "node_modules", "@groundtruth-sh", "cli");
+  let manifest;
+  try {
+    manifest = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+  } catch (err) {
+    fail(`Installed ${pkg} but could not read its package.json: ${err.message}`);
+  }
+
+  const bin = typeof manifest.bin === "string" ? manifest.bin : Object.values(manifest.bin ?? {})[0];
+  if (!bin) fail(`Installed ${pkg} but it declares no bin to run.`);
+
+  return join(root, bin);
+}
+
 function main() {
   const workspace = env.GITHUB_WORKSPACE || process.cwd();
   const repoRoot = resolve(workspace, env.INPUT_WORKING_DIRECTORY || ".");
@@ -193,18 +254,16 @@ function main() {
   const cliPath = (env.INPUT_CLI_PATH || "").trim();
 
   const args = ["check", "--repo", repoRoot, "--file", file, "--json"];
-  const [command, commandArgs] = cliPath
-    ? ["node", [resolve(workspace, cliPath), ...args]]
-    : ["npx", ["--yes", `@groundtruth-sh/cli@${version}`, ...args]];
+  const entry = cliPath ? resolve(workspace, cliPath) : installCli(version);
 
-  const run = spawnSync(command, commandArgs, {
+  const run = spawnSync("node", [entry, ...args], {
     cwd: repoRoot,
     encoding: "utf8",
     shell: false,
     env,
   });
 
-  if (run.error) fail(`Could not run ${command}: ${run.error.message}`);
+  if (run.error) fail(`Could not run node: ${run.error.message}`);
   if (run.stderr) stdout.write(run.stderr);
   // The CLI reserves exit 2 for "could not even run the check" — a missing or
   // malformed assertions file. That is a setup failure, not a drift finding,

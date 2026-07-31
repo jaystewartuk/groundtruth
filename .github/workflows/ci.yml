@@ -50,3 +50,22 @@ jobs:
       - uses: ./
         with:
           cli-path: dist/cli.js
+
+      # The other half: the path every consumer actually takes, where the CLI
+      # comes from the registry instead of the working tree. Nothing local can
+      # exercise it, and it broke once already — npx's bin resolution differs
+      # across npm majors, so v0.2.0 failed on a default runner while passing
+      # everywhere it was tested (ADR-0005). This runs against the drift
+      # fixture, which fails by design, so the assertion is only that the
+      # published CLI installed and produced a report at all.
+      - uses: ./
+        id: published
+        continue-on-error: true
+        with:
+          version: latest
+          working-directory: test/fixtures/sample-repo
+
+      - name: The published CLI installed and reported
+        run: |
+          test "${{ steps.published.outputs.total }}" -gt 0 \
+            || { echo "::error::the published CLI produced no report"; exit 1; }

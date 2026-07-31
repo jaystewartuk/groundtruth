@@ -185,7 +185,7 @@ annotation is always in the check output regardless. Confirm too that the
 assertion's `source` is a real `<file>#L<line>` for a path relative to
 `working-directory`.
 
-**A self-hosted runner can't find `npx`** — add `actions/setup-node` before
+**A self-hosted runner can't find `npm`** — add `actions/setup-node` before
 the Action. It deliberately doesn't install Node itself: silently mutating the
 toolchain of the job that called you is worse than a documented requirement.
 

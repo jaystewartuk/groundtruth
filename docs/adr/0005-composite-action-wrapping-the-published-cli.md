@@ -33,9 +33,17 @@ Node and npm. There is nothing to bundle that is not already distributed.
 ## Decision
 
 The Action is a composite action: `action.yml` at the repo root, plus a
-single dependency-free ESM runner at `action/run.mjs` that `npx`-installs the
+single dependency-free ESM runner at `action/run.mjs` that installs the
 published `@groundtruth-sh/cli` at a pinned version and runs
 `groundtruth check --json`.
+
+The install is a plain `npm install --no-save --prefix <temp dir>`, followed
+by reading the entrypoint out of the installed package's own `bin` field and
+running it with `node` directly. Not `npx` — see the consequences below; that
+was the original implementation and it did not survive contact with a default
+runner. Installing to a temp prefix rather than into the checkout also keeps
+the consumer's working tree clean, which matters for any pipeline that
+diffs it.
 
 The runner imports nothing outside the Node 20 standard library. In
 particular it does **not** use `@actions/core`: a composite action has no
@@ -68,9 +76,22 @@ CI gate that changes behaviour without a commit is not a gate.
   run — so the release order is npm first, tag second. This is a real
   sharp edge introduced by this decision; the release-process page and
   CLAUDE.md both name it.
-- **Cold-start cost.** Each run pays an `npx` install of a small
-  dependency-light package rather than executing a pre-bundled file. On the
-  order of seconds, against a check that is otherwise near-instant.
+- **Cold-start cost.** Each run pays an install of a small dependency-light
+  package rather than executing a pre-bundled file. On the order of seconds,
+  against a check that is otherwise near-instant.
+- **The install has to be done explicitly, not via `npx`.** The first
+  implementation shelled out to `npx --yes @groundtruth-sh/cli@<version>
+  check`, which worked on every machine it was tried on and failed on a
+  default GitHub runner with `sh: 1: groundtruth: not found`. npx infers
+  which binary to run from the package spec, and that inference differs
+  between the npm 10 most developers have locally and the npm 11 that ships
+  with the Node 24 now default on runners — a scoped package whose bin name
+  doesn't match its package name lands exactly on the difference. The fix
+  removes the inference: install to a known prefix, read the `bin` field,
+  run it with node. The deeper lesson is about testing, and it is recorded
+  in CI rather than in prose: the `self-check` job now runs the Action
+  against the *published* CLI as well as the local build, because the
+  consumer's path was the one path nothing local could exercise.
 - **A network dependency at run time.** If npm is unreachable the check
   fails to run rather than reporting drift. Consumers who cannot accept that
   can install the CLI as a dev dependency and point the Action's `cli-path`

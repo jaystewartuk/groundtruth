@@ -7,8 +7,8 @@
 
 ## Application boundary
 
-groundtruth is a dev-time and CI-time CLI, distributed as an npm package
-(currently git-installed — see root [README § Install](../../README.md#install)).
+groundtruth is a dev-time and CI-time CLI, distributed as the
+`@groundtruth-sh/cli` npm package (see root [README § Install](../../README.md#install)).
 It has no server component, no deployed service, and no runtime database.
 Its only inputs are: the target repo's files on disk, and a
 `.groundtruth.jsonc` assertions file. Its only output is stdout and a
@@ -85,11 +85,12 @@ tradeoff this bought when `symbol_at_path` was added.
 ## Deployment
 
 The CLI itself has no deployment: it's installed by consumers via
-`pnpm add -D github:jaystewart-dev/groundtruth` (root
+`pnpm add -D @groundtruth-sh/cli` (root
 [README § Install](../../README.md#install)) and invoked locally or in CI
-as a shell command. There is no release pipeline beyond `pnpm build` (tsc
-→ `dist/`) — no tagged releases or npm publish yet, see
-[Release process](https://groundtruth.sh/project/release-process).
+as a shell command. Releases are manual — version bump, `npm publish`,
+tag, GitHub release; see
+[Release process](https://groundtruth.sh/project/release-process). There
+is no automated release workflow.
 
 This repository does have one deployed artifact: the documentation site
 at [`site/`](../../site/), a static VitePress build published to GitHub

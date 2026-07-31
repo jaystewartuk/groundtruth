@@ -5,13 +5,14 @@ check, read the report.
 
 ## 1. Install
 
-Not published to npm yet — install straight from git. pnpm pins the
-resolved commit into `pnpm-lock.yaml`, so a later commit to groundtruth
-doesn't reach your project until you explicitly `pnpm update groundtruth`.
-
 ```bash
-pnpm add -D github:jaystewart-dev/groundtruth
+pnpm add -D @groundtruth-sh/cli   # or: npm install -D @groundtruth-sh/cli
 ```
+
+Or run it without adding a dependency: `pnpm dlx @groundtruth-sh/cli check`
+(`npx @groundtruth-sh/cli check` works too). The package is scoped — npm's
+name-similarity rule reserves unscoped `groundtruth` — but the command it
+installs is plain `groundtruth`.
 
 Iterating on groundtruth itself instead of consuming it? Link your local
 checkout so `groundtruth check` runs your working copy:
@@ -27,7 +28,7 @@ Copy the shipped example and edit it to match the claims your own
 `CLAUDE.md`/`AGENTS.md` actually makes:
 
 ```bash
-cp node_modules/groundtruth/.groundtruth.jsonc.example .groundtruth.jsonc
+cp node_modules/@groundtruth-sh/cli/.groundtruth.jsonc.example .groundtruth.jsonc
 ```
 
 A minimal `.groundtruth.jsonc` — one assertion, checking that a script

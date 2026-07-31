@@ -7,7 +7,9 @@ groundtruth to check itself). Full docs: [`docs/README.md`](docs/README.md).
 
 A CLI (`groundtruth check`) that verifies claims in `CLAUDE.md`/`AGENTS.md`
 against the actual repo. One command exists today; nothing is deployed —
-this is a local dev/CI tool distributed via git install, not npm yet.
+this is a local dev/CI tool distributed on npm as `@groundtruth-sh/cli`
+(first published as 0.1.0 on 2026-07-31). The installed command is still
+plain `groundtruth`.
 
 ## Facts an agent should not assume are stale without checking
 
@@ -21,8 +23,12 @@ this is a local dev/CI tool distributed via git install, not npm yet.
 - `symbol_at_path` is regex-based, not an AST parse — it false-negatives
   on re-exported symbols. Deliberate, see
   [ADR-0003](docs/adr/0003-regex-based-symbol-matching-for-mvp.md).
-- Not published to npm. Install is git-based
-  (`pnpm add -D github:jaystewart-dev/groundtruth`).
+- Published to npm as `@groundtruth-sh/cli` since 0.1.0 (2026-07-31); install
+  is `pnpm add -D @groundtruth-sh/cli`; the bin it installs is plain
+  `groundtruth`. Unscoped `groundtruth` is permanently blocked by npm's
+  name-similarity rule (the unrelated `ground-truth` exists). Releases are
+  manual — no release automation workflow exists (see the site's
+  release-process page).
 
 ## Commands
 

@@ -1,39 +1,43 @@
 # Release process
 
-::: warning No releases yet
-groundtruth hasn't cut a tagged release or published to npm. `package.json`
-is still at `0.0.1`, and the only install path today is
-[git-install via pnpm](/guide/getting-started#_1-install). What follows is
-the intended process, not a description of something that's happened —
-distinguishing the two is the point of this page.
+::: tip First release cut
+v0.1.0 was published to npm as
+[`@groundtruth-sh/cli`](https://www.npmjs.com/package/@groundtruth-sh/cli) on
+July 31, 2026. The process below is now a description of what actually
+happens, not an intention — it is still manual and single-maintainer.
+The name is scoped because npm's name-similarity rule permanently
+reserves unscoped `groundtruth` against the unrelated, long-dormant
+`ground-truth` package, and the bare `groundtruth` org name was already
+taken too; the `groundtruth-sh` npm org — named for the domain — holds
+this and future packages (the planned GitHub Action, for one).
 :::
 
-## How consumers install today
+## How consumers install
 
 ```bash
-pnpm add -D github:jaystewart-dev/groundtruth
+pnpm add -D @groundtruth-sh/cli
 ```
 
-pnpm resolves and pins a specific commit into the consumer's
-`pnpm-lock.yaml`. A new commit to `main` doesn't reach anyone until they
-run `pnpm update groundtruth` — there's no floating "latest" the way
-semver ranges against an npm registry would give you.
+Standard semver resolution against the npm registry. Installing straight
+from git (`pnpm add -D github:jaystewart-dev/groundtruth`) still works
+and pins an exact commit instead of a published version — useful for
+trying an unreleased `main`.
 
-## What "publishing a release" will mean
+## Cutting a release
 
-1. Bump `version` in `package.json` (currently `0.0.1`, semver).
-2. Tag the commit (`git tag vX.Y.Z`) and push the tag — this is what the
-   `og:image` "Latest release" badge on the [home page](/) will start
-   reflecting once a first tag exists.
-3. `pnpm publish` to npm, restricted to what `package.json`'s `files`
-   field ships: `dist/` (compiled CLI + library) and
-   `.groundtruth.jsonc.example`.
-4. Update the [Getting started](/guide/getting-started) install command
-   from the git-install form to `pnpm add -D groundtruth`.
+1. Bump `version` in `package.json` (semver).
+2. `pnpm test` and `pnpm typecheck` green; `npm pack --dry-run` to eyeball
+   exactly what ships — the `files` field restricts the tarball to `dist/`
+   (compiled CLI + library) and `.groundtruth.jsonc.example`.
+3. `npm publish` — the `prepare` script rebuilds `dist/` via tsc first,
+   and `publishConfig.access: public` keeps the scoped package public.
+4. Tag the commit (`git tag vX.Y.Z`), push the tag, and create a GitHub
+   release from it — this is what the "Latest release" badge on the
+   [home page](/) reflects.
 
-None of this is automated yet — no `.github/workflows/release.yml`
-exists. Automating step 2–3 behind a tag push is a reasonable next step
-once there's a first release to cut.
+None of this is automated — no `.github/workflows/release.yml` exists.
+Automating steps 3–4 behind a tag push is a reasonable next step now that
+there's a first release behind us.
 
 ## Documentation site releases
 

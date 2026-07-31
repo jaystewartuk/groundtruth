@@ -1,9 +1,21 @@
 {
-  "name": "groundtruth",
-  "version": "0.0.1",
+  "name": "@groundtruth-sh/cli",
+  "version": "0.1.0",
   "description": "Verify CLAUDE.md / AGENTS.md against the actual repo — a compiler and CI gate for agent-context assertions.",
   "type": "module",
   "license": "MIT",
+  "author": "Jay Stewart",
+  "keywords": [
+    "claude-md",
+    "agents-md",
+    "claude-code",
+    "agent-context",
+    "documentation-drift",
+    "assertions",
+    "ci",
+    "cli",
+    "lint"
+  ],
   "homepage": "https://groundtruth.sh",
   "repository": {
     "type": "git",
@@ -14,15 +26,22 @@
   },
   "packageManager": "pnpm@11.13.0",
   "bin": {
-    "groundtruth": "./dist/cli.js"
+    "groundtruth": "dist/cli.js"
   },
   "exports": {
-    ".": "./dist/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
+  "types": "./dist/index.d.ts",
   "files": [
     "dist",
     ".groundtruth.jsonc.example"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=20"
   },

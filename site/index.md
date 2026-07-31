@@ -41,6 +41,7 @@ features:
 
 [![GitHub stars](https://img.shields.io/github/stars/jaystewart-dev/groundtruth?style=flat-square&color=16a34a)](https://github.com/jaystewart-dev/groundtruth/stargazers)
 [![Latest release](https://img.shields.io/github/v/release/jaystewart-dev/groundtruth?style=flat-square&color=0ea5e9)](https://github.com/jaystewart-dev/groundtruth/releases)
+[![npm](https://img.shields.io/npm/v/@groundtruth-sh/cli?style=flat-square&color=cb3837)](https://www.npmjs.com/package/@groundtruth-sh/cli)
 [![CI](https://img.shields.io/github/actions/workflow/status/jaystewart-dev/groundtruth/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/jaystewart-dev/groundtruth/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/github/license/jaystewart-dev/groundtruth?style=flat-square&color=64748b)](https://github.com/jaystewart-dev/groundtruth/blob/main/LICENSE)
 
@@ -129,8 +130,8 @@ Full breakdown of every component: [Architecture overview](/architecture/overvie
 ## Try it in under five minutes
 
 ```bash
-pnpm add -D github:jaystewart-dev/groundtruth
-cp node_modules/groundtruth/.groundtruth.jsonc.example .groundtruth.jsonc
+pnpm add -D @groundtruth-sh/cli
+cp node_modules/@groundtruth-sh/cli/.groundtruth.jsonc.example .groundtruth.jsonc
 # edit .groundtruth.jsonc to match claims in your own CLAUDE.md
 groundtruth check
 ```

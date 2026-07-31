@@ -37,8 +37,10 @@
 
 ## What doesn't get a convention doc yet
 
-Release process, versioning policy, and contribution guidelines aren't
-written down because there's no external contributor flow yet (single
-maintainer, not published to npm — root
-[README § Install](../../README.md#install)). Write these when a second
-regular contributor or an npm release actually happens, not before.
+Versioning policy isn't written down beyond plain semver — still a
+single-maintainer project. The release process is documented on the site
+([Release process](https://groundtruth.sh/project/release-process)) and
+contributor expectations in the root
+[CONTRIBUTING.md](../../CONTRIBUTING.md), both written around the first
+npm release (0.1.0, 2026-07-31). Write a fuller versioning policy when a
+second regular contributor makes one necessary, not before.

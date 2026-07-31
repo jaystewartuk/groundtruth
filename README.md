@@ -2,6 +2,7 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/jaystewart-dev/groundtruth?style=flat-square&color=16a34a)](https://github.com/jaystewart-dev/groundtruth/stargazers)
 [![Latest release](https://img.shields.io/github/v/release/jaystewart-dev/groundtruth?style=flat-square&color=0ea5e9)](https://github.com/jaystewart-dev/groundtruth/releases)
+[![npm](https://img.shields.io/npm/v/@groundtruth-sh/cli?style=flat-square&color=cb3837)](https://www.npmjs.com/package/@groundtruth-sh/cli)
 [![CI](https://img.shields.io/github/actions/workflow/status/jaystewart-dev/groundtruth/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/jaystewart-dev/groundtruth/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/github/license/jaystewart-dev/groundtruth?style=flat-square&color=64748b)](https://github.com/jaystewart-dev/groundtruth/blob/main/LICENSE)
 
@@ -38,14 +39,19 @@ useful today without any API key.
 
 ## Install
 
-Not yet published to npm. Until then, install straight from git:
-
 ```bash
-pnpm add -D github:jaystewart-dev/groundtruth
+pnpm add -D @groundtruth-sh/cli   # or: npm install -D @groundtruth-sh/cli
 ```
 
-pnpm pins the resolved commit into `pnpm-lock.yaml`, so a new commit on this
-repo doesn't reach a consumer until you run `pnpm update groundtruth` there.
+Or run it without adding a dependency:
+
+```bash
+pnpm dlx @groundtruth-sh/cli check   # or: npx @groundtruth-sh/cli check
+```
+
+The package is scoped because npm's name-similarity rule reserves unscoped
+`groundtruth` against the unrelated existing `ground-truth` package — but
+the command it installs is plain `groundtruth`.
 
 For fast local iteration while developing groundtruth itself:
 
@@ -57,7 +63,8 @@ cd your-project && groundtruth check   # runs your local working copy
 ## Usage
 
 ```bash
-cp .groundtruth.jsonc.example .groundtruth.jsonc   # then edit it
+cp node_modules/@groundtruth-sh/cli/.groundtruth.jsonc.example .groundtruth.jsonc
+# edit it, then:
 groundtruth check
 ```
 

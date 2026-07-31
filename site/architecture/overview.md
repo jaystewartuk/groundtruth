@@ -10,8 +10,9 @@ stay perfectly in sync as the source evolves.
 
 ## Application boundary
 
-groundtruth is a dev-time and CI-time tool, distributed as an npm package
-(currently git-installed — see [Getting started](/guide/getting-started)).
+groundtruth is a dev-time and CI-time tool, distributed as the
+[`@groundtruth-sh/cli` npm package](https://www.npmjs.com/package/@groundtruth-sh/cli) —
+see [Getting started](/guide/getting-started).
 It has no deployed service and no runtime database. Its only inputs are
 the target repo's files and a `.groundtruth.jsonc` assertions file; its
 only outputs are stdout and a process exit code. It never writes back to

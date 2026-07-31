@@ -49,8 +49,6 @@ for the full reasoning.
 - A `--inject`-style mode for a session-start hook, so an agent starts
   every session already told which of its own instructions are currently
   false.
-- First npm publish — currently git-install only, see
-  [Getting started](/guide/getting-started#_1-install).
 
 ## Not planned
 

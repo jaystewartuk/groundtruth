@@ -1,0 +1,105 @@
+// .groundtruth.jsonc — groundtruth's assertions about itself.
+//
+// Every `source` below points at a real line of this repo's own CLAUDE.md.
+// The `action` job in .github/workflows/ci.yml runs these on every pull
+// request, using the Action from the local checkout against the freshly built
+// CLI — so the tool, the Action, and this repo's agent-context file are all
+// verified by the same pass.
+//
+// If you are looking for the annotated teaching example (the AgendaProfe
+// drift findings, including deliberately failing ones), that lives in
+// .groundtruth.jsonc.example. This file is the real thing: it is expected to
+// be green, and a red run here means CLAUDE.md now says something false.
+//
+// One kind is absent on purpose: env_var_absent. This repo's context file
+// makes no claim about an environment variable, and writing an assertion for
+// a claim nobody made would be the same self-deception the tool exists to
+// catch. Kinds get used when a sentence earns them.
+{
+  "assertions": [
+    {
+      "claim": "It ships ... as a GitHub Action defined by `action.yml` at the repo root.",
+      "kind": "path_exists",
+      "args": { "path": "action.yml" },
+      "source": "CLAUDE.md#L12-13"
+    },
+    {
+      "claim": "`main` is protected and the `verify` check must pass before merge.",
+      // The branch-protection rule itself is GitHub state, not repo state, so
+      // the mechanically checkable half is that the workflow providing the
+      // required check does run on pull requests into main.
+      "kind": "workflow_trigger",
+      "args": { "workflow": "ci.yml", "trigger": "pull_request", "target": "main" },
+      "source": "CLAUDE.md#L17-18"
+    },
+    {
+      "claim": "No LLM-based extraction from `CLAUDE.md`/`AGENTS.md` exists yet.",
+      // The negative claim, encoded as the absence of the module that would
+      // hold it. This flips to failing the day extraction is built — which is
+      // exactly when the sentence above stops being true.
+      "kind": "path_absent",
+      "args": { "path": "src/extract" },
+      "source": "CLAUDE.md#L29-30"
+    },
+    {
+      "claim": "The canonical list is `ASSERTION_KINDS` in `src/types.ts`.",
+      "kind": "symbol_at_path",
+      "args": { "symbol": "ASSERTION_KINDS", "path": "src/types.ts" },
+      "source": "CLAUDE.md#L34"
+    },
+    {
+      "claim": "`symbol_at_path` is regex-based, not an AST parse. Deliberate, see ADR-0003.",
+      "kind": "path_exists",
+      "args": { "path": "docs/adr/0003-regex-based-symbol-matching-for-mvp.md" },
+      "source": "CLAUDE.md#L38"
+    },
+    {
+      "claim": "Releases are manual — no release automation workflow exists.",
+      "kind": "path_absent",
+      "args": { "path": ".github/workflows/release.yml" },
+      "source": "CLAUDE.md#L43-44"
+    },
+    {
+      "claim": "A dependency-free runner at `action/run.mjs` that shells out to the published CLI.",
+      "kind": "path_exists",
+      "args": { "path": "action/run.mjs" },
+      "source": "CLAUDE.md#L45-46"
+    },
+    {
+      "claim": "Why, and what that costs: ADR-0005.",
+      "kind": "path_exists",
+      "args": { "path": "docs/adr/0005-composite-action-wrapping-the-published-cli.md" },
+      "source": "CLAUDE.md#L49"
+    },
+    {
+      "claim": "pnpm build — tsc -> dist/",
+      "kind": "script_exists",
+      "args": { "name": "build" },
+      "source": "CLAUDE.md#L63"
+    },
+    {
+      "claim": "pnpm test — pretest runs tsc, then vitest against test/fixtures/sample-repo",
+      "kind": "script_exists",
+      "args": { "name": "test" },
+      "source": "CLAUDE.md#L64"
+    },
+    {
+      "claim": "pnpm typecheck — tsc --noEmit",
+      "kind": "script_exists",
+      "args": { "name": "typecheck" },
+      "source": "CLAUDE.md#L65"
+    },
+    {
+      "claim": "Step 3 (registering the checker in `src/assertions/index.ts`) is enforced at compile time if skipped.",
+      "kind": "symbol_at_path",
+      "args": { "symbol": "checkAssertions", "path": "src/assertions/index.ts" },
+      "source": "CLAUDE.md#L72"
+    },
+    {
+      "claim": "Architecture and request flow: `docs/architecture/overview.md`.",
+      "kind": "path_exists",
+      "args": { "path": "docs/architecture/overview.md" },
+      "source": "CLAUDE.md#L76"
+    }
+  ]
+}

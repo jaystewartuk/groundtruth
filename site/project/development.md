@@ -32,9 +32,16 @@ cd your-project && groundtruth check   # runs your local working copy
 ## Continuous integration
 
 Every push and pull request runs
-[`.github/workflows/ci.yml`](https://github.com/jaystewart-dev/groundtruth/blob/main/.github/workflows/ci.yml):
-typecheck, then test. This documentation site has its own separate deploy
-workflow — see [Release process](/project/release-process).
+[`.github/workflows/ci.yml`](https://github.com/jaystewart-dev/groundtruth/blob/main/.github/workflows/ci.yml),
+which has two jobs. `verify` runs typecheck, then test — it is the check
+`main`'s branch protection requires. `self-check` runs the
+[GitHub Action](/guide/github-action) from the working tree against the CLI
+built from the same commit, over this repo's own `.groundtruth.jsonc`: a
+pull request that breaks the Action, or that leaves `CLAUDE.md` claiming
+something no longer true, fails there.
+
+This documentation site has its own separate deploy workflow — see
+[Release process](/project/release-process).
 
 ## Adding an assertion kind
 

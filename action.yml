@@ -1,0 +1,81 @@
+name: "groundtruth — agent-context check"
+description: "Verify CLAUDE.md / AGENTS.md claims against the actual repo, and fail the build when your agent context has drifted."
+author: "Jay Stewart"
+
+branding:
+  icon: "check-square"
+  color: "green"
+
+inputs:
+  version:
+    description: >-
+      Version of @groundtruth-sh/cli to run, resolved from npm. Pin it to a
+      released version for reproducible CI; "latest" tracks the registry and
+      can change under you.
+    required: false
+    default: "0.2.0"
+  file:
+    description: "Assertions file, resolved relative to `working-directory`."
+    required: false
+    default: ".groundtruth.jsonc"
+  working-directory:
+    description: "Repo root to check against, relative to the workspace."
+    required: false
+    default: "."
+  fail-on-unverifiable:
+    description: >-
+      Also fail the job when an assertion is unverifiable. Off by default:
+      unverifiable assertions are always reported, never silently passed, but
+      they do not break the build unless you ask them to.
+    required: false
+    default: "false"
+  annotations:
+    description: >-
+      Emit inline annotations on the exact context-file line that made each
+      failing claim, so failures land in the pull request diff.
+    required: false
+    default: "true"
+  summary:
+    description: "Write the check report to the job summary."
+    required: false
+    default: "true"
+  cli-path:
+    description: >-
+      Advanced. Path to a local CLI entrypoint (e.g. `dist/cli.js`) to run with
+      node instead of fetching the published package. Used to test an
+      unreleased build; leave empty otherwise.
+    required: false
+    default: ""
+
+outputs:
+  total:
+    description: "Total number of assertions checked."
+    value: ${{ steps.groundtruth.outputs.total }}
+  passing:
+    description: "Number of passing assertions."
+    value: ${{ steps.groundtruth.outputs.passing }}
+  failing:
+    description: "Number of failing assertions."
+    value: ${{ steps.groundtruth.outputs.failing }}
+  unverifiable:
+    description: "Number of assertions that could not be mechanically checked."
+    value: ${{ steps.groundtruth.outputs.unverifiable }}
+  report-path:
+    description: "Path to the full JSON report written by the run."
+    value: ${{ steps.groundtruth.outputs.report-path }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: groundtruth
+      shell: bash
+      run: node "$GROUNDTRUTH_ACTION_PATH/action/run.mjs"
+      env:
+        GROUNDTRUTH_ACTION_PATH: ${{ github.action_path }}
+        INPUT_VERSION: ${{ inputs.version }}
+        INPUT_FILE: ${{ inputs.file }}
+        INPUT_WORKING_DIRECTORY: ${{ inputs.working-directory }}
+        INPUT_FAIL_ON_UNVERIFIABLE: ${{ inputs.fail-on-unverifiable }}
+        INPUT_ANNOTATIONS: ${{ inputs.annotations }}
+        INPUT_SUMMARY: ${{ inputs.summary }}
+        INPUT_CLI_PATH: ${{ inputs.cli-path }}

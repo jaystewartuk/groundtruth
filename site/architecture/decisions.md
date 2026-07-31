@@ -68,3 +68,29 @@ anything on the hardest, most judgment-dependent layer.
 
 [Full ADR →](https://github.com/jaystewart-dev/groundtruth/blob/main/docs/adr/0004-three-layer-roadmap.md) ·
 [Roadmap](/project/roadmap)
+
+## ADR-0005: The GitHub Action is a composite wrapper around the published CLI {#adr-0005-the-github-action-is-a-composite-wrapper-around-the-published-cli}
+
+**Decision:** Ship the [GitHub Action](/guide/github-action) as a
+*composite* action — `action.yml` at the repo root plus a
+dependency-free Node runner — that `npx`-installs the published
+`@groundtruth-sh/cli` and shells out to it. Not a bundled JavaScript
+action, not a Docker action, and not a second implementation of the
+checks. The runner deliberately avoids `@actions/core` too: with no
+bundling step, that dependency would have to be vendored into the repo.
+
+**Why:** The repo already publishes the thing the Action needs to run, and
+every GitHub-hosted runner already has Node and npm — so there is nothing
+to bundle that isn't already distributed. A bundled action would buy a few
+seconds of cold start in exchange for a committed build artifact that can
+silently drift from its own source, which is a strange bargain for a tool
+whose whole subject is drift.
+
+**The cost, stated plainly:** the Action's default `version` input names a
+CLI version that must already exist on npm when the ref is tagged, so
+releases must publish to npm *before* tagging. There is also a network
+dependency at run time — if npm is unreachable, the check fails to run
+rather than reporting drift.
+
+[Full ADR →](https://github.com/jaystewart-dev/groundtruth/blob/main/docs/adr/0005-composite-action-wrapping-the-published-cli.md) ·
+[Release process](/project/release-process)

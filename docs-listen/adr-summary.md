@@ -1,6 +1,6 @@
 # The decisions behind groundtruth, and why they were made
 
-There are four real architectural decisions baked into groundtruth's
+There are five real architectural decisions baked into groundtruth's
 current design, and it's worth understanding not just what they are, but
 why each one was made — because in each case, there was a real
 alternative on the table that got rejected for a specific reason.
@@ -70,3 +70,57 @@ time, a context file accumulates more and more rules, and some of them
 become dead weight that nobody, human or agent, is actually reading
 anymore. The team wants that pruning to be based on real evidence of what
 gets used, not a guess.
+
+The fifth decision is about how the tool actually reaches a pull request,
+and it's the first one here that's about distribution rather than about
+checking. The reasoning starts from an uncomfortable observation: a drift
+check that only ever runs on somebody's laptop catches drift after it has
+already been merged, which is most of the value gone. So the tool needed
+to be easy to drop into a continuous-integration pipeline, and on GitHub
+that means shipping what's called an Action — a reusable step other
+people can add to their own workflows in a line or two.
+
+GitHub offers three shapes for one of those, and the choice between them
+is a genuine tradeoff. The most common shape for a tool written in
+JavaScript is to commit a pre-bundled copy of the whole program into the
+repository, so the runner can execute it immediately with nothing to
+fetch. It starts fastest. But it means carrying a second build artifact
+that has to be rebuilt and re-committed every time the source changes,
+and that can quietly fall out of step with the code it was built from —
+which, for a project whose entire subject is things quietly falling out
+of step with each other, is an awkward thing to sign up for. The second
+shape wraps everything in a container, which gives complete control of
+the environment but pays for it with a container download on every single
+run: minutes of waiting for a check that does milliseconds of real work.
+The third shape, the one chosen here, is called a composite action, and
+it's really just a thin wrapper around ordinary shell commands. It has no
+bundling story at all — whatever it invokes has to already exist on the
+machine, or be fetched at the moment it runs.
+
+That last constraint is exactly why it fits. The command-line tool is
+already published to the public package registry, and every runner GitHub
+provides already has the runtime needed to fetch and run it. There is
+nothing left to bundle that isn't already being distributed. So the
+Action installs the published tool at a pinned version, runs the same
+check anyone would run locally, and then does the three things a
+continuous-integration surface can do that a terminal can't. It puts a
+marker directly on the line of the context file that made the false
+claim, so the failure shows up in the code review itself rather than in a
+log somebody has to go hunting for. It writes a readable summary onto the
+run. And it hands the counts to any later step that wants to act on them.
+It re-implements none of the checking, which was never seriously on the
+table — two implementations of the same check is precisely the kind of
+drift this whole project exists to catch.
+
+There's a real cost attached, and it's worth naming because it bites in a
+specific way. Since the Action installs a particular published version of
+the tool, that version has to already exist publicly at the moment the
+Action itself is released. Get the order wrong — tag the release before
+publishing the package — and the Action is broken for everyone who tries
+it, on their very first run, in the most visible way possible. So the
+release ritual is fixed: publish the package first, tag second. The other
+cost is that the check now depends on the package registry being
+reachable when it runs. If it isn't, the check fails to run rather than
+reporting drift, and anyone who can't accept that can install the tool as
+an ordinary dependency and call it directly. The command-line tool is the
+product; the Action is a convenience layered over it.

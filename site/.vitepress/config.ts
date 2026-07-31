@@ -40,6 +40,7 @@ export default withMermaid(
 
       nav: [
         { text: "Guide", link: "/guide/getting-started" },
+        { text: "GitHub Action", link: "/guide/github-action" },
         { text: "Reference", link: "/reference/cli" },
         { text: "Architecture", link: "/architecture/overview" },
         {
@@ -63,6 +64,7 @@ export default withMermaid(
             items: [
               { text: "Getting started", link: "/guide/getting-started" },
               { text: "Configuration", link: "/guide/configuration" },
+              { text: "GitHub Action", link: "/guide/github-action" },
               { text: "End-to-end example", link: "/guide/example" },
             ],
           },

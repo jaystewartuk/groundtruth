@@ -90,7 +90,16 @@ Pages on every push to `main` via
 [`.github/workflows/deploy-site.yml`](https://github.com/jaystewart-dev/groundtruth/blob/main/.github/workflows/deploy-site.yml).
 Source code itself is verified on every pull request via
 [`.github/workflows/ci.yml`](https://github.com/jaystewart-dev/groundtruth/blob/main/.github/workflows/ci.yml)
-(typecheck + test).
+(typecheck + test, plus a `self-check` job that runs groundtruth's own
+[GitHub Action](/guide/github-action) against its own assertions).
+
+The Action ships from this same repository — `action.yml` at the root, a
+composite wrapper that installs the published CLI and shells out to it
+rather than reimplementing any of it
+([ADR-0005](/architecture/decisions#adr-0005-the-github-action-is-a-composite-wrapper-around-the-published-cli)).
+It adds no component to the diagram above: the same single process does the
+same single pass over the filesystem, with its report rendered into
+annotations and a job summary afterwards.
 
 ## What this page deliberately omits
 

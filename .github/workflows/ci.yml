@@ -23,3 +23,30 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
       - run: pnpm test
+
+  # groundtruth checking groundtruth. Runs the Action from this checkout —
+  # not a published ref — against the CLI just built from this branch, so a
+  # pull request that breaks either the Action or this repo's own CLAUDE.md
+  # says so here, in the diff, before it ships. `cli-path` is the escape
+  # hatch that makes testing an unreleased build possible; consumers leave it
+  # unset and get the published package.
+  self-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      - uses: ./
+        with:
+          cli-path: dist/cli.js

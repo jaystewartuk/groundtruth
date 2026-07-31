@@ -6,10 +6,11 @@ groundtruth to check itself). Full docs: [`docs/README.md`](docs/README.md).
 ## What this repo is
 
 A CLI (`groundtruth check`) that verifies claims in `CLAUDE.md`/`AGENTS.md`
-against the actual repo. One command exists today; nothing is deployed —
-this is a local dev/CI tool distributed on npm as `@groundtruth-sh/cli`
-(first published as 0.1.0 on 2026-07-31). The installed command is still
-plain `groundtruth`.
+against the actual repo. One command exists today; nothing is a running
+service. It ships two ways, both from this repo: on npm as
+`@groundtruth-sh/cli` (first published as 0.1.0 on 2026-07-31; the installed
+command is still plain `groundtruth`), and as a GitHub Action defined by
+`action.yml` at the repo root.
 
 ## How changes land
 
@@ -18,9 +19,10 @@ the `verify` check must pass before merge. No approval is required — single
 maintainer — so the flow is: branch, open the pull request, merge it
 yourself once CI is green. Never push to `main` directly.
 
-The reason is that this repo is public and ships to npm, where a published
-version number can never be taken back. Merging does not publish, though —
-releases stay manual and deliberate (see the site's release-process page).
+The reason is that this repo is public and ships to npm and the GitHub
+Marketplace, where a published version number can never be taken back.
+Merging does not publish, though — releases stay manual and deliberate (see
+the site's release-process page).
 
 ## Facts an agent should not assume are stale without checking
 
@@ -40,6 +42,20 @@ releases stay manual and deliberate (see the site's release-process page).
   name-similarity rule (the unrelated `ground-truth` exists). Releases are
   manual — no release automation workflow exists (see the site's
   release-process page).
+- The GitHub Action is a **composite** action: `action.yml` at the repo root
+  plus a dependency-free runner at `action/run.mjs` that shells out to the
+  published CLI. It is not a bundled JavaScript action and there is no
+  `dist/` build step for it — editing `action/run.mjs` is the whole change.
+  Why, and what that costs: [ADR-0005](docs/adr/0005-composite-action-wrapping-the-published-cli.md).
+- `action.yml`'s `version` input pins which published CLI the Action installs,
+  and it must be bumped to match `package.json` in the same release commit —
+  an Action release pointing at an unpublished version is broken for every
+  consumer.
+- This repo runs the Action on itself: `.groundtruth.jsonc` at the root holds
+  assertions taken from this very file, and the `self-check` job in
+  `.github/workflows/ci.yml` runs them against the local build on every pull
+  request. If you change a claim here, expect that job to be the thing that
+  tells you.
 
 ## Commands
 

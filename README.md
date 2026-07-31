@@ -97,6 +97,60 @@ groundtruth check [--repo <path>] [--file <path>] [--json]
   --json          Machine-readable output instead of a table
 ```
 
+## In CI: the GitHub Action
+
+Drift caught on a laptop is drift caught after it merged. The Action runs the
+same check on every pull request, and annotates the exact line of your context
+file that made the false claim, so the failure lands in the diff:
+
+```yaml
+name: agent-context
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  groundtruth:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jaystewart-dev/groundtruth@v0.2.0
+```
+
+That's the whole setup — no `setup-node` step, no install step. All inputs are
+optional:
+
+| input | default | meaning |
+|---|---|---|
+| `version` | `0.2.0` | Which published CLI version to run. `latest` tracks the registry |
+| `file` | `.groundtruth.jsonc` | Assertions file, relative to `working-directory` |
+| `working-directory` | `.` | Repo root to check against — point it at a package in a monorepo |
+| `fail-on-unverifiable` | `false` | Also fail the job when an assertion can't be mechanically checked |
+| `annotations` | `true` | Inline annotations on the claiming line |
+| `summary` | `true` | Write the report to the job summary |
+| `cli-path` | — | Advanced: run a local CLI build instead of fetching from npm |
+
+Outputs — `total`, `passing`, `failing`, `unverifiable`, and `report-path`
+(the full JSON report on disk) — let a later step act on the result:
+
+```yaml
+      - uses: jaystewart-dev/groundtruth@v0.2.0
+        id: check
+        continue-on-error: true
+      - run: echo "${{ steps.check.outputs.failing }} claims have gone stale"
+```
+
+The Action is a composite wrapper around the published CLI, not a
+reimplementation of it — it shells out to exactly what you'd run locally
+([ADR-0005](docs/adr/0005-composite-action-wrapping-the-published-cli.md)).
+It needs Node and npm on the runner, which every GitHub-hosted runner has.
+Full reference: [groundtruth.sh/guide/github-action](https://groundtruth.sh/guide/github-action).
+
+This repo runs the Action on itself: [`.groundtruth.jsonc`](./.groundtruth.jsonc)
+holds assertions taken from its own `CLAUDE.md`, checked on every pull request
+by the `self-check` job in [`ci.yml`](.github/workflows/ci.yml).
+
 ## The `.groundtruth.jsonc` format
 
 An array of assertions, each with:
@@ -181,9 +235,10 @@ full reasoning):
    rules are ever actually cited, so a growing context file can be pruned
    with evidence instead of guesswork.
 
-Also planned, not yet built: a GitHub Action for CI, and a
-`--inject`-style mode for a session-start hook so an agent starts every
-session already told which of its own instructions are currently false.
+The GitHub Action shipped in 0.2.0 (see [In CI](#in-ci-the-github-action)
+above). Still planned, not yet built: a `--inject`-style mode for a
+session-start hook, so an agent starts every session already told which of
+its own instructions are currently false.
 
 ## License
 

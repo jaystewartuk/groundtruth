@@ -22,6 +22,9 @@ this page should start linking to real issues instead of restating prose.
   `script_exists`, `workflow_trigger`, `symbol_at_path`.
 - ✅ Fail-closed handling of unverifiable claims (see
   [ADR-0002](/architecture/decisions#adr-0002-unverifiable-assertions-never-fail-but-always-report)).
+- ✅ A [GitHub Action](/guide/github-action) *(0.2.0)* — the same check on
+  every pull request, with inline annotations on the exact context-file
+  line that made a false claim, a job summary, and step outputs.
 
 ## Planned — three-layer design
 
@@ -43,9 +46,6 @@ for the full reasoning.
 
 ## Also planned, not yet started
 
-- A GitHub Action for CI, packaged for other repos to consume directly
-  (distinct from this repo's own [`ci.yml`](/project/development#continuous-integration),
-  which only checks groundtruth itself).
 - A `--inject`-style mode for a session-start hook, so an agent starts
   every session already told which of its own instructions are currently
   false.

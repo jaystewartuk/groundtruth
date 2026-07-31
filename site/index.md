@@ -28,7 +28,7 @@ features:
     details: The MVP checker is fully mechanical — zero LLM calls, zero network access, zero API key to run `groundtruth check` today.
   - icon: 🧱
     title: CI-native
-    details: Exits non-zero on any failing assertion. Drop it into an existing pipeline as a gate, next to your type check and test run.
+    details: One line of YAML with the GitHub Action, or a plain non-zero exit code in any other pipeline. Failures annotate the exact context-file line that made the claim, right in the pull request diff.
   - icon: 🧩
     title: Six assertion kinds
     details: path_exists, path_absent, env_var_absent, script_exists, workflow_trigger, symbol_at_path — one checker per kind, each independently testable.
@@ -138,6 +138,15 @@ groundtruth check
 
 Full walkthrough with a real `.groundtruth.jsonc`:
 [Getting started →](/guide/getting-started)
+
+Then put it on every pull request — two lines of YAML, no install step:
+
+```yaml
+      - uses: actions/checkout@v4
+      - uses: jaystewart-dev/groundtruth@v0.2.0
+```
+
+[GitHub Action →](/guide/github-action)
 
 <style>
 .badge-row {

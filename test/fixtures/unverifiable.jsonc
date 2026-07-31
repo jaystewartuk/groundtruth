@@ -1,0 +1,14 @@
+// A one-assertion suite that is deliberately unverifiable against this repo:
+// env_var_absent's default scan targets (turbo.json, .env.example) do not
+// exist here, so the checker can neither confirm nor deny the claim. Used by
+// test/action.test.ts to prove the Action's fail-on-unverifiable input.
+{
+  "assertions": [
+    {
+      "claim": "No decommissioned vendor's env var is still declared in build tooling.",
+      "kind": "env_var_absent",
+      "args": { "name": "SUPABASE_URL" },
+      "source": "CLAUDE.md#L1"
+    }
+  ]
+}

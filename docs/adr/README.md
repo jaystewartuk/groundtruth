@@ -15,6 +15,7 @@ instead). Use [`template.md`](template.md) for new ones.
 | [0002](0002-unverifiable-assertions-never-fail-but-always-report.md) | Unverifiable assertions never fail, but are always reported | Accepted |
 | [0003](0003-regex-based-symbol-matching-for-mvp.md) | Regex-based symbol matching for `symbol_at_path` | Accepted |
 | [0004](0004-three-layer-roadmap.md) | Three-layer product design: verify, contradict, instrument | Proposed |
+| [0005](0005-composite-action-wrapping-the-published-cli.md) | The GitHub Action is a composite wrapper around the published CLI | Accepted |
 
 ## When to write one
 

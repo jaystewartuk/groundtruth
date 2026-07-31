@@ -11,6 +11,17 @@ this is a local dev/CI tool distributed on npm as `@groundtruth-sh/cli`
 (first published as 0.1.0 on 2026-07-31). The installed command is still
 plain `groundtruth`.
 
+## How changes land
+
+Every change to `main` goes through a pull request. `main` is protected and
+the `verify` check must pass before merge. No approval is required — single
+maintainer — so the flow is: branch, open the pull request, merge it
+yourself once CI is green. Never push to `main` directly.
+
+The reason is that this repo is public and ships to npm, where a published
+version number can never be taken back. Merging does not publish, though —
+releases stay manual and deliberate (see the site's release-process page).
+
 ## Facts an agent should not assume are stale without checking
 
 - No LLM-based extraction from `CLAUDE.md`/`AGENTS.md` exists yet.

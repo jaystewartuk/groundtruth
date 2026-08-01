@@ -34,8 +34,13 @@ jobs:
       - run: pnpm install --frozen-lockfile
         working-directory: site
 
+      # POSTHOG_KEY is a repository *variable*, not a secret: PostHog project
+      # keys are public by design and ship in the client bundle. Leaving it
+      # unset is a supported state — the site just builds without analytics.
       - run: pnpm run build
         working-directory: site
+        env:
+          POSTHOG_KEY: ${{ vars.POSTHOG_KEY }}
 
       - uses: actions/configure-pages@v5
 

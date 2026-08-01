@@ -56,6 +56,12 @@ the site's release-process page).
   `.github/workflows/ci.yml` runs them against the local build on every pull
   request. If you change a claim here, expect that job to be the thing that
   tells you.
+- The docs site reports to PostHog, cookieless (`persistence: "memory"`, so
+  there is no consent banner and a returning reader counts as a new person),
+  wired in `site/.vitepress/theme/index.ts`. The project key reaches the build
+  as the `POSTHOG_KEY` repository *variable* — public by design, not a secret —
+  and only in `deploy-site.yml`, so local and fork builds are silently
+  untracked. With it unset the site still builds; it just stops reporting.
 
 ## Commands
 

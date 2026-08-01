@@ -11,10 +11,13 @@
 // .groundtruth.jsonc.example. This file is the real thing: it is expected to
 // be green, and a red run here means CLAUDE.md now says something false.
 //
-// One kind is absent on purpose: env_var_absent. This repo's context file
-// makes no claim about an environment variable, and writing an assertion for
-// a claim nobody made would be the same self-deception the tool exists to
-// catch. Kinds get used when a sentence earns them.
+// One kind is absent on purpose: env_var_absent. The single environment
+// variable this repo's context file mentions, POSTHOG_KEY, is claimed to be
+// *present* in deploy-site.yml — the reverse of what that kind checks, and
+// no other kind here can express it either. Writing an assertion for a claim
+// nobody made, or one that checks the opposite of the claim, would be the
+// same self-deception the tool exists to catch. Kinds get used when a
+// sentence earns them.
 {
   "assertions": [
     {
@@ -75,31 +78,31 @@
       "claim": "pnpm build — tsc -> dist/",
       "kind": "script_exists",
       "args": { "name": "build" },
-      "source": "CLAUDE.md#L63"
+      "source": "CLAUDE.md#L69"
     },
     {
       "claim": "pnpm test — pretest runs tsc, then vitest against test/fixtures/sample-repo",
       "kind": "script_exists",
       "args": { "name": "test" },
-      "source": "CLAUDE.md#L64"
+      "source": "CLAUDE.md#L70"
     },
     {
       "claim": "pnpm typecheck — tsc --noEmit",
       "kind": "script_exists",
       "args": { "name": "typecheck" },
-      "source": "CLAUDE.md#L65"
+      "source": "CLAUDE.md#L71"
     },
     {
       "claim": "Step 3 (registering the checker in `src/assertions/index.ts`) is enforced at compile time if skipped.",
       "kind": "symbol_at_path",
       "args": { "symbol": "checkAssertions", "path": "src/assertions/index.ts" },
-      "source": "CLAUDE.md#L72"
+      "source": "CLAUDE.md#L78"
     },
     {
       "claim": "Architecture and request flow: `docs/architecture/overview.md`.",
       "kind": "path_exists",
       "args": { "path": "docs/architecture/overview.md" },
-      "source": "CLAUDE.md#L76"
+      "source": "CLAUDE.md#L82"
     }
   ]
 }

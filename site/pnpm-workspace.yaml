@@ -4,6 +4,9 @@
 # with groundtruth's own package.json.
 
 allowBuilds:
+  # posthog-js pulls in core-js, whose install script only prints a funding
+  # banner. Nothing here needs it to run.
+  core-js: false
   esbuild: true
 
 onlyBuiltDependencies:

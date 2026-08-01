@@ -130,6 +130,16 @@ export default withMermaid(
       theme: { light: "github-light", dark: "github-dark" },
     },
 
+    vite: {
+      define: {
+        // PostHog's *public* project key — it ships in the client bundle by
+        // design, so this is not a secret. It comes from the environment only
+        // so that local, fork, and preview builds are silently untracked and
+        // never pollute the production numbers. Consumed in theme/index.ts.
+        __POSTHOG_KEY__: JSON.stringify(process.env.POSTHOG_KEY ?? ""),
+      },
+    },
+
     mermaid: {},
   }),
 );

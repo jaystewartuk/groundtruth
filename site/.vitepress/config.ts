@@ -102,7 +102,10 @@ export default withMermaid(
         ],
       },
 
-      socialLinks: [{ icon: "github", link: "https://github.com/jaystewart-dev/groundtruth" }],
+      socialLinks: [
+        { icon: "github", link: "https://github.com/jaystewart-dev/groundtruth" },
+        { icon: "npm", link: "https://www.npmjs.com/package/@groundtruth-sh/cli" },
+      ],
 
       search: {
         provider: "local",

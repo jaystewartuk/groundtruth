@@ -10,9 +10,10 @@ pnpm add -D @groundtruth-sh/cli   # or: npm install -D @groundtruth-sh/cli
 ```
 
 Or run it without adding a dependency: `pnpm dlx @groundtruth-sh/cli check`
-(`npx @groundtruth-sh/cli check` works too). The package is scoped — npm's
-name-similarity rule reserves unscoped `groundtruth` — but the command it
-installs is plain `groundtruth`.
+(`npx @groundtruth-sh/cli check` works too). The published package is
+[`@groundtruth-sh/cli`](https://www.npmjs.com/package/@groundtruth-sh/cli) —
+scoped because npm's name-similarity rule reserves unscoped `groundtruth` —
+but the command it installs is plain `groundtruth`.
 
 Iterating on groundtruth itself instead of consuming it? Link your local
 checkout so `groundtruth check` runs your working copy:

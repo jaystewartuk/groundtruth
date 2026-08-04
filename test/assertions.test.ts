@@ -181,7 +181,7 @@ describe("text_absent", () => {
 
     const excluded = checkTextAbsent(SAMPLE_REPO, {
       pattern: "SUPABASE_URL",
-      exclude: ["*.json", ".github/**"],
+      exclude: ["*.json", "*.jsonc", ".github/**"],
     });
     expect(excluded.status).toBe("passing");
   });

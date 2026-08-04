@@ -53,6 +53,21 @@
       "kind": "workflow_trigger",
       "args": { "workflow": "checks.yml", "trigger": "pull_request", "target": "main" },
       "source": "CLAUDE.md#L12"
+    },
+    {
+      "claim": "The Supabase project is torn down; do not add an MCP server for it.",
+      // The finer-grained version of the path_absent above: no JSON config in
+      // this repo may mention Supabase at all. Fails on turbo.json and
+      // .mcp.json in this fixture — deliberate, it models the real drift.
+      "kind": "text_absent",
+      "args": { "pattern": "supabase", "caseInsensitive": true, "include": ["*.json"] },
+      "source": "CLAUDE.md#L8"
+    },
+    {
+      "claim": "`pnpm verify:push` runs typecheck + unit.",
+      "kind": "text_present",
+      "args": { "pattern": "verify:push", "path": "package.json" },
+      "source": "CLAUDE.md#L9"
     }
   ]
 }

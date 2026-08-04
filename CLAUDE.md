@@ -6,8 +6,9 @@ groundtruth to check itself). Full docs: [`docs/README.md`](docs/README.md).
 ## What this repo is
 
 A CLI (`groundtruth check`) that verifies claims in `CLAUDE.md`/`AGENTS.md`
-against the actual repo. One command exists today; nothing is a running
-service. It ships two ways, both from this repo: on npm as
+against the actual repo, plus two eviction helpers (`groundtruth digest`,
+`groundtruth evict`); nothing is a running service. It ships two ways, both
+from this repo: on npm as
 `@groundtruth-sh/cli` (first published as 0.1.0 on 2026-07-31; the installed
 command is still plain `groundtruth`), and as a GitHub Action defined by
 `action.yml` at the repo root.
@@ -29,10 +30,18 @@ the site's release-process page).
 - No LLM-based extraction from `CLAUDE.md`/`AGENTS.md` exists yet.
   Assertions are hand-authored in `.groundtruth.jsonc`. See
   [ADR-0001](docs/adr/0001-hand-authored-assertions-before-llm-extraction.md).
-- Six assertion kinds exist: `path_exists`, `path_absent`,
-  `env_var_absent`, `script_exists`, `workflow_trigger`, `symbol_at_path`.
+- Eight assertion kinds exist: `path_exists`, `path_absent`,
+  `env_var_absent`, `script_exists`, `workflow_trigger`, `symbol_at_path`,
+  `text_present`, `text_absent`.
   The canonical list is `ASSERTION_KINDS` in `src/types.ts` — if this file
   and that array ever disagree, the array is right.
+- `text_absent` can match a retired fact without restating it
+  (`patternDigest`, authored via `groundtruth digest`), and
+  `groundtruth evict` turns a one-time sweep into a permanent `text_absent`
+  assertion. Scope, redaction, and boundary decisions:
+  [ADR-0006](docs/adr/0006-content-assertions-scan-tracked-text-files-only.md),
+  [ADR-0007](docs/adr/0007-redacted-patterns.md),
+  [ADR-0008](docs/adr/0008-evict-is-working-tree-only.md).
 - `symbol_at_path` is regex-based, not an AST parse — it false-negatives
   on re-exported symbols. Deliberate, see
   [ADR-0003](docs/adr/0003-regex-based-symbol-matching-for-mvp.md).

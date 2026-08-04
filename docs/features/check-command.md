@@ -2,8 +2,8 @@
 
 > **Summary:** Loads a `.groundtruth.jsonc` assertions file, checks each
 > assertion against the repo on disk, prints a pass/fail/unverifiable
-> report, exits non-zero if anything failed. This is groundtruth's only
-> command today.
+> report, exits non-zero if anything failed. groundtruth's core command —
+> the eviction workflow around it is [`evict-command.md`](evict-command.md).
 
 ## Purpose
 
@@ -59,8 +59,9 @@ for why).
 
 ## Assertion kinds
 
-Six kinds exist today: `path_exists`, `path_absent`, `env_var_absent`,
-`script_exists`, `workflow_trigger`, `symbol_at_path`. Each kind's
+Eight kinds exist today: `path_exists`, `path_absent`, `env_var_absent`,
+`script_exists`, `workflow_trigger`, `symbol_at_path`, `text_present`,
+`text_absent`. Each kind's
 argument shape and exact check semantics are the type source of truth in
 `src/types.ts` and documented for humans in the root
 [README's kind table](../../README.md#assertion-kinds) — not duplicated
@@ -73,7 +74,11 @@ here, since that table is the single source for it.
 - `symbol_at_path` is regex-based and misses re-exported symbols — see
   [ADR-0003](../adr/0003-regex-based-symbol-matching-for-mvp.md).
 - `env_var_absent` on JSON files needs an exact key/value match, not a
-  substring search.
+  substring search (`text_absent` covers the substring case).
+- `text_absent`'s default scope needs a git checkout, and redacted
+  patterns match exact literals only — see
+  [ADR-0006](../adr/0006-content-assertions-scan-tracked-text-files-only.md)
+  and [ADR-0007](../adr/0007-redacted-patterns.md).
 - No cross-file contradiction detection — that's layer 2 of
   [ADR-0004](../adr/0004-three-layer-roadmap.md), unbuilt.
 

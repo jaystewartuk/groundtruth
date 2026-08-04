@@ -97,6 +97,26 @@ groundtruth check [--repo <path>] [--file <path>] [--json]
   --json          Machine-readable output instead of a table
 ```
 
+## Evicting a fact
+
+When a fact is retired — a deadline that no longer holds, a codename that
+must stop appearing — `groundtruth evict` sweeps every tracked text file for
+it and, with `--write`, appends a `text_absent` assertion so `check` enforces
+non-recurrence from then on:
+
+```bash
+printf '%s' 'the retired fact' | groundtruth evict --write --source docs/decisions/D-12.md#L3
+```
+
+The fact is read from stdin, never argv — shell history is itself a context
+surface. For privacy-motivated evictions, `--redact --label <name>` writes a
+salted-digest pattern that matches the fact **without restating it** in
+`.groundtruth.jsonc` (author one directly with `groundtruth digest`). Every
+sweep ends by listing the surfaces it *cannot* see — git history, PR/issue
+bodies, CI logs, transcripts — because a sweep that overstates its coverage
+is the exact failure mode this tool exists to prevent. Full walkthrough:
+[groundtruth.sh/guide/evicting-a-fact](https://groundtruth.sh/guide/evicting-a-fact).
+
 ## In CI: the GitHub Action
 
 Drift caught on a laptop is drift caught after it merged. The Action runs the
@@ -158,7 +178,7 @@ An array of assertions, each with:
 | field | meaning |
 |---|---|
 | `claim` | The sentence from your context file, verbatim — for humans reading the report |
-| `kind` | One of the 6 kinds below |
+| `kind` | One of the 8 kinds below |
 | `args` | Kind-specific arguments |
 | `source` | `"<file>#L<line>"` — traces a failure back to the exact sentence that made the claim |
 
@@ -175,6 +195,13 @@ commented example (the AgendaProfe findings, encoded as real assertions).
 | `script_exists` | `{ name, packageJson? }` | `package.json` has a `scripts[name]` entry |
 | `workflow_trigger` | `{ workflow, trigger, target? }` | a `.github/workflows/<workflow>` file's `on:` block includes `trigger` (optionally scoped to a branch via `target`) |
 | `symbol_at_path` | `{ symbol, path }` | a named `export function`/`const`/`class`/`interface`/`type`/`enum` exists in the file at `path` |
+| `text_present` | `{ pattern, path, patternType?, caseInsensitive? }` | `pattern` (literal by default, or a `regex`) appears in the one named file — for claims of the shape "X is configured in file Y" |
+| `text_absent` | `{ pattern \| patternDigest, label?, files? \| include?, exclude?, patternType?, caseInsensitive? }` | `pattern` appears in **no** tracked text file (default scope: `git ls-files`, minus binaries, >5 MB files, and the assertions file itself). `patternDigest` + `label` matches a retired fact *without restating it* — authored with `groundtruth digest`, reported by `label` and location only |
+
+For eviction assertions (`text_absent` on a retired fact), `source` points at
+the **eviction decision record** — the decision-log line or commit that
+retired the fact — rather than a sentence making a claim; absence is the
+point ([ADR-0007](docs/adr/0007-redacted-patterns.md)).
 
 **Known MVP limitations, not silent gaps:**
 
@@ -183,8 +210,15 @@ commented example (the AgendaProfe findings, encoded as real assertions).
   reports `failing`, not a false pass.
 - `env_var_absent` on a `.json` file requires an exact string/key match, not
   a substring search — it won't catch a var name embedded inside a longer
-  string (e.g. inside a URL). Use `path_absent` for the coarser "this whole
-  file shouldn't exist" case in the meantime.
+  string (e.g. inside a URL). `text_absent` covers the substring case.
+- `patternDigest` matches **exact literals only** — no regex, no paraphrase
+  detection. A reworded fact is not caught; see
+  [ADR-0007](docs/adr/0007-redacted-patterns.md) for the honest threat model
+  (redaction keeps a fact out of agent context; it is not cryptographic
+  secrecy for low-entropy facts).
+- `text_absent`'s default scope needs a git checkout; without one it reports
+  `unverifiable` and asks for explicit `files`/`include` — never a raw
+  directory walk ([ADR-0006](docs/adr/0006-content-assertions-scan-tracked-text-files-only.md)).
 - No kind yet covers **cross-file contradiction** (e.g. `CLAUDE.md` saying
   "PRs are the default" while a memory file says the opposite) — that's
   layer 2 in the roadmap below, and needs an LLM judgment call, not a

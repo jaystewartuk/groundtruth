@@ -35,7 +35,7 @@ declarations, not an AST parse, and reports `failing` (not a false
 [Assertion kinds](/reference/assertion-kinds#symbol-at-path) and
 [ADR-0003](/architecture/decisions#adr-0003-regex-based-symbol-matching-for-mvp).
 
-### Can I check something that isn't one of the six kinds?
+### Can I check something that isn't one of the eight kinds?
 
 Not without writing a checker for it — see
 [Development → Adding an assertion kind](/project/development#adding-an-assertion-kind).

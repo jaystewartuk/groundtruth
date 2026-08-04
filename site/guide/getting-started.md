@@ -50,7 +50,7 @@ your `CLAUDE.md` claims exists still does:
 
 Every field is required. See [Configuration](/guide/configuration) for
 what each one means and [Assertion kinds](/reference/assertion-kinds) for
-the full set of checks available — six today.
+the full set of checks available — eight today.
 
 ## 3. Run it
 

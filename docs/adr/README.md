@@ -16,6 +16,9 @@ instead). Use [`template.md`](template.md) for new ones.
 | [0003](0003-regex-based-symbol-matching-for-mvp.md) | Regex-based symbol matching for `symbol_at_path` | Accepted |
 | [0004](0004-three-layer-roadmap.md) | Three-layer product design: verify, contradict, instrument | Proposed |
 | [0005](0005-composite-action-wrapping-the-published-cli.md) | The GitHub Action is a composite wrapper around the published CLI | Accepted |
+| [0006](0006-content-assertions-scan-tracked-text-files-only.md) | Content assertions scan tracked text files only, and exclude the assertions file itself | Accepted |
+| [0007](0007-redacted-patterns.md) | Redacted patterns: rolling-hash prefilter, salted SHA-256, exact-literal scope, honest threat model | Accepted |
+| [0008](0008-evict-is-working-tree-only.md) | `evict` is working-tree-only and says so; stdin-only input; `--write` bridges sweep to enforcement | Accepted |
 
 ## When to write one
 

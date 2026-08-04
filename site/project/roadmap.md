@@ -18,8 +18,13 @@ this page should start linking to real issues instead of restating prose.
 - ✅ `groundtruth check` — hand-authored `.groundtruth.jsonc` assertions,
   verified against a repo, worst-first table or `--json` output, CI-ready
   exit codes.
-- ✅ Six assertion kinds: `path_exists`, `path_absent`, `env_var_absent`,
-  `script_exists`, `workflow_trigger`, `symbol_at_path`.
+- ✅ Eight assertion kinds: `path_exists`, `path_absent`, `env_var_absent`,
+  `script_exists`, `workflow_trigger`, `symbol_at_path`, `text_present`,
+  `text_absent`.
+- ✅ Fact eviction: `groundtruth evict` sweeps the working tree for a
+  retired fact and can append an enforcing `text_absent` assertion —
+  redacted via `groundtruth digest`, so the assertion matches the fact
+  without restating it (see [Evicting a fact](/guide/evicting-a-fact)).
 - ✅ Fail-closed handling of unverifiable claims (see
   [ADR-0002](/architecture/decisions#adr-0002-unverifiable-assertions-never-fail-but-always-report)).
 - ✅ A [GitHub Action](/guide/github-action) *(0.2.0)* — the same check on

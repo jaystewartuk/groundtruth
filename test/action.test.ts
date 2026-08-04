@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdtempSync, readFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -205,15 +205,15 @@ describe("the Action end to end", () => {
     expect(stdout).toContain("::error file=test/fixtures/sample-repo/CLAUDE.md,line=8");
 
     const outputs = readFileSync(join(temp, "output.txt"), "utf8");
-    expect(outputs).toContain("failing=6");
-    expect(outputs).toContain("passing=3");
-    expect(outputs).toContain("total=9");
+    expect(outputs).toContain("failing=7");
+    expect(outputs).toContain("passing=4");
+    expect(outputs).toContain("total=11");
 
     const summary = readFileSync(join(temp, "summary.md"), "utf8");
-    expect(summary).toContain("**6 of 9 assertion(s) failing**");
+    expect(summary).toContain("**7 of 11 assertion(s) failing**");
 
     const report = JSON.parse(readFileSync(join(temp, "groundtruth-report.json"), "utf8"));
-    expect(report.failing).toBe(6);
+    expect(report.failing).toBe(7);
   });
 
   it("passes on this repo's own assertions — the Action checking itself", () => {
@@ -235,6 +235,49 @@ describe("the Action end to end", () => {
     const { status, stdout } = runAction({ INPUT_FILE: "does-not-exist.jsonc" });
     expect(status).toBe(2);
     expect(stdout).toContain("::error title=groundtruth::");
+  });
+
+  it("keeps a redacted text_absent failure redacted all the way into annotations and summary", () => {
+    // Author a digest with the real CLI, plant the fact, run the real runner.
+    // CLI discipline should make leak-free output automatic, but the Action
+    // is the surface that posts into other people's pull requests — verify,
+    // don't assume (see the spec for ADR-0007's reporting rule).
+    const fact = "Project Foxglove ships 2031-04-01";
+    const digestOut = execFileSync("node", [CLI, "digest", "--stdin"], {
+      encoding: "utf8",
+      input: fact,
+    });
+    const { patternDigest } = JSON.parse(digestOut);
+
+    const repo = mkdtempSync(join(tmpdir(), "groundtruth-redact-"));
+    writeFileSync(join(repo, "notes.md"), `reminder: ${fact}\n`);
+    writeFileSync(
+      join(repo, ".groundtruth.jsonc"),
+      JSON.stringify({
+        assertions: [
+          {
+            claim: "The retired codename does not appear anywhere.",
+            kind: "text_absent",
+            args: { patternDigest, label: "retired-codename", files: ["notes.md"] },
+            source: "notes.md#L1",
+          },
+        ],
+      }),
+    );
+
+    const { status, stdout, temp } = runAction({
+      GITHUB_WORKSPACE: repo,
+      INPUT_WORKING_DIRECTORY: ".",
+      INPUT_CLI_PATH: CLI,
+    });
+    expect(status).toBe(1);
+    expect(stdout).toContain("retired-codename");
+    expect(stdout.toLowerCase()).not.toContain("foxglove");
+    expect(stdout).not.toContain("2031");
+
+    const summary = readFileSync(join(temp, "summary.md"), "utf8");
+    expect(summary).toContain("retired-codename");
+    expect(summary.toLowerCase()).not.toContain("foxglove");
   });
 
   it("fails a clean run when fail-on-unverifiable is set and something is unverifiable", () => {

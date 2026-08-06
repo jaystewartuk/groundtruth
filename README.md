@@ -240,6 +240,14 @@ above). Still planned, not yet built: a `--inject`-style mode for a
 session-start hook, so an agent starts every session already told which of
 its own instructions are currently false.
 
+## Who's behind it
+
+Maintained by [Jay Stewart](https://jaystewart.dev). The audit that motivated
+the tool is written up as
+[a public case study](https://jaystewart.dev/work/agent-operated-codebase/),
+and the same audit is available for your own repositories as a
+[fixed-price service](https://jaystewart.dev/audit/).
+
 ## License
 
 MIT

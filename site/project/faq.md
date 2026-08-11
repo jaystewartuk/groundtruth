@@ -1,3 +1,7 @@
+---
+description: "Short answers on LLM extraction, network access, unverifiable claims, re-exported symbols, npm packaging, and API stability."
+---
+
 # FAQ
 
 ### Does groundtruth read my `CLAUDE.md` and figure out the assertions itself?
@@ -43,11 +47,17 @@ There's no plugin system; every kind lives in `src/assertions/`.
 
 ### Is groundtruth on npm?
 
-Not yet — install via git, see
-[Getting started](/guide/getting-started#_1-install). pnpm pins the
-resolved commit, so updates are explicit (`pnpm update groundtruth`).
+Yes — as [`@groundtruth-sh/cli`](https://www.npmjs.com/package/@groundtruth-sh/cli),
+published since v0.1.0 (July 2026): `pnpm add -D @groundtruth-sh/cli`. The
+name is scoped because npm's name-similarity rule reserves unscoped
+`groundtruth` against the unrelated existing `ground-truth` package, but the
+command it installs is plain `groundtruth`. Installing straight from git
+(`pnpm add -D github:jaystewart-dev/groundtruth`) still works when you want
+to pin an unreleased commit — see
+[Getting started](/guide/getting-started#_1-install) and the
+[release process](/project/release-process).
 
-### Is the programmatic API (`import { ... } from "groundtruth"`) stable?
+### Is the programmatic API (`import { ... } from "@groundtruth-sh/cli"`) stable?
 
 No stability guarantee yet. It mirrors internal module boundaries rather
 than a designed public surface — see

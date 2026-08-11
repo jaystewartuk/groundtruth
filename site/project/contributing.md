@@ -1,3 +1,7 @@
+---
+description: "How to contribute to groundtruth — issue-first workflow, required checks, and where the canonical CONTRIBUTING.md lives."
+---
+
 # Contributing
 
 The canonical contributing guide lives at

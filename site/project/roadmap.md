@@ -1,3 +1,7 @@
+---
+description: "What groundtruth can do today, and the three-layer design ahead: mechanical verification, contradiction detection, and context economics."
+---
+
 # Roadmap
 
 Sourced directly from the root
@@ -22,7 +26,7 @@ this page should start linking to real issues instead of restating prose.
   `script_exists`, `workflow_trigger`, `symbol_at_path`.
 - ✅ Fail-closed handling of unverifiable claims (see
   [ADR-0002](/architecture/decisions#adr-0002-unverifiable-assertions-never-fail-but-always-report)).
-- ✅ A [GitHub Action](/guide/github-action) *(0.2.0)* — the same check on
+- ✅ A [GitHub Action](/guide/github-action) *(shipped in 0.2.0)* — the same check on
   every pull request, with inline annotations on the exact context-file
   line that made a false claim, a job summary, and step outputs.
 

@@ -1,9 +1,13 @@
+---
+description: "Fixes for the common failure modes of groundtruth check — missing assertions files, surprising passing results, re-export false negatives, and CI that doesn't gate."
+---
+
 # Troubleshooting
 
 ### `No assertions file at <path>.`
 
 groundtruth exits `2` before checking anything if it can't find the
-assertions file. Fix: `cp node_modules/groundtruth/.groundtruth.jsonc.example .groundtruth.jsonc`,
+assertions file. Fix: `cp node_modules/@groundtruth-sh/cli/.groundtruth.jsonc.example .groundtruth.jsonc`,
 or pass `--file <path>` if yours lives somewhere else. See
 [Getting started](/guide/getting-started).
 

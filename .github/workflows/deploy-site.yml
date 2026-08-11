@@ -21,7 +21,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # Full history, not a shallow clone: VitePress derives each page's
+      # "Last updated" timestamp from git log, and a depth-1 checkout would
+      # stamp every page with the date of whatever commit triggered the
+      # deploy.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
 

@@ -1,3 +1,7 @@
+---
+description: "Summaries of every architecture decision record — why assertions are hand-authored, why unverifiable never fails a build, and why the Action wraps the published CLI."
+---
+
 # Architecture decisions
 
 The full Architecture Decision Records live in

@@ -10,7 +10,7 @@ hero:
       text: Get Started
       link: /guide/getting-started
     - theme: alt
-      text: Documentation
+      text: How it works
       link: /architecture/overview
     - theme: alt
       text: GitHub
@@ -143,7 +143,7 @@ Then put it on every pull request — two lines of YAML, no install step:
 
 ```yaml
       - uses: actions/checkout@v4
-      - uses: jaystewart-dev/groundtruth@v0.2.0
+      - uses: jaystewart-dev/groundtruth@v%%GT_VERSION%%
 ```
 
 [GitHub Action →](/guide/github-action)

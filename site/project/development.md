@@ -1,3 +1,7 @@
+---
+description: "Set up a local groundtruth checkout: commands, test fixtures, CI jobs, the assertion-kind checklist, and naming conventions."
+---
+
 # Development
 
 ## Setup
@@ -42,6 +46,30 @@ something no longer true, fails there.
 
 This documentation site has its own separate deploy workflow — see
 [Release process](/project/release-process).
+
+## Working on this docs site
+
+The site under `site/` is its own pnpm workspace, so it installs and runs
+independently of the CLI:
+
+```bash
+cd site
+pnpm install
+pnpm dev        # local preview with hot reload
+pnpm build      # exactly what CI and the deploy run
+```
+
+Two things to know before editing pages:
+
+- Never write a literal released version into an example. Pinned refs like
+  the Action examples' `@v` lines are substituted at build time from the
+  root `package.json` — see the placeholder mechanism in
+  `site/.vitepress/config.ts`, and the
+  [release process](/project/release-process#documentation-site-releases)
+  for why.
+- A pull request that touches `site/` gets a build check in CI
+  (`site-build.yml`), so a broken site build is caught before merge, not at
+  deploy time.
 
 ## Adding an assertion kind
 

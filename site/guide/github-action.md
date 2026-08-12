@@ -1,3 +1,7 @@
+---
+description: "Run groundtruth check on every pull request with a two-line GitHub Action — inline annotations on the claiming line, job summaries, step outputs, and recipes for monorepos and strict mode."
+---
+
 # GitHub Action
 
 Drift caught on a laptop is drift caught *after* it merged. The Action runs
@@ -20,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: jaystewart-dev/groundtruth@v0.2.0
+      - uses: jaystewart-dev/groundtruth@v%%GT_VERSION%%
 ```
 
 That is the whole setup. No `setup-node` step and no install step: the Action
@@ -31,9 +35,9 @@ It expects a `.groundtruth.jsonc` at your repo root — see
 [Getting started](/guide/getting-started) if you don't have one yet.
 
 ::: tip Pin the ref
-`@v0.2.0` pins both the Action and, through its default `version` input, the
-CLI it installs. A CI gate that changes behaviour without a commit is not a
-gate. Use `@main` only if you want to track development.
+`@v%%GT_VERSION%%` pins both the Action and, through its default `version`
+input, the CLI it installs. A CI gate that changes behaviour without a commit
+is not a gate. Use `@main` only if you want to track development.
 :::
 
 ## What a failing run looks like
@@ -88,7 +92,7 @@ the gate — useful for the first week of adoption, while you find out how much
 your context layer has already drifted:
 
 ```yaml
-      - uses: jaystewart-dev/groundtruth@v0.2.0
+      - uses: jaystewart-dev/groundtruth@v%%GT_VERSION%%
         id: check
         continue-on-error: true
       - run: echo "${{ steps.check.outputs.failing }} claims have gone stale"
@@ -103,7 +107,7 @@ pointing at the package root — `file` and every assertion path resolve from
 there:
 
 ```yaml
-      - uses: jaystewart-dev/groundtruth@v0.2.0
+      - uses: jaystewart-dev/groundtruth@v%%GT_VERSION%%
         with:
           working-directory: apps/web
 ```
@@ -114,10 +118,10 @@ Run the Action more than once. Give each step an `id` if you want its counts
 separately:
 
 ```yaml
-      - uses: jaystewart-dev/groundtruth@v0.2.0
+      - uses: jaystewart-dev/groundtruth@v%%GT_VERSION%%
         with:
           working-directory: apps/web
-      - uses: jaystewart-dev/groundtruth@v0.2.0
+      - uses: jaystewart-dev/groundtruth@v%%GT_VERSION%%
         with:
           working-directory: apps/api
 ```
@@ -129,7 +133,7 @@ false. Stricter than the default on purpose — an unverifiable assertion often
 means the assertion is pointing at a file layout that has moved:
 
 ```yaml
-      - uses: jaystewart-dev/groundtruth@v0.2.0
+      - uses: jaystewart-dev/groundtruth@v%%GT_VERSION%%
         with:
           fail-on-unverifiable: true
 ```

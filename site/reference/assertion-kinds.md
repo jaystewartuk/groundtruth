@@ -1,3 +1,7 @@
+---
+description: "All six assertion kinds — path_exists, path_absent, env_var_absent, script_exists, workflow_trigger, symbol_at_path — with args, semantics, and edge cases."
+---
+
 # Assertion kinds
 
 Eight kinds exist today. Each is one file under `src/assertions/`, and each

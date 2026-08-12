@@ -1,3 +1,7 @@
+---
+description: "How groundtruth works: a single-process CLI, its components, request and data flow, and the compile-time-enforced extension point for new assertion kinds."
+---
+
 # Architecture overview
 
 groundtruth is a single-process CLI: no server, no database, no network

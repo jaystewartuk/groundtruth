@@ -10,7 +10,7 @@ hero:
       text: Get Started
       link: /guide/getting-started
     - theme: alt
-      text: Documentation
+      text: How it works
       link: /architecture/overview
     - theme: alt
       text: GitHub
@@ -143,10 +143,21 @@ Then put it on every pull request — two lines of YAML, no install step:
 
 ```yaml
       - uses: actions/checkout@v4
-      - uses: jaystewart-dev/groundtruth@v0.2.0
+      - uses: jaystewart-dev/groundtruth@v%%GT_VERSION%%
 ```
 
 [GitHub Action →](/guide/github-action)
+
+## Where it comes from
+
+groundtruth is maintained by [Jay Stewart](https://jaystewart.dev), who runs
+an agent-operated production practice — the audit that motivated the tool is
+written up, with counted figures, in
+[a public case study](https://jaystewart.dev/work/agent-operated-codebase/).
+The tool is free and complete on its own; if you want the same audit run
+against your own repositories by its author — every claim verified, the gate
+left behind — that exists as a
+[fixed-price service](https://jaystewart.dev/audit/).
 
 <style>
 .badge-row {

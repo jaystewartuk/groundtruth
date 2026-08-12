@@ -1,3 +1,7 @@
+---
+description: "The .groundtruth.jsonc assertions file — the four required fields of an assertion, where the file lives, and what is deliberately not configurable."
+---
+
 # Configuration
 
 groundtruth has exactly one configuration surface: the assertions file,

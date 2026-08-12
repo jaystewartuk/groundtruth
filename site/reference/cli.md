@@ -1,3 +1,7 @@
+---
+description: "Flags, exit codes, human and JSON output shapes, and the programmatic API of groundtruth check."
+---
+
 # CLI reference
 
 Three commands exist: `check` (the CI gate), and the two eviction helpers
@@ -120,7 +124,7 @@ Shape is `CheckSummary` plus `contextFiles` — see `src/types.ts`.
 
 ## Programmatic API
 
-`groundtruth`'s `exports["."]` (`src/index.ts`) re-exports the same
+The package's `exports["."]` entry (`src/index.ts`) re-exports the same
 building blocks the CLI uses, for embedding in another tool:
 
 ```ts
@@ -131,9 +135,9 @@ import {
   summarize,
   formatTable,
   formatJson,
-} from "groundtruth";
+} from "@groundtruth-sh/cli";
 ```
 
 There's no stability guarantee on this surface yet — it mirrors internal
-module boundaries, not a designed public API. Treat it as unstable until
-a first tagged release.
+module boundaries, not a designed public API. While the package is
+pre-1.0, treat it as unstable.

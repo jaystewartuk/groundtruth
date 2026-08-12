@@ -1,3 +1,7 @@
+---
+description: "A full worked example: a repo whose CLAUDE.md makes five claims, two already false — and the exact report groundtruth check produces before and after the fix."
+---
+
 # End-to-end example
 
 This is the exact scenario groundtruth's own test suite runs against —

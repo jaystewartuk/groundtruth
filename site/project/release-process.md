@@ -1,3 +1,7 @@
+---
+description: "How a groundtruth release ships: npm publish before the tag, one version number across CLI and Action, and the manual Marketplace step."
+---
+
 # Release process
 
 ::: tip First release cut
@@ -86,3 +90,11 @@ Unlike the CLI, this documentation site *does* deploy automatically —
 every push to `main` rebuilds and publishes it via
 [`.github/workflows/deploy-site.yml`](https://github.com/jaystewart-dev/groundtruth/blob/main/.github/workflows/deploy-site.yml).
 There's no versioning for the site; it always reflects `main`.
+
+The site is deliberately not a third place to bump the version: everywhere
+the docs pin a released ref — the `jaystewart-dev/groundtruth@vX.Y.Z` lines
+in Action examples — the number is substituted at build time from the root
+`package.json`'s `version` field (the mechanism lives in
+[`site/.vitepress/config.ts`](https://github.com/jaystewart-dev/groundtruth/blob/main/site/.vitepress/config.ts)).
+A release commit that bumps `package.json` and `action.yml` therefore
+updates every example on the next deploy, with no site edit to forget.

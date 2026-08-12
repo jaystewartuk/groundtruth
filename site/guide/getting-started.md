@@ -1,3 +1,7 @@
+---
+description: "Install @groundtruth-sh/cli, write your first assertion, and run groundtruth check — five minutes from install to a verified CLAUDE.md claim."
+---
+
 # Getting started
 
 Five minutes, start to finish: install, write one assertion, run the

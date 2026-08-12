@@ -13,7 +13,7 @@ inputs:
       released version for reproducible CI; "latest" tracks the registry and
       can change under you.
     required: false
-    default: "0.2.0"
+    default: "0.2.1"
   file:
     description: "Assertions file, resolved relative to `working-directory`."
     required: false

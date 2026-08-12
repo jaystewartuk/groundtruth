@@ -1,3 +1,7 @@
+---
+description: "Retire a fact with groundtruth evict — sweep every tracked file, enforce non-recurrence with a text_absent assertion, redacted so the fact never reappears in the config."
+---
+
 # Evicting a fact
 
 When an operator retires a fact — a deadline that no longer holds, a goal

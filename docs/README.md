@@ -31,7 +31,7 @@ edition of the documents that most benefit from it. It is not a copy; read
 | `infrastructure/` | Deploy targets, hosting, provisioning | **reserved** — groundtruth is a local CLI with no deployed service; create this folder when one exists, not before |
 | `operations/` | Runbooks, on-call, incident process | **reserved** — no production system to operate yet |
 | `security/` | Threat model, vuln handling, secrets policy | **reserved** — create when the project has a security surface beyond "don't merge vulnerable deps" (tracked in `development/conventions.md` for now) |
-| `product/` | Roadmap, positioning, investor-facing material | **reserved** — the README's Roadmap section is the current source of truth; split out here if it outgrows a section |
+| `product/` | Roadmap and positioning | **reserved** — the README's Roadmap section is the current source of truth; split out here if it outgrows a section |
 | `api/` | Generated reference for a library/HTTP surface | **reserved** — groundtruth's only public surface is the `check` CLI command, documented in `features/check-command.md`; create this if `src/index.ts`'s programmatic exports grow a real consumer base |
 | `onboarding/` | New-hire ramp material beyond dev setup | **reserved** — folded into `development/onboarding.md` until there's a team, not just a maintainer |
 | `runbooks/` | Step-by-step operational procedures | **reserved** — nothing to run yet |

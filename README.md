@@ -242,11 +242,12 @@ its own instructions are currently false.
 
 ## Who's behind it
 
-Maintained by [Jay Stewart](https://jaystewart.dev). The audit that motivated
-the tool is written up as
-[a public case study](https://jaystewart.dev/work/agent-operated-codebase/),
-and the same audit is available for your own repositories as a
-[fixed-price service](https://jaystewart.dev/audit/).
+Maintained by [Jay Stewart](https://jaystewart.dev). groundtruth came out of
+an audit of a real agent-operated production repo — written up, with counted
+figures, as
+[a public case study](https://jaystewart.dev/work/agent-operated-codebase/) —
+and it is the same check the author runs against his own repositories in CI,
+as part of a measured practice of AI-native engineering.
 
 ## License
 

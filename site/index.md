@@ -151,13 +151,11 @@ Then put it on every pull request — two lines of YAML, no install step:
 ## Where it comes from
 
 groundtruth is maintained by [Jay Stewart](https://jaystewart.dev), who runs
-an agent-operated production practice — the audit that motivated the tool is
-written up, with counted figures, in
+his own production systems with AI agents writing most of the code — the
+audit that motivated the tool is written up, with counted figures, in
 [a public case study](https://jaystewart.dev/work/agent-operated-codebase/).
-The tool is free and complete on its own; if you want the same audit run
-against your own repositories by its author — every claim verified, the gate
-left behind — that exists as a
-[fixed-price service](https://jaystewart.dev/audit/).
+The tool is free, MIT-licensed and complete on its own, and it is the same
+check the author runs against his own repositories in CI.
 
 <style>
 .badge-row {

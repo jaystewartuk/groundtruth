@@ -10,6 +10,10 @@ Sourced directly from the root
 explicit current-vs-planned labeling; update the README first, this page
 second.
 
+Development is currently **paused at layer 1**: the CLI and the Action are
+maintained — breakage gets fixed, releases stay installable — and everything
+labeled planned below is direction, not a schedule.
+
 ::: tip No issue tracker yet
 This project doesn't yet use GitHub Issues or Milestones to track work —
 there are none open at the time of writing. Everything below comes from

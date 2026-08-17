@@ -18,30 +18,30 @@
   <rect width="1200" height="630" fill="url(#glow)"/>
 
   <!-- mark -->
-  <rect x="80" y="76" width="72" height="72" rx="16" fill="#0b1120" stroke="url(#accent)" stroke-width="3"/>
-  <path d="M100 116 L120 136 L152 96" fill="none" stroke="url(#accent)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="136" y="76" width="72" height="72" rx="16" fill="#0b1120" stroke="url(#accent)" stroke-width="3"/>
+  <path d="M156 116 L176 136 L208 96" fill="none" stroke="url(#accent)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <text x="172" y="128" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="46" fill="#f8fafc" font-weight="700">groundtruth</text>
+  <text x="228" y="128" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="46" fill="#f8fafc" font-weight="700">groundtruth</text>
 
-  <text x="80" y="210" font-family="ui-sans-serif, system-ui, sans-serif" font-size="30" fill="#cbd5e1">
+  <text x="136" y="210" font-family="ui-sans-serif, system-ui, sans-serif" font-size="30" fill="#cbd5e1">
     A compiler and CI gate for CLAUDE.md / AGENTS.md.
   </text>
-  <text x="80" y="250" font-family="ui-sans-serif, system-ui, sans-serif" font-size="30" fill="#cbd5e1">
+  <text x="136" y="250" font-family="ui-sans-serif, system-ui, sans-serif" font-size="30" fill="#cbd5e1">
     Catch agent-context drift before an agent acts on it.
   </text>
 
   <!-- terminal panel -->
-  <rect x="80" y="310" width="1040" height="250" rx="14" fill="#0a0f1c" stroke="#1f2937" stroke-width="1.5"/>
-  <circle cx="112" cy="342" r="7" fill="#ef4444"/>
-  <circle cx="136" cy="342" r="7" fill="#f59e0b"/>
-  <circle cx="160" cy="342" r="7" fill="#22c55e"/>
+  <rect x="136" y="310" width="928" height="250" rx="14" fill="#0a0f1c" stroke="#1f2937" stroke-width="1.5"/>
+  <circle cx="168" cy="342" r="7" fill="#ef4444"/>
+  <circle cx="192" cy="342" r="7" fill="#f59e0b"/>
+  <circle cx="216" cy="342" r="7" fill="#22c55e"/>
 
-  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="26">
-    <text x="108" y="392" fill="#94a3b8">$ groundtruth check</text>
-    <text x="108" y="434" fill="#f8fafc">9 assertion(s) — 3 passing, 6 failing, 0 unverifiable</text>
-    <text x="108" y="474" fill="#f87171">✗ CLAUDE.md#L7  "Do NOT reintroduce a Supabase/Vercel env var."</text>
-    <text x="108" y="510" fill="#4ade80">✓ CLAUDE.md#L9  "`pnpm verify:push` runs typecheck + unit."</text>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="23">
+    <text x="164" y="392" fill="#94a3b8">$ groundtruth check</text>
+    <text x="164" y="434" fill="#f8fafc">9 assertion(s) — 3 passing, 6 failing, 0 unverifiable</text>
+    <text x="164" y="474" fill="#f87171">✗ CLAUDE.md#L7  "Do NOT reintroduce a Supabase/Vercel env var."</text>
+    <text x="164" y="510" fill="#4ade80">✓ CLAUDE.md#L9  "`pnpm verify:push` runs typecheck + unit."</text>
   </g>
 
-  <text x="80" y="608" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22" fill="#64748b">github.com/jaystewart-dev/groundtruth · MIT</text>
+  <text x="136" y="608" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22" fill="#64748b">github.com/jaystewart-dev/groundtruth · MIT</text>
 </svg>

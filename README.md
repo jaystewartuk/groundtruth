@@ -37,6 +37,11 @@ LLM-based extraction straight from `CLAUDE.md`/`AGENTS.md` is not built yet
 produce, so nothing here is throwaway, and `groundtruth check` is fully
 useful today without any API key.
 
+Development is currently **paused at layer 1**. The CLI and the Action are
+maintained — breakage gets fixed and releases stay installable — and the
+roadmap below is direction, not a schedule; later layers get built when a
+real user's need pulls them.
+
 ## Install
 
 ```bash
@@ -236,7 +241,7 @@ full reasoning):
    with evidence instead of guesswork.
 
 The GitHub Action shipped in 0.2.0 (see [In CI](#in-ci-the-github-action)
-above). Still planned, not yet built: a `--inject`-style mode for a
+above). Sketched, not scheduled: a `--inject`-style mode for a
 session-start hook, so an agent starts every session already told which of
 its own instructions are currently false.
 

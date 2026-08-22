@@ -57,13 +57,18 @@ jobs:
       # across npm majors, so v0.2.0 failed on a default runner while passing
       # everywhere it was tested (ADR-0005). This runs against the drift
       # fixture, which fails by design, so the assertion is only that the
-      # published CLI installed and produced a report at all.
+      # published CLI installed and produced a report at all. It gets its own
+      # assertions file restricted to already-published kinds: between merge
+      # and release, the fixture's main .groundtruth.jsonc may use kinds the
+      # published CLI's schema doesn't know yet, which would fail the load
+      # (exit 2) instead of producing a report.
       - uses: ./
         id: published
         continue-on-error: true
         with:
           version: latest
           working-directory: test/fixtures/sample-repo
+          file: .groundtruth.published.jsonc
 
       - name: The published CLI installed and reported
         run: |

@@ -30,7 +30,7 @@ clear error, not partway through a check run.
 | Field | Type | Meaning |
 |---|---|---|
 | `claim` | `string` | The sentence from your context file, verbatim. Never checked mechanically itself — it's what a human reads in the report. |
-| `kind` | one of 6 strings | Which checker to run. See [Assertion kinds](/reference/assertion-kinds). |
+| `kind` | one of 8 strings | Which checker to run. See [Assertion kinds](/reference/assertion-kinds). |
 | `args` | object | Kind-specific arguments — shape depends on `kind`. |
 | `source` | `string` | `"<file>#L<line>"`. Traces a failure back to the exact line that made the claim. |
 

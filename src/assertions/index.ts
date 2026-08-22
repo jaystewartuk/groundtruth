@@ -4,9 +4,15 @@ import { checkEnvVarAbsent } from "./env-var-absent.js";
 import { checkScriptExists } from "./script-exists.js";
 import { checkWorkflowTrigger } from "./workflow-trigger.js";
 import { checkSymbolAtPath } from "./symbol-at-path.js";
-import type { Assertion, AssertionStatus, CheckResult } from "../types.js";
+import { checkTextPresent } from "./text-present.js";
+import { checkTextAbsent } from "./text-absent.js";
+import type { Assertion, AssertionStatus, CheckContext, CheckResult } from "../types.js";
 
-type Checker = (repoRoot: string, args: unknown) => { status: AssertionStatus; detail: string };
+type Checker = (
+  repoRoot: string,
+  args: unknown,
+  context?: CheckContext,
+) => { status: AssertionStatus; detail: string };
 
 // One entry per AssertionKind — exhaustiveness is enforced by types.ts's
 // mapped Assertion type, so adding a kind without a checker here is a
@@ -23,14 +29,24 @@ const REGISTRY: Record<Assertion["kind"], Checker> = {
   script_exists: checkScriptExists as unknown as Checker,
   workflow_trigger: checkWorkflowTrigger as unknown as Checker,
   symbol_at_path: checkSymbolAtPath as unknown as Checker,
+  text_present: checkTextPresent as unknown as Checker,
+  text_absent: checkTextAbsent as unknown as Checker,
 };
 
-export function checkAssertion(repoRoot: string, assertion: Assertion): CheckResult {
+export function checkAssertion(
+  repoRoot: string,
+  assertion: Assertion,
+  context?: CheckContext,
+): CheckResult {
   const checker = REGISTRY[assertion.kind];
-  const { status, detail } = checker(repoRoot, assertion.args);
+  const { status, detail } = checker(repoRoot, assertion.args, context);
   return { assertion, status, detail };
 }
 
-export function checkAssertions(repoRoot: string, assertions: Assertion[]): CheckResult[] {
-  return assertions.map((assertion) => checkAssertion(repoRoot, assertion));
+export function checkAssertions(
+  repoRoot: string,
+  assertions: Assertion[],
+  context?: CheckContext,
+): CheckResult[] {
+  return assertions.map((assertion) => checkAssertion(repoRoot, assertion, context));
 }

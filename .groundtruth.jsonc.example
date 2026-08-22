@@ -7,9 +7,11 @@
 //
 // Every entry has:
 //   claim   — the sentence from your context file, verbatim, for humans
-//   kind    — one of the 6 supported assertion kinds (README has the full list)
+//   kind    — one of the 8 supported assertion kinds (README has the full list)
 //   args    — kind-specific arguments (see README for each kind's shape)
 //   source  — "<file>#L<line>" so a failure traces back to the exact sentence
+//             (for eviction assertions: the decision record that retired the
+//             fact — absence has no claiming sentence to point at)
 //
 // These examples are drawn directly from a real audit of a production repo
 // (AgendaProfe) that found exactly these four kinds of drift: a decommissioned
@@ -37,17 +39,61 @@
       "source": "CLAUDE.md#L7"
     },
 
-    // --- "The Supabase project is torn down" — coarsest available check:
-    // path_absent can only assert a whole file doesn't exist, not "this file
-    // exists but must not mention Supabase". That's a real MVP limitation,
-    // not a silent gap — use it for whole-file cases (a leftover config file
-    // for a decommissioned integration) and wait for a future kind for the
-    // finer-grained case. ---
+    // --- "The Supabase project is torn down" — two granularities. path_absent
+    // asserts the whole leftover config file doesn't exist; text_absent
+    // asserts nothing mentions Supabase at all, wherever it hides. ---
     {
       "claim": "The Supabase project is torn down; do not add an MCP server for it.",
       "kind": "path_absent",
       "args": { "path": ".mcp.json" },
       "source": "CLAUDE.md#L8"
+    },
+    {
+      "claim": "The Supabase project is torn down; do not add an MCP server for it.",
+      // text_absent scans every git-tracked text file by default (binaries,
+      // >5 MB files, and this assertions file itself are skipped — the last
+      // so this very entry's pattern can't trigger the check). `include` /
+      // `exclude` globs or an explicit `files` list narrow the scope.
+      "kind": "text_absent",
+      "args": { "pattern": "supabase", "caseInsensitive": true, "include": ["**/*.json"] },
+      "source": "CLAUDE.md#L8"
+    },
+
+    // --- text_present: the claim names where something is configured, so the
+    // check targets exactly that one file — "mentioned somewhere" is not an
+    // assertion worth writing. ---
+    {
+      "claim": "atuin is installed by `bootstrap.sh`.",
+      "kind": "text_present",
+      "args": { "pattern": "atuin", "path": "bootstrap.sh" },
+      "source": "CLAUDE.md#L14"
+    },
+
+    // --- a redacted eviction: this assertion enforces that a retired fact
+    // (here the synthetic literal "the Q3 launch codename is Foxglove")
+    // appears nowhere — without the assertion itself restating it. Never
+    // hand-author the digest: pipe the fact to `groundtruth digest`, or run
+    // `groundtruth evict --redact --write --label <name>` to sweep and
+    // append in one step. In a real eviction the fact appears in no comment
+    // either, obviously — it is spelled out here only to make the example
+    // legible. `label` is required: it is the only handle failure reports
+    // get. `source` points at the eviction decision record, not a claiming
+    // sentence. ---
+    {
+      "claim": "The retired Q3 launch codename does not appear anywhere in this repo.",
+      "kind": "text_absent",
+      "args": {
+        "patternDigest": {
+          "algo": "sha256",
+          "salt": "d41d8cd98f00b204e9800998ecf8427e",
+          "digest": "b1b1ef93dfb2cc0a4d04cd9a8f516a7f76be8437853e39e584365ab46972455d",
+          "rk": 1245521538,
+          "length": 34,
+          "normalize": "lower"
+        },
+        "label": "retired-q3-codename"
+      },
+      "source": "docs/decisions/D-12.md#L3"
     },
 
     // --- two claims that are still TRUE, so groundtruth isn't just a list of

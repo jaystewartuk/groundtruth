@@ -45,6 +45,7 @@ const SIDEBAR: Record<string, { text: string; items: { text: string; link: strin
         { text: "Getting started", link: "/guide/getting-started" },
         { text: "Configuration", link: "/guide/configuration" },
         { text: "GitHub Action", link: "/guide/github-action" },
+        { text: "Evicting a fact", link: "/guide/evicting-a-fact" },
         { text: "End-to-end example", link: "/guide/example" },
       ],
     },

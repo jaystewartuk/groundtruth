@@ -11,10 +11,11 @@
 // .groundtruth.jsonc.example. This file is the real thing: it is expected to
 // be green, and a red run here means CLAUDE.md now says something false.
 //
-// One kind is absent on purpose: env_var_absent. The single environment
+// Two kinds are absent on purpose. env_var_absent: the single environment
 // variable this repo's context file mentions, POSTHOG_KEY, is claimed to be
-// *present* in deploy-site.yml — the reverse of what that kind checks, and
-// no other kind here can express it either. Writing an assertion for a claim
+// *present* in deploy-site.yml — the reverse of what that kind checks.
+// text_absent: nothing has been evicted from this repo yet, so there is no
+// retired fact to enforce the absence of. Writing an assertion for a claim
 // nobody made, or one that checks the opposite of the claim, would be the
 // same self-deception the tool exists to catch. Kinds get used when a
 // sentence earns them.
@@ -24,7 +25,7 @@
       "claim": "It ships ... as a GitHub Action defined by `action.yml` at the repo root.",
       "kind": "path_exists",
       "args": { "path": "action.yml" },
-      "source": "CLAUDE.md#L12-13"
+      "source": "CLAUDE.md#L13-14"
     },
     {
       "claim": "`main` is protected and the `verify` check must pass before merge.",
@@ -33,7 +34,7 @@
       // required check does run on pull requests into main.
       "kind": "workflow_trigger",
       "args": { "workflow": "ci.yml", "trigger": "pull_request", "target": "main" },
-      "source": "CLAUDE.md#L17-18"
+      "source": "CLAUDE.md#L18-19"
     },
     {
       "claim": "No LLM-based extraction from `CLAUDE.md`/`AGENTS.md` exists yet.",
@@ -42,67 +43,94 @@
       // exactly when the sentence above stops being true.
       "kind": "path_absent",
       "args": { "path": "src/extract" },
-      "source": "CLAUDE.md#L29-30"
+      "source": "CLAUDE.md#L30-31"
     },
     {
       "claim": "The canonical list is `ASSERTION_KINDS` in `src/types.ts`.",
       "kind": "symbol_at_path",
       "args": { "symbol": "ASSERTION_KINDS", "path": "src/types.ts" },
-      "source": "CLAUDE.md#L34"
+      "source": "CLAUDE.md#L36"
+    },
+    {
+      "claim": "Scope, redaction, and boundary decisions: ADR-0006, ADR-0007, ADR-0008.",
+      "kind": "path_exists",
+      "args": { "path": "docs/adr/0006-content-assertions-scan-tracked-text-files-only.md" },
+      "source": "CLAUDE.md#L41-44"
+    },
+    {
+      "claim": "Scope, redaction, and boundary decisions: ADR-0006, ADR-0007, ADR-0008.",
+      "kind": "path_exists",
+      "args": { "path": "docs/adr/0007-redacted-patterns.md" },
+      "source": "CLAUDE.md#L41-44"
+    },
+    {
+      "claim": "Scope, redaction, and boundary decisions: ADR-0006, ADR-0007, ADR-0008.",
+      "kind": "path_exists",
+      "args": { "path": "docs/adr/0008-evict-is-working-tree-only.md" },
+      "source": "CLAUDE.md#L41-44"
     },
     {
       "claim": "`symbol_at_path` is regex-based, not an AST parse. Deliberate, see ADR-0003.",
       "kind": "path_exists",
       "args": { "path": "docs/adr/0003-regex-based-symbol-matching-for-mvp.md" },
-      "source": "CLAUDE.md#L38"
+      "source": "CLAUDE.md#L45-47"
+    },
+    {
+      "claim": "The bin it installs is plain `groundtruth`.",
+      // The first claim in this file only a content assertion can express:
+      // no path, script, or symbol encodes what the installed command is
+      // called — only package.json's bin map does.
+      "kind": "text_present",
+      "args": { "pattern": "\"groundtruth\": \"dist/cli.js\"", "path": "package.json" },
+      "source": "CLAUDE.md#L48-50"
     },
     {
       "claim": "Releases are manual — no release automation workflow exists.",
       "kind": "path_absent",
       "args": { "path": ".github/workflows/release.yml" },
-      "source": "CLAUDE.md#L43-44"
+      "source": "CLAUDE.md#L51-53"
     },
     {
       "claim": "A dependency-free runner at `action/run.mjs` that shells out to the published CLI.",
       "kind": "path_exists",
       "args": { "path": "action/run.mjs" },
-      "source": "CLAUDE.md#L45-46"
+      "source": "CLAUDE.md#L54-55"
     },
     {
       "claim": "Why, and what that costs: ADR-0005.",
       "kind": "path_exists",
       "args": { "path": "docs/adr/0005-composite-action-wrapping-the-published-cli.md" },
-      "source": "CLAUDE.md#L49"
+      "source": "CLAUDE.md#L58"
     },
     {
       "claim": "pnpm build — tsc -> dist/",
       "kind": "script_exists",
       "args": { "name": "build" },
-      "source": "CLAUDE.md#L69"
+      "source": "CLAUDE.md#L78"
     },
     {
       "claim": "pnpm test — pretest runs tsc, then vitest against test/fixtures/sample-repo",
       "kind": "script_exists",
       "args": { "name": "test" },
-      "source": "CLAUDE.md#L70"
+      "source": "CLAUDE.md#L79"
     },
     {
       "claim": "pnpm typecheck — tsc --noEmit",
       "kind": "script_exists",
       "args": { "name": "typecheck" },
-      "source": "CLAUDE.md#L71"
+      "source": "CLAUDE.md#L80"
     },
     {
       "claim": "Step 3 (registering the checker in `src/assertions/index.ts`) is enforced at compile time if skipped.",
       "kind": "symbol_at_path",
       "args": { "symbol": "checkAssertions", "path": "src/assertions/index.ts" },
-      "source": "CLAUDE.md#L78"
+      "source": "CLAUDE.md#L86-87"
     },
     {
       "claim": "Architecture and request flow: `docs/architecture/overview.md`.",
       "kind": "path_exists",
       "args": { "path": "docs/architecture/overview.md" },
-      "source": "CLAUDE.md#L82"
+      "source": "CLAUDE.md#L91"
     }
   ]
 }

@@ -8,7 +8,7 @@ issue rather than guessing.
 
 For anything beyond a small fix, open an issue first describing what
 you're planning. This project is deliberately narrow in scope right now
-(one command, six assertion kinds, no plugin system) — see the
+(three commands, eight assertion kinds, no plugin system) — see the
 [roadmap](https://groundtruth.sh/project/roadmap)
 for what's actually planned, so you don't spend time on something that
 doesn't fit the current direction.

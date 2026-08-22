@@ -30,8 +30,8 @@ features:
     title: CI-native
     details: One line of YAML with the GitHub Action, or a plain non-zero exit code in any other pipeline. Failures annotate the exact context-file line that made the claim, right in the pull request diff.
   - icon: 🧩
-    title: Six assertion kinds
-    details: path_exists, path_absent, env_var_absent, script_exists, workflow_trigger, symbol_at_path — one checker per kind, each independently testable.
+    title: Eight assertion kinds
+    details: path_exists, path_absent, env_var_absent, script_exists, workflow_trigger, symbol_at_path, text_present, text_absent — one checker per kind, each independently testable.
   - icon: 🗂️
     title: Human table or machine JSON
     details: The same check run renders as a worst-first readable table for a terminal, or --json for a script to consume.

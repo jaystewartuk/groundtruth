@@ -4,7 +4,7 @@ description: "All six assertion kinds — path_exists, path_absent, env_var_abse
 
 # Assertion kinds
 
-Six kinds exist today. Each is one file under `src/assertions/`, and each
+Eight kinds exist today. Each is one file under `src/assertions/`, and each
 is independently registered in the kind → checker registry described in
 [Architecture overview](/architecture/overview#extension-point-assertion-kinds) —
 adding a kind without wiring its checker is a TypeScript compile error,
@@ -27,8 +27,8 @@ otherwise. Never `unverifiable`.
 
 The inverse of `path_exists` — `passing` if the path does **not** exist.
 The coarsest available check for "this whole file/directory shouldn't be
-here"; it can't express "this file exists but must not mention X" — that
-needs `env_var_absent` or a future finer-grained kind.
+here"; "this file exists but must not mention X" is
+[`text_absent`](#text-absent)'s job.
 
 ## `env_var_absent`
 
@@ -88,6 +88,63 @@ for why. Matches `export [default] [async] (function|const|class|interface|type|
 `passing` if found, `failing` if the file doesn't exist or the pattern
 doesn't match. A symbol only reachable via `export { X } from "./y"` (a
 re-export) reports `failing` — a known false negative, not a silent one.
+
+## `text_present`
+
+```jsonc
+{ "kind": "text_present", "args": { "pattern": "atuin", "path": "bootstrap.sh" } }
+```
+
+| `args` field | Required | Default |
+|---|---|---|
+| `pattern` | yes | — |
+| `path` | yes | — |
+| `patternType` | no | `"literal"` (or `"regex"`) |
+| `caseInsensitive` | no | `false` |
+
+`pattern` must appear in the **one named file** — for claims of the shape
+"X is configured in file Y". A literal is truly literal (no implied word
+boundaries; regex metacharacters are inert); `patternType: "regex"` compiles
+the pattern instead, and a regex that doesn't compile is `unverifiable`,
+never a crash. A missing `path` is `failing`, not `unverifiable` — the claim
+implies the file exists. Deliberately single-file: see
+[ADR-0006](/architecture/decisions#adr-0006-content-assertions-scan-tracked-text-files-only).
+
+## `text_absent`
+
+```jsonc
+{
+  "kind": "text_absent",
+  "args": { "pattern": "supabase", "caseInsensitive": true, "exclude": ["docs/history.md"] }
+}
+```
+
+| `args` field | Required | Default |
+|---|---|---|
+| `pattern` *or* `patternDigest` | exactly one | — |
+| `label` | with `patternDigest` | — |
+| `files` *or* `include` | no (mutually exclusive) | all git-tracked files |
+| `exclude` | no | — |
+| `patternType`, `caseInsensitive` | no (plaintext `pattern` only) | `"literal"`, `false` |
+
+`pattern` must appear in **no file in scope**. The default scope is every
+git-tracked file (`git ls-files`) — absence is only meaningful repo-wide —
+minus binary files, files over 5 MB (both skipped *and named* in the
+detail), and the assertions file itself, so an assertion never self-triggers
+on its own `pattern` field. Outside a git work tree the default scope is
+`unverifiable` with a pointer to `files`/`include` — never a raw directory
+walk. Failing detail lists `file#L<line>` for every hit, capped at 20
+listed with an accurate total.
+
+`patternDigest` replaces `pattern` for privacy-motivated evictions: it
+matches a retired fact **without restating it**, via a salted-SHA-256
+digest authored by [`groundtruth digest`](/reference/cli#groundtruth-digest).
+Digests match exact literals only (no regex, no paraphrases), and a digest
+failure reports the required `label` and locations, never the matched text.
+Threat model and mechanics:
+[ADR-0007](/architecture/decisions#adr-0007-redacted-patterns). For
+eviction assertions, `source` points at the eviction decision record — see
+the [eviction guide](/guide/evicting-a-fact).
 
 ## Adding a new kind
 

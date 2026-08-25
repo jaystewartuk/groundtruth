@@ -28,6 +28,12 @@ const symbolAtPathArgs = z.object({
   path: z.string().min(1),
 });
 
+const textMatchesAcrossArgs = z.object({
+  text: z.string().min(1),
+  files: z.array(z.string().min(1)).min(1),
+  normalize: z.array(z.enum(["whitespace", "markdown"])).optional(),
+});
+
 const base = {
   claim: z.string().min(1),
   source: z.string().min(1),
@@ -40,6 +46,11 @@ export const assertionSchema = z.discriminatedUnion("kind", [
   z.object({ ...base, kind: z.literal("script_exists"), args: scriptExistsArgs }),
   z.object({ ...base, kind: z.literal("workflow_trigger"), args: workflowTriggerArgs }),
   z.object({ ...base, kind: z.literal("symbol_at_path"), args: symbolAtPathArgs }),
+  z.object({
+    ...base,
+    kind: z.literal("text_matches_across"),
+    args: textMatchesAcrossArgs,
+  }),
 ]);
 
 export const manualAssertionsFileSchema = z.object({

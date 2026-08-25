@@ -26,8 +26,9 @@ this page should start linking to real issues instead of restating prose.
 - ✅ `groundtruth check` — hand-authored `.groundtruth.jsonc` assertions,
   verified against a repo, worst-first table or `--json` output, CI-ready
   exit codes.
-- ✅ Six assertion kinds: `path_exists`, `path_absent`, `env_var_absent`,
-  `script_exists`, `workflow_trigger`, `symbol_at_path`.
+- ✅ Seven assertion kinds: `path_exists`, `path_absent`, `env_var_absent`,
+  `script_exists`, `workflow_trigger`, `symbol_at_path`,
+  `text_matches_across`.
 - ✅ Fail-closed handling of unverifiable claims (see
   [ADR-0002](/architecture/decisions#adr-0002-unverifiable-assertions-never-fail-but-always-report)).
 - ✅ A [GitHub Action](/guide/github-action) *(shipped in 0.2.0)* — the same check on

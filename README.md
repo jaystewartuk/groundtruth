@@ -180,6 +180,7 @@ commented example (the AgendaProfe findings, encoded as real assertions).
 | `script_exists` | `{ name, packageJson? }` | `package.json` has a `scripts[name]` entry |
 | `workflow_trigger` | `{ workflow, trigger, target? }` | a `.github/workflows/<workflow>` file's `on:` block includes `trigger` (optionally scoped to a branch via `target`) |
 | `symbol_at_path` | `{ symbol, path }` | a named `export function`/`const`/`class`/`interface`/`type`/`enum` exists in the file at `path` |
+| `text_matches_across` | `{ text, files, normalize? }` | every file in `files` contains `text`. `normalize` defaults to `["whitespace"]`; add `"markdown"` to strip blockquote markers and `*`/`_` emphasis first |
 
 **Known MVP limitations, not silent gaps:**
 
@@ -190,8 +191,16 @@ commented example (the AgendaProfe findings, encoded as real assertions).
   a substring search — it won't catch a var name embedded inside a longer
   string (e.g. inside a URL). Use `path_absent` for the coarser "this whole
   file shouldn't exist" case in the meantime.
-- No kind yet covers **cross-file contradiction** (e.g. `CLAUDE.md` saying
-  "PRs are the default" while a memory file says the opposite) — that's
+- `text_matches_across` normalizes whitespace and, on request, Markdown
+  wrappers — but nothing else. It will not see through template
+  interpolation (`{site.location}` in a JSX file), HTML tags, or smart-quote
+  and dash substitutions. Those report `failing`, not a false pass. Its
+  `text` is a literal, not a pattern: it cannot express "the version in
+  `action.yml` equals the version in `package.json`" — see
+  [ADR-0006](docs/adr/0006-verbatim-agreement-before-relational-matching.md)
+  for why the relational variant was deferred.
+- No kind yet covers **semantic** cross-file contradiction (e.g. `CLAUDE.md`
+  saying "PRs are the default" while a memory file says the opposite) — that's
   layer 2 in the roadmap below, and needs an LLM judgment call, not a
   mechanical check.
 

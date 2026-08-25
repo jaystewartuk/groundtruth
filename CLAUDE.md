@@ -29,10 +29,16 @@ the site's release-process page).
 - No LLM-based extraction from `CLAUDE.md`/`AGENTS.md` exists yet.
   Assertions are hand-authored in `.groundtruth.jsonc`. See
   [ADR-0001](docs/adr/0001-hand-authored-assertions-before-llm-extraction.md).
-- Six assertion kinds exist: `path_exists`, `path_absent`,
-  `env_var_absent`, `script_exists`, `workflow_trigger`, `symbol_at_path`.
-  The canonical list is `ASSERTION_KINDS` in `src/types.ts` — if this file
-  and that array ever disagree, the array is right.
+- Seven assertion kinds exist: `path_exists`, `path_absent`,
+  `env_var_absent`, `script_exists`, `workflow_trigger`, `symbol_at_path`,
+  `text_matches_across`. The canonical list is `ASSERTION_KINDS` in
+  `src/types.ts` — if this file and that array ever disagree, the array is
+  right.
+- `text_matches_across` is the only kind about agreement *between* files
+  rather than a fact inside one. A missing file fails rather than reporting
+  unverifiable — the opposite of `env_var_absent`'s policy, and deliberate:
+  deleting a surface must never be the way to go green. See
+  [ADR-0006](docs/adr/0006-verbatim-agreement-before-relational-matching.md).
 - `symbol_at_path` is regex-based, not an AST parse — it false-negatives
   on re-exported symbols. Deliberate, see
   [ADR-0003](docs/adr/0003-regex-based-symbol-matching-for-mvp.md).

@@ -5,6 +5,7 @@ export const ASSERTION_KINDS = [
   "script_exists",
   "workflow_trigger",
   "symbol_at_path",
+  "text_matches_across",
 ] as const;
 
 export type AssertionKind = (typeof ASSERTION_KINDS)[number];
@@ -14,6 +15,16 @@ export type EnvVarAbsentArgs = { name: string; files?: string[] };
 export type ScriptExistsArgs = { name: string; packageJson?: string };
 export type WorkflowTriggerArgs = { workflow: string; trigger: string; target?: string };
 export type SymbolAtPathArgs = { symbol: string; path: string };
+
+// Normalizers applied to both the needle and each file before comparison.
+// Defaults to ["whitespace"] — see src/assertions/text-matches-across.ts for
+// why hard-wrapping is the failure mode worth defaulting against.
+export type TextNormalizer = "whitespace" | "markdown";
+export type TextMatchesAcrossArgs = {
+  text: string;
+  files: string[];
+  normalize?: TextNormalizer[];
+};
 
 export type ArgsFor<K extends AssertionKind> = K extends "path_exists"
   ? PathArgs
@@ -27,7 +38,9 @@ export type ArgsFor<K extends AssertionKind> = K extends "path_exists"
           ? WorkflowTriggerArgs
           : K extends "symbol_at_path"
             ? SymbolAtPathArgs
-            : never;
+            : K extends "text_matches_across"
+              ? TextMatchesAcrossArgs
+              : never;
 
 // A single checkable claim, extracted (eventually) from an agent-context file
 // or (for now, MVP) hand-authored in a .groundtruth.jsonc file. `source` is

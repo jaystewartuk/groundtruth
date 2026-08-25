@@ -103,6 +103,32 @@
       "kind": "path_exists",
       "args": { "path": "docs/architecture/overview.md" },
       "source": "CLAUDE.md#L82"
+    },
+    // The version claim, and the first assertion here that could not be
+    // written before text_matches_across existed. CLAUDE.md says action.yml's
+    // `version` input "must be bumped to match package.json in the same
+    // release commit", and until now nothing enforced it — a release could
+    // point the Action at a version that was never published, which is broken
+    // for every consumer.
+    //
+    // The literal below is the current version, so bumping a release means
+    // editing three files rather than two. That is the cost ADR-0006 names,
+    // and it is the right trade here: the third edit is in the same commit as
+    // the other two, and it is caught by CI rather than by a user.
+    {
+      "claim": "`action.yml`'s `version` input ... must be bumped to match `package.json` in the same release commit.",
+      "kind": "text_matches_across",
+      "args": {
+        "text": "0.2.1",
+        "files": ["package.json", "action.yml"]
+      },
+      "source": "CLAUDE.md#L56-58"
+    },
+    {
+      "claim": "Seven assertion kinds exist ... `text_matches_across`.",
+      "kind": "symbol_at_path",
+      "args": { "symbol": "checkTextMatchesAcross", "path": "src/assertions/text-matches-across.ts" },
+      "source": "CLAUDE.md#L32-36"
     }
   ]
 }

@@ -4,6 +4,7 @@ import { checkEnvVarAbsent } from "./env-var-absent.js";
 import { checkScriptExists } from "./script-exists.js";
 import { checkWorkflowTrigger } from "./workflow-trigger.js";
 import { checkSymbolAtPath } from "./symbol-at-path.js";
+import { checkTextMatchesAcross } from "./text-matches-across.js";
 import type { Assertion, AssertionStatus, CheckResult } from "../types.js";
 
 type Checker = (repoRoot: string, args: unknown) => { status: AssertionStatus; detail: string };
@@ -23,6 +24,7 @@ const REGISTRY: Record<Assertion["kind"], Checker> = {
   script_exists: checkScriptExists as unknown as Checker,
   workflow_trigger: checkWorkflowTrigger as unknown as Checker,
   symbol_at_path: checkSymbolAtPath as unknown as Checker,
+  text_matches_across: checkTextMatchesAcross as unknown as Checker,
 };
 
 export function checkAssertion(repoRoot: string, assertion: Assertion): CheckResult {

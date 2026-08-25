@@ -98,3 +98,42 @@ rather than reporting drift.
 
 [Full ADR →](https://github.com/jaystewart-dev/groundtruth/blob/main/docs/adr/0005-composite-action-wrapping-the-published-cli.md) ·
 [Release process](/project/release-process)
+
+## ADR-0006: `text_matches_across` checks verbatim agreement, and a missing file fails {#adr-0006-verbatim-agreement-before-relational-matching}
+
+**Decision:** `text_matches_across` takes a **literal** string and a list of
+files, and passes only when every file contains it after normalization. The
+literal lives in the assertion, which makes `.groundtruth.jsonc` the single
+home for a sentence that has to appear in several places. A **missing file
+fails** rather than reporting `unverifiable`.
+
+**Why:** The motivating case was a sentence duplicated across a CV, a
+LinkedIn draft, a booking message, a website page and a profile README. Two
+separate corrections each reached four of the six copies — neither was a bad
+edit, both were correct edits that failed to enumerate their surfaces. Both
+times a substring search reported the stragglers as clean, because every
+drifted variant still contained the phrase being searched for. A literal
+comparison over normalized text is the smallest thing that cannot make that
+mistake, and it needs none of the LLM judgment that
+[ADR-0004](#adr-0004-three-layer-roadmap) reserves for semantic
+contradiction.
+
+Whitespace normalization is on by default because hard-wrapped prose is the
+most common way a sentence hides from a line-oriented search; re-wrapping a
+paragraph changes none of its meaning and all of its line breaks.
+
+The missing-file rule is the opposite of `env_var_absent`'s, and the
+asymmetry is the point: there, a file that does not exist cannot contain the
+variable, so absence tells you nothing. Here, a surface that no longer exists
+is not an unknown — it has stopped stating the sentence. Reporting
+`unverifiable` would make deleting a file the cheapest way to go green.
+
+**The cost, stated plainly:** it cannot express a relational claim — "the
+version in `action.yml` equals the version in `package.json`" needs a pattern
+with a capture group, not a literal. This repo has exactly that claim in its
+own `CLAUDE.md`, so the gap is felt rather than theoretical; the literal
+workaround is used, at the price of a third edit at release time. The kind is
+also sensitive to file renames, which is intended — the assertion *is* the
+list of surfaces.
+
+[Full ADR →](https://github.com/jaystewart-dev/groundtruth/blob/main/docs/adr/0006-verbatim-agreement-before-relational-matching.md)

@@ -16,6 +16,7 @@ instead). Use [`template.md`](template.md) for new ones.
 | [0003](0003-regex-based-symbol-matching-for-mvp.md) | Regex-based symbol matching for `symbol_at_path` | Accepted |
 | [0004](0004-three-layer-roadmap.md) | Three-layer product design: verify, contradict, instrument | Proposed |
 | [0005](0005-composite-action-wrapping-the-published-cli.md) | The GitHub Action is a composite wrapper around the published CLI | Accepted |
+| [0006](0006-verbatim-agreement-before-relational-matching.md) | `text_matches_across` checks verbatim agreement, and a missing file fails | Accepted |
 
 ## When to write one
 

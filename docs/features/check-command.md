@@ -59,8 +59,9 @@ for why).
 
 ## Assertion kinds
 
-Six kinds exist today: `path_exists`, `path_absent`, `env_var_absent`,
-`script_exists`, `workflow_trigger`, `symbol_at_path`. Each kind's
+Seven kinds exist today: `path_exists`, `path_absent`, `env_var_absent`,
+`script_exists`, `workflow_trigger`, `symbol_at_path`,
+`text_matches_across`. Each kind's
 argument shape and exact check semantics are the type source of truth in
 `src/types.ts` and documented for humans in the root
 [README's kind table](../../README.md#assertion-kinds) — not duplicated
@@ -74,6 +75,9 @@ here, since that table is the single source for it.
   [ADR-0003](../adr/0003-regex-based-symbol-matching-for-mvp.md).
 - `env_var_absent` on JSON files needs an exact key/value match, not a
   substring search.
+- `text_matches_across` takes a literal, not a pattern, so it cannot express
+  a relational claim ("the version in A equals the version in B") — see
+  [ADR-0006](../adr/0006-verbatim-agreement-before-relational-matching.md).
 - No cross-file contradiction detection — that's layer 2 of
   [ADR-0004](../adr/0004-three-layer-roadmap.md), unbuilt.
 

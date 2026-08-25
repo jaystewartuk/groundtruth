@@ -69,6 +69,24 @@
       "kind": "workflow_trigger",
       "args": { "workflow": "checks.yml", "trigger": "pull_request", "target": "main" },
       "source": "CLAUDE.md#L12"
+    },
+    // A rule stated in more than one place is a rule that drifts. This is the
+    // shape text_matches_across is for: name every file that has to say it,
+    // and let the assertion be the one place the sentence actually lives.
+    //
+    // Two things to copy from this example. Use "markdown" normalization when
+    // the sentence might sit inside a blockquote or carry emphasis in one file
+    // and not another. And expect a rename to fail it — the file list *is* the
+    // claim, so a moved surface is a changed claim, not a false alarm.
+    {
+      "claim": "Every change goes through a PR — no direct pushes to `main`.",
+      "kind": "text_matches_across",
+      "args": {
+        "text": "Every change goes through a PR",
+        "files": ["CLAUDE.md", "CONTRIBUTING.md", "docs/development/WORKFLOW.md"],
+        "normalize": ["markdown", "whitespace"]
+      },
+      "source": "CLAUDE.md#L14"
     }
   ]
 }

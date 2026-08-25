@@ -25,7 +25,7 @@ to catch — see the root [README's intro](../../README.md).
 
 **Kind** (assertion kind) — Which of the six checkers an assertion uses
 (`path_exists`, `path_absent`, `env_var_absent`, `script_exists`,
-`workflow_trigger`, `symbol_at_path`). See the root
+`workflow_trigger`, `symbol_at_path`, `text_matches_across`). See the root
 [README's kind table](../../README.md#assertion-kinds).
 
 **Unverifiable** — An assertion status meaning "no checker could

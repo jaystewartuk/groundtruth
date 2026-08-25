@@ -1,10 +1,10 @@
 ---
-description: "All six assertion kinds — path_exists, path_absent, env_var_absent, script_exists, workflow_trigger, symbol_at_path — with args, semantics, and edge cases."
+description: "All seven assertion kinds — path_exists, path_absent, env_var_absent, script_exists, workflow_trigger, symbol_at_path, text_matches_across — with args, semantics, and edge cases."
 ---
 
 # Assertion kinds
 
-Six kinds exist today. Each is one file under `src/assertions/`, and each
+Seven kinds exist today. Each is one file under `src/assertions/`, and each
 is independently registered in the kind → checker registry described in
 [Architecture overview](/architecture/overview#extension-point-assertion-kinds) —
 adding a kind without wiring its checker is a TypeScript compile error,
@@ -88,6 +88,41 @@ for why. Matches `export [default] [async] (function|const|class|interface|type|
 `passing` if found, `failing` if the file doesn't exist or the pattern
 doesn't match. A symbol only reachable via `export { X } from "./y"` (a
 re-export) reports `failing` — a known false negative, not a silent one.
+
+## `text_matches_across`
+
+```jsonc
+{
+  "kind": "text_matches_across",
+  "args": {
+    "text": "Every change to `main` goes through a pull request.",
+    "files": ["CLAUDE.md", "CONTRIBUTING.md", "docs/development/onboarding.md"],
+    "normalize": ["markdown", "whitespace"]
+  }
+}
+```
+
+The only kind about agreement **between** files rather than a fact inside
+one. `passing` when every file in `files` contains `text` after
+normalization; `failing` otherwise, with missing files and mismatching files
+reported separately.
+
+`normalize` defaults to `["whitespace"]`, which collapses every run of
+whitespace to a single space — hard-wrapped prose is the most common way a
+sentence hides from a line-oriented search. Add `"markdown"` to strip
+per-line blockquote markers and `*`/`_` emphasis first. Nothing else is
+stripped: template interpolation, HTML tags and smart-quote substitution all
+report `failing` rather than a false pass.
+
+**A missing file reports `failing`, not `unverifiable`** — the opposite of
+`env_var_absent`, and deliberate. The claim is that N surfaces state this
+sentence, so a surface that no longer exists has stopped stating it.
+Otherwise deleting a file would be the cheapest way to go green. See
+[ADR-0006](/architecture/decisions#adr-0006-verbatim-agreement-before-relational-matching).
+
+`text` is a literal, not a pattern. It cannot express "the version in A
+equals the version in B" — that relational variant is deferred until a
+second real use appears.
 
 ## Adding a new kind
 

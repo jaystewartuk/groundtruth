@@ -150,10 +150,10 @@ Then put it on every pull request — two lines of YAML, no install step:
 
 ## Where it comes from
 
-groundtruth is maintained by [Jay Stewart](https://jaystewart.dev), who runs
+groundtruth is maintained by [Jay Stewart](https://jaystewart.co.uk), who runs
 his own production systems with AI agents writing most of the code — the
 audit that motivated the tool is written up, with counted figures, in
-[a public case study](https://jaystewart.dev/work/agent-operated-codebase/).
+[a public case study](https://jaystewart.co.uk/work/agent-operated-codebase/).
 The tool is free, MIT-licensed and complete on its own, and it is the same
 check the author runs against his own repositories in CI.
 

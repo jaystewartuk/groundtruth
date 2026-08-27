@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: jaystewart-dev/groundtruth@v%%GT_VERSION%%
+      - uses: jaystewartuk/groundtruth@v%%GT_VERSION%%
 ```
 
 That is the whole setup. No `setup-node` step and no install step: the Action
@@ -92,7 +92,7 @@ the gate — useful for the first week of adoption, while you find out how much
 your context layer has already drifted:
 
 ```yaml
-      - uses: jaystewart-dev/groundtruth@v%%GT_VERSION%%
+      - uses: jaystewartuk/groundtruth@v%%GT_VERSION%%
         id: check
         continue-on-error: true
       - run: echo "${{ steps.check.outputs.failing }} claims have gone stale"
@@ -107,7 +107,7 @@ pointing at the package root — `file` and every assertion path resolve from
 there:
 
 ```yaml
-      - uses: jaystewart-dev/groundtruth@v%%GT_VERSION%%
+      - uses: jaystewartuk/groundtruth@v%%GT_VERSION%%
         with:
           working-directory: apps/web
 ```
@@ -118,10 +118,10 @@ Run the Action more than once. Give each step an `id` if you want its counts
 separately:
 
 ```yaml
-      - uses: jaystewart-dev/groundtruth@v%%GT_VERSION%%
+      - uses: jaystewartuk/groundtruth@v%%GT_VERSION%%
         with:
           working-directory: apps/web
-      - uses: jaystewart-dev/groundtruth@v%%GT_VERSION%%
+      - uses: jaystewartuk/groundtruth@v%%GT_VERSION%%
         with:
           working-directory: apps/api
 ```
@@ -133,7 +133,7 @@ false. Stricter than the default on purpose — an unverifiable assertion often
 means the assertion is pointing at a file layout that has moved:
 
 ```yaml
-      - uses: jaystewart-dev/groundtruth@v%%GT_VERSION%%
+      - uses: jaystewartuk/groundtruth@v%%GT_VERSION%%
         with:
           fail-on-unverifiable: true
 ```
@@ -173,7 +173,7 @@ the costs that choice carries, are in
 
 groundtruth runs this Action on itself. Its own `.groundtruth.jsonc` holds
 assertions taken from its own `CLAUDE.md`, and the `self-check` job in
-[`ci.yml`](https://github.com/jaystewart-dev/groundtruth/blob/main/.github/workflows/ci.yml)
+[`ci.yml`](https://github.com/jaystewartuk/groundtruth/blob/main/.github/workflows/ci.yml)
 runs the Action from the working tree against the CLI built from the same
 commit — so a pull request that breaks either one says so before it ships.
 

@@ -8,7 +8,7 @@ groundtruth is a single-process CLI: no server, no database, no network
 calls, nothing running in the background. `groundtruth check` reads a
 `.groundtruth.jsonc` file and the target repo's files on disk, runs each
 assertion's checker, and exits. Everything below is sourced from
-[`src/`](https://github.com/jaystewart-dev/groundtruth/tree/main/src) —
+[`src/`](https://github.com/jaystewartuk/groundtruth/tree/main/src) —
 follow the links to the actual code rather than trusting this page to
 stay perfectly in sync as the source evolves.
 
@@ -26,13 +26,13 @@ either the target repo or the assertions file.
 
 | Component | Source | Responsibility |
 |---|---|---|
-| Entry point | [`src/cli.ts`](https://github.com/jaystewart-dev/groundtruth/blob/main/src/cli.ts) | Arg parsing, orchestration, exit code |
-| Context discovery | [`src/discover.ts`](https://github.com/jaystewart-dev/groundtruth/blob/main/src/discover.ts) | Finds which agent-context file(s) exist (informational today) |
-| Assertion loading | [`src/manual/load.ts`](https://github.com/jaystewart-dev/groundtruth/blob/main/src/manual/load.ts), [`schema.ts`](https://github.com/jaystewart-dev/groundtruth/blob/main/src/manual/schema.ts) | Parses and zod-validates `.groundtruth.jsonc` |
-| Checker registry | [`src/assertions/index.ts`](https://github.com/jaystewart-dev/groundtruth/blob/main/src/assertions/index.ts) | Dispatches each assertion to its kind-specific checker |
-| Checkers | [`src/assertions/*.ts`](https://github.com/jaystewart-dev/groundtruth/tree/main/src/assertions) | One file per assertion kind — see [Assertion kinds](/reference/assertion-kinds) |
-| Reporting | [`src/report.ts`](https://github.com/jaystewart-dev/groundtruth/blob/main/src/report.ts) | Aggregates results, formats table/JSON output |
-| Public exports | [`src/index.ts`](https://github.com/jaystewart-dev/groundtruth/blob/main/src/index.ts) | Programmatic API surface — see [CLI reference](/reference/cli#programmatic-api) |
+| Entry point | [`src/cli.ts`](https://github.com/jaystewartuk/groundtruth/blob/main/src/cli.ts) | Arg parsing, orchestration, exit code |
+| Context discovery | [`src/discover.ts`](https://github.com/jaystewartuk/groundtruth/blob/main/src/discover.ts) | Finds which agent-context file(s) exist (informational today) |
+| Assertion loading | [`src/manual/load.ts`](https://github.com/jaystewartuk/groundtruth/blob/main/src/manual/load.ts), [`schema.ts`](https://github.com/jaystewartuk/groundtruth/blob/main/src/manual/schema.ts) | Parses and zod-validates `.groundtruth.jsonc` |
+| Checker registry | [`src/assertions/index.ts`](https://github.com/jaystewartuk/groundtruth/blob/main/src/assertions/index.ts) | Dispatches each assertion to its kind-specific checker |
+| Checkers | [`src/assertions/*.ts`](https://github.com/jaystewartuk/groundtruth/tree/main/src/assertions) | One file per assertion kind — see [Assertion kinds](/reference/assertion-kinds) |
+| Reporting | [`src/report.ts`](https://github.com/jaystewartuk/groundtruth/blob/main/src/report.ts) | Aggregates results, formats table/JSON output |
+| Public exports | [`src/index.ts`](https://github.com/jaystewartuk/groundtruth/blob/main/src/index.ts) | Programmatic API surface — see [CLI reference](/reference/cli#programmatic-api) |
 
 ## Request flow
 
@@ -91,9 +91,9 @@ No CD pipeline exists for the CLI itself yet beyond `pnpm build` (tsc →
 component. This documentation site is the one thing in this repository
 that *does* have a deploy pipeline: it builds and publishes to GitHub
 Pages on every push to `main` via
-[`.github/workflows/deploy-site.yml`](https://github.com/jaystewart-dev/groundtruth/blob/main/.github/workflows/deploy-site.yml).
+[`.github/workflows/deploy-site.yml`](https://github.com/jaystewartuk/groundtruth/blob/main/.github/workflows/deploy-site.yml).
 Source code itself is verified on every pull request via
-[`.github/workflows/ci.yml`](https://github.com/jaystewart-dev/groundtruth/blob/main/.github/workflows/ci.yml)
+[`.github/workflows/ci.yml`](https://github.com/jaystewartuk/groundtruth/blob/main/.github/workflows/ci.yml)
 (typecheck + test, plus a `self-check` job that runs groundtruth's own
 [GitHub Action](/guide/github-action) against its own assertions).
 
@@ -109,6 +109,6 @@ annotations and a job summary afterwards.
 
 No "infrastructure" or "external integrations" section, because
 groundtruth calls no external service and provisions no infrastructure —
-see [`docs/README.md`](https://github.com/jaystewart-dev/groundtruth/blob/main/docs/README.md#folder-taxonomy)
+see [`docs/README.md`](https://github.com/jaystewartuk/groundtruth/blob/main/docs/README.md#folder-taxonomy)
 in the repo for the full reasoning on what documentation categories are
 populated versus deliberately reserved for later.

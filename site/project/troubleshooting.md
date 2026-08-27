@@ -51,5 +51,5 @@ and [Roadmap](/project/roadmap). Today, assertions are written by hand.
 ### Something else
 
 Open an issue on
-[GitHub](https://github.com/jaystewart-dev/groundtruth/issues) — there's
+[GitHub](https://github.com/jaystewartuk/groundtruth/issues) — there's
 no other support channel yet.

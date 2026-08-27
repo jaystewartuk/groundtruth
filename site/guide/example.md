@@ -5,7 +5,7 @@ description: "A full worked example: a repo whose CLAUDE.md makes five claims, t
 # End-to-end example
 
 This is the exact scenario groundtruth's own test suite runs against —
-[`test/fixtures/sample-repo`](https://github.com/jaystewart-dev/groundtruth/tree/main/test/fixtures/sample-repo)
+[`test/fixtures/sample-repo`](https://github.com/jaystewartuk/groundtruth/tree/main/test/fixtures/sample-repo)
 in the repo — modeled directly on the real AgendaProfe audit findings
 described on the [home page](/). It's a small repo whose `CLAUDE.md` makes
 five claims, two of which are already false. Every command and output
@@ -49,7 +49,7 @@ env-var declarations or leftover config files.
 `.groundtruth.jsonc` atomizes the "no Supabase/Vercel env var" claim into
 one assertion per variable (five), plus one each for the MCP server, the
 script, the symbol, and the workflow trigger — nine total. Full file:
-[`.groundtruth.jsonc`](https://github.com/jaystewart-dev/groundtruth/blob/main/test/fixtures/sample-repo/.groundtruth.jsonc).
+[`.groundtruth.jsonc`](https://github.com/jaystewartuk/groundtruth/blob/main/test/fixtures/sample-repo/.groundtruth.jsonc).
 
 ```jsonc
 {

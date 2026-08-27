@@ -1,10 +1,10 @@
 # groundtruth
 
-[![GitHub stars](https://img.shields.io/github/stars/jaystewart-dev/groundtruth?style=flat-square&color=16a34a)](https://github.com/jaystewart-dev/groundtruth/stargazers)
-[![Latest release](https://img.shields.io/github/v/release/jaystewart-dev/groundtruth?style=flat-square&color=0ea5e9)](https://github.com/jaystewart-dev/groundtruth/releases)
+[![GitHub stars](https://img.shields.io/github/stars/jaystewartuk/groundtruth?style=flat-square&color=16a34a)](https://github.com/jaystewartuk/groundtruth/stargazers)
+[![Latest release](https://img.shields.io/github/v/release/jaystewartuk/groundtruth?style=flat-square&color=0ea5e9)](https://github.com/jaystewartuk/groundtruth/releases)
 [![npm](https://img.shields.io/npm/v/@groundtruth-sh/cli?style=flat-square&color=cb3837)](https://www.npmjs.com/package/@groundtruth-sh/cli)
-[![CI](https://img.shields.io/github/actions/workflow/status/jaystewart-dev/groundtruth/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/jaystewart-dev/groundtruth/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/github/license/jaystewart-dev/groundtruth?style=flat-square&color=64748b)](https://github.com/jaystewart-dev/groundtruth/blob/main/LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/jaystewartuk/groundtruth/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/jaystewartuk/groundtruth/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/github/license/jaystewartuk/groundtruth?style=flat-square&color=64748b)](https://github.com/jaystewartuk/groundtruth/blob/main/LICENSE)
 
 Verify `CLAUDE.md` / `AGENTS.md` against the actual repo.
 
@@ -120,7 +120,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: jaystewart-dev/groundtruth@v0.2.0
+      - uses: jaystewartuk/groundtruth@v0.2.0
 ```
 
 That's the whole setup — no `setup-node` step, no install step. All inputs are
@@ -140,7 +140,7 @@ Outputs — `total`, `passing`, `failing`, `unverifiable`, and `report-path`
 (the full JSON report on disk) — let a later step act on the result:
 
 ```yaml
-      - uses: jaystewart-dev/groundtruth@v0.2.0
+      - uses: jaystewartuk/groundtruth@v0.2.0
         id: check
         continue-on-error: true
       - run: echo "${{ steps.check.outputs.failing }} claims have gone stale"

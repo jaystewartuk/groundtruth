@@ -5,7 +5,7 @@ description: "How to contribute to groundtruth — issue-first workflow, require
 # Contributing
 
 The canonical contributing guide lives at
-[`CONTRIBUTING.md`](https://github.com/jaystewart-dev/groundtruth/blob/main/CONTRIBUTING.md)
+[`CONTRIBUTING.md`](https://github.com/jaystewartuk/groundtruth/blob/main/CONTRIBUTING.md)
 in the repo root, where GitHub surfaces it automatically when someone
 opens a pull request or new issue. This page summarizes it and covers the
 community side.
@@ -21,12 +21,12 @@ community side.
 - A real architectural tradeoff gets an ADR under `docs/adr/`, not just a
   paragraph in a PR description.
 
-Full guide: [`CONTRIBUTING.md` →](https://github.com/jaystewart-dev/groundtruth/blob/main/CONTRIBUTING.md)
+Full guide: [`CONTRIBUTING.md` →](https://github.com/jaystewartuk/groundtruth/blob/main/CONTRIBUTING.md)
 
 ## Issue templates
 
 Bug reports and feature requests each have a structured template —
-[open one on GitHub](https://github.com/jaystewart-dev/groundtruth/issues/new/choose).
+[open one on GitHub](https://github.com/jaystewartuk/groundtruth/issues/new/choose).
 
 ## Code of conduct
 
@@ -38,5 +38,5 @@ here.
 ## Discussions and sponsors
 
 GitHub Discussions isn't enabled on this repository, and there's no
-sponsorship program. [Issues](https://github.com/jaystewart-dev/groundtruth/issues)
+sponsorship program. [Issues](https://github.com/jaystewartuk/groundtruth/issues)
 are the only channel today.

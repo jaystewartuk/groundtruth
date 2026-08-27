@@ -55,4 +55,4 @@ it'll be added here rather than left implicit.
 ## Reporting a bug or requesting a feature
 
 Use the issue templates on
-[GitHub](https://github.com/jaystewart-dev/groundtruth/issues/new/choose).
+[GitHub](https://github.com/jaystewartuk/groundtruth/issues/new/choose).

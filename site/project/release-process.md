@@ -29,7 +29,7 @@ pnpm add -D @groundtruth-sh/cli
 ```
 
 Standard semver resolution against the npm registry. Installing straight
-from git (`pnpm add -D github:jaystewart-dev/groundtruth`) still works
+from git (`pnpm add -D github:jaystewartuk/groundtruth`) still works
 and pins an exact commit instead of a published version — useful for
 trying an unreleased `main`.
 
@@ -88,13 +88,13 @@ pinned.
 
 Unlike the CLI, this documentation site *does* deploy automatically —
 every push to `main` rebuilds and publishes it via
-[`.github/workflows/deploy-site.yml`](https://github.com/jaystewart-dev/groundtruth/blob/main/.github/workflows/deploy-site.yml).
+[`.github/workflows/deploy-site.yml`](https://github.com/jaystewartuk/groundtruth/blob/main/.github/workflows/deploy-site.yml).
 There's no versioning for the site; it always reflects `main`.
 
 The site is deliberately not a third place to bump the version: everywhere
-the docs pin a released ref — the `jaystewart-dev/groundtruth@vX.Y.Z` lines
+the docs pin a released ref — the `jaystewartuk/groundtruth@vX.Y.Z` lines
 in Action examples — the number is substituted at build time from the root
 `package.json`'s `version` field (the mechanism lives in
-[`site/.vitepress/config.ts`](https://github.com/jaystewart-dev/groundtruth/blob/main/site/.vitepress/config.ts)).
+[`site/.vitepress/config.ts`](https://github.com/jaystewartuk/groundtruth/blob/main/site/.vitepress/config.ts)).
 A release commit that bumps `package.json` and `action.yml` therefore
 updates every example on the next deploy, with no site edit to forget.

@@ -5,7 +5,7 @@ description: "What groundtruth can do today, and the three-layer design ahead: m
 # Roadmap
 
 Sourced directly from the root
-[README's Roadmap section](https://github.com/jaystewart-dev/groundtruth#roadmap)
+[README's Roadmap section](https://github.com/jaystewartuk/groundtruth#roadmap)
 — the single source of truth for planned work. This page restates it with
 explicit current-vs-planned labeling; update the README first, this page
 second.

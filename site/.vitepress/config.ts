@@ -171,13 +171,13 @@ export default withMermaid(
             { text: "Release process", link: "/project/release-process" },
           ],
         },
-        { text: "GitHub", link: "https://github.com/jaystewart-dev/groundtruth" },
+        { text: "GitHub", link: "https://github.com/jaystewartuk/groundtruth" },
       ],
 
       sidebar: SIDEBAR as DefaultTheme.Sidebar,
 
       socialLinks: [
-        { icon: "github", link: "https://github.com/jaystewart-dev/groundtruth" },
+        { icon: "github", link: "https://github.com/jaystewartuk/groundtruth" },
         { icon: "npm", link: "https://www.npmjs.com/package/@groundtruth-sh/cli" },
       ],
 
@@ -186,7 +186,7 @@ export default withMermaid(
       },
 
       editLink: {
-        pattern: "https://github.com/jaystewart-dev/groundtruth/edit/main/site/:path",
+        pattern: "https://github.com/jaystewartuk/groundtruth/edit/main/site/:path",
         text: "Edit this page on GitHub",
       },
 
@@ -261,7 +261,7 @@ export default withMermaid(
         "",
         `> ${DESCRIPTION}`,
         "",
-        `Current release: v${CLI_VERSION} (npm: @groundtruth-sh/cli · GitHub Action: jaystewart-dev/groundtruth@v${CLI_VERSION})`,
+        `Current release: v${CLI_VERSION} (npm: @groundtruth-sh/cli · GitHub Action: jaystewartuk/groundtruth@v${CLI_VERSION})`,
         "",
         "## Docs",
         "",
@@ -274,7 +274,7 @@ export default withMermaid(
         "## Optional",
         "",
         `- [Full docs as one file](${SITE_URL}llms-full.txt)`,
-        `- [Source repository](https://github.com/jaystewart-dev/groundtruth)`,
+        `- [Source repository](https://github.com/jaystewartuk/groundtruth)`,
         "",
       ];
       writeFileSync(join(outDir, "llms.txt"), indexLines.join("\n"));

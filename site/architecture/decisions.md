@@ -5,7 +5,7 @@ description: "Summaries of every architecture decision record — why assertions
 # Architecture decisions
 
 The full Architecture Decision Records live in
-[`docs/adr/`](https://github.com/jaystewart-dev/groundtruth/tree/main/docs/adr)
+[`docs/adr/`](https://github.com/jaystewartuk/groundtruth/tree/main/docs/adr)
 in the repository — this page is a summary for site readers, with a
 permalink per decision for cross-linking from the rest of the docs. Read
 the linked ADR for the complete context, consequences, and alternatives
@@ -25,7 +25,7 @@ checker/report core — which needs neither — was proven out. The
 hand-authored schema was deliberately designed to be the exact shape
 extraction will need to produce, so today's work isn't throwaway.
 
-[Full ADR →](https://github.com/jaystewart-dev/groundtruth/blob/main/docs/adr/0001-hand-authored-assertions-before-llm-extraction.md)
+[Full ADR →](https://github.com/jaystewartuk/groundtruth/blob/main/docs/adr/0001-hand-authored-assertions-before-llm-extraction.md)
 
 ## ADR-0002: Unverifiable assertions never fail, but are always reported {#adr-0002-unverifiable-assertions-never-fail-but-always-report}
 
@@ -39,7 +39,7 @@ kind that doesn't exist yet. Treating it as passing — silently — is
 exactly the "context that lies gets executed" failure mode groundtruth
 exists to catch, just moved up one layer.
 
-[Full ADR →](https://github.com/jaystewart-dev/groundtruth/blob/main/docs/adr/0002-unverifiable-assertions-never-fail-but-always-report.md)
+[Full ADR →](https://github.com/jaystewartuk/groundtruth/blob/main/docs/adr/0002-unverifiable-assertions-never-fail-but-always-report.md)
 
 ## ADR-0003: Regex-based symbol matching for `symbol_at_path` {#adr-0003-regex-based-symbol-matching-for-mvp}
 
@@ -52,7 +52,7 @@ proven out. Because every kind's checker sits behind the same swappable
 `Checker` type, replacing the regex with a real parser later is a
 contained, single-file change — not a rewrite.
 
-[Full ADR →](https://github.com/jaystewart-dev/groundtruth/blob/main/docs/adr/0003-regex-based-symbol-matching-for-mvp.md)
+[Full ADR →](https://github.com/jaystewartuk/groundtruth/blob/main/docs/adr/0003-regex-based-symbol-matching-for-mvp.md)
 
 ## ADR-0004: Three-layer product design {#adr-0004-three-layer-roadmap}
 
@@ -70,7 +70,7 @@ pruned with evidence instead of a guess.
 — bundling all three into one release would have blocked shipping
 anything on the hardest, most judgment-dependent layer.
 
-[Full ADR →](https://github.com/jaystewart-dev/groundtruth/blob/main/docs/adr/0004-three-layer-roadmap.md) ·
+[Full ADR →](https://github.com/jaystewartuk/groundtruth/blob/main/docs/adr/0004-three-layer-roadmap.md) ·
 [Roadmap](/project/roadmap)
 
 ## ADR-0005: The GitHub Action is a composite wrapper around the published CLI {#adr-0005-the-github-action-is-a-composite-wrapper-around-the-published-cli}
@@ -96,7 +96,7 @@ releases must publish to npm *before* tagging. There is also a network
 dependency at run time — if npm is unreachable, the check fails to run
 rather than reporting drift.
 
-[Full ADR →](https://github.com/jaystewart-dev/groundtruth/blob/main/docs/adr/0005-composite-action-wrapping-the-published-cli.md) ·
+[Full ADR →](https://github.com/jaystewartuk/groundtruth/blob/main/docs/adr/0005-composite-action-wrapping-the-published-cli.md) ·
 [Release process](/project/release-process)
 
 ## ADR-0006: `text_matches_across` checks verbatim agreement, and a missing file fails {#adr-0006-verbatim-agreement-before-relational-matching}
@@ -136,4 +136,4 @@ workaround is used, at the price of a third edit at release time. The kind is
 also sensitive to file renames, which is intended — the assertion *is* the
 list of surfaces.
 
-[Full ADR →](https://github.com/jaystewart-dev/groundtruth/blob/main/docs/adr/0006-verbatim-agreement-before-relational-matching.md)
+[Full ADR →](https://github.com/jaystewartuk/groundtruth/blob/main/docs/adr/0006-verbatim-agreement-before-relational-matching.md)

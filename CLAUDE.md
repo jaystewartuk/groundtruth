@@ -89,3 +89,17 @@ Architecture and request flow: [`docs/architecture/overview.md`](docs/architectu
 Why a given tradeoff was made: [`docs/adr/`](docs/adr/README.md). Do not
 restate architectural reasoning here — link to it, per this repo's own
 single-source-of-truth rule ([`docs/README.md`](docs/README.md#principles-this-tree-follows)).
+
+## Reconstructing history from git
+
+[`scripts/backfill-history.mjs`](scripts/backfill-history.mjs) replays a
+repo's git log to produce a drift history: how the context layer grew, how
+much of it any assertion cites, and — with `--state` — what the gate would
+have reported on each commit. It is a research script, not part of the
+published CLI or the Action.
+
+**The one rule that makes `--state` sound:** it checks each commit against
+the `.groundtruth.jsonc` *as it stood at that commit*, and skips commits from
+before the assertions file existed. Applying today's assertions to an old tree
+produces failures that are artifacts of the feature not existing yet, not
+drift — measured on this repo at `4a474b23`, all 6 failures were of that kind.

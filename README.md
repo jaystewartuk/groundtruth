@@ -21,7 +21,7 @@ executable assertions and checks them against your working tree — a compiler
 and CI gate for the rules you've written down for your agent to follow.
 
 This project exists because an audit of a real production repo
-([AgendaProfe](https://agendaprofe.com)) found four live
+([SpiralClass](https://spiralclass.com)) found four live
 instances of exactly this: stale `SUPABASE_*`/`VERCEL_*` env vars still
 declared in build tooling months after both were decommissioned, a leftover
 MCP server config for a torn-down database, and a memory file directly
@@ -168,7 +168,7 @@ An array of assertions, each with:
 | `source` | `"<file>#L<line>"` — traces a failure back to the exact sentence that made the claim |
 
 See [`.groundtruth.jsonc.example`](./.groundtruth.jsonc.example) for a full,
-commented example (the AgendaProfe findings, encoded as real assertions).
+commented example (the SpiralClass findings, encoded as real assertions).
 
 ### Assertion kinds
 
@@ -225,7 +225,7 @@ pnpm install
 pnpm build      # tsc -> dist/
 pnpm test       # builds first (pretest), then runs vitest against
                 # test/fixtures/sample-repo — a fixture tree modeling the
-                # real AgendaProfe drift findings
+                # real SpiralClass drift findings
 pnpm typecheck  # tsc --noEmit
 ```
 

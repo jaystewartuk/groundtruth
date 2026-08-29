@@ -19,7 +19,7 @@ pnpm test:watch
 pnpm typecheck  # tsc --noEmit, no output
 ```
 
-`test/fixtures/sample-repo` is a fixture tree modeling the real AgendaProfe
+`test/fixtures/sample-repo` is a fixture tree modeling the real SpiralClass
 drift findings described in the root README — it's the ground truth for
 what `groundtruth check`'s own tests assert against. Read
 `test/assertions.test.ts` and `test/cli.test.ts` before adding a new

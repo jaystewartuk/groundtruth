@@ -12,7 +12,7 @@
 //   source  — "<file>#L<line>" so a failure traces back to the exact sentence
 //
 // These examples are drawn directly from a real audit of a production repo
-// (AgendaProfe) that found exactly these four kinds of drift: a decommissioned
+// (SpiralClass) that found exactly these four kinds of drift: a decommissioned
 // vendor's env vars still declared in build tooling, a leftover MCP server
 // config, and — as a sanity check that this file isn't just a list of
 // failures — two claims that were still true and should report as passing.

@@ -6,7 +6,7 @@ description: "A full worked example: a repo whose CLAUDE.md makes five claims, t
 
 This is the exact scenario groundtruth's own test suite runs against —
 [`test/fixtures/sample-repo`](https://github.com/jaystewartuk/groundtruth/tree/main/test/fixtures/sample-repo)
-in the repo — modeled directly on the real AgendaProfe audit findings
+in the repo — modeled directly on the real SpiralClass audit findings
 described on the [home page](/). It's a small repo whose `CLAUDE.md` makes
 five claims, two of which are already false. Every command and output
 block below is copied verbatim from actually running `groundtruth check`

@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 // End-to-end: runs the actual built CLI (dist/cli.js) against
 // test/fixtures/sample-repo's .groundtruth.jsonc, which encodes real drift
-// found in the AgendaProfe audit (stale Supabase/Vercel env vars in
+// found in the SpiralClass audit (stale Supabase/Vercel env vars in
 // turbo.json, a leftover .mcp.json) alongside claims that are still true.
 // Requires `pnpm build` to have run first — that's what `pretest` is for.
 

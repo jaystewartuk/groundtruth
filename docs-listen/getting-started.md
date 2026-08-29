@@ -22,7 +22,7 @@ the sentence told it not to touch.
 
 This isn't a hypothetical. The project that led to groundtruth being built
 was a real audit of a production repository — a project called
-AgendaProfe. That audit found four separate instances of exactly this
+SpiralClass. That audit found four separate instances of exactly this
 pattern: leftover environment variables for a database provider and a
 hosting provider that had both been decommissioned months earlier, but
 were still declared in the build tooling; a configuration file for a

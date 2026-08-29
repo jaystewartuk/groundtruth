@@ -21,7 +21,7 @@ pnpm typecheck  # tsc --noEmit, no output
 ```
 
 `test/fixtures/sample-repo` is a fixture tree modeling the real
-AgendaProfe drift findings described on the [home page](/) — it's the
+SpiralClass drift findings described on the [home page](/) — it's the
 ground truth (no pun avoidable) for what groundtruth's own tests assert
 against. Read `test/assertions.test.ts` and `test/cli.test.ts` before
 changing checker behavior or CLI flags; they're the executable spec.

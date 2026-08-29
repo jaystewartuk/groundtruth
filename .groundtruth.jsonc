@@ -6,7 +6,7 @@
 // CLI — so the tool, the Action, and this repo's agent-context file are all
 // verified by the same pass.
 //
-// If you are looking for the annotated teaching example (the AgendaProfe
+// If you are looking for the annotated teaching example (the SpiralClass
 // drift findings, including deliberately failing ones), that lives in
 // .groundtruth.jsonc.example. This file is the real thing: it is expected to
 // be green, and a red run here means CLAUDE.md now says something false.

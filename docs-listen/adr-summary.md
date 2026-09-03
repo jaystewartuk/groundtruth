@@ -1,6 +1,6 @@
 # The decisions behind groundtruth, and why they were made
 
-There are five real architectural decisions baked into groundtruth's
+There are seven real architectural decisions baked into groundtruth's
 current design, and it's worth understanding not just what they are, but
 why each one was made — because in each case, there was a real
 alternative on the table that got rejected for a specific reason.
@@ -36,7 +36,7 @@ design choice, but it's the one the project seems proudest of, because it
 reflects the tool's whole reason for existing.
 
 The third decision is a much more mundane, practical tradeoff, but a real
-one. One of the six kinds of claims groundtruth can check is whether a
+one. One of the seven kinds of claims groundtruth can check is whether a
 particular function still exists at a particular file path — something
 like, "this function is still the one place that decides a certain piece
 of business logic." Checking that properly really calls for actually
@@ -124,3 +124,82 @@ reachable when it runs. If it isn't, the check fails to run rather than
 reporting drift, and anyone who can't accept that can install the tool as
 an ordinary dependency and call it directly. The command-line tool is the
 product; the Action is a convenience layered over it.
+
+
+The sixth decision is about a kind of claim that is different from all the
+others, because it isn't about a fact inside one file. It's about several
+files agreeing with each other. Some sentences have to be stated in more
+than one place — an availability line that appears on a CV, a profile page,
+a booking message and a website, say — and a sentence like that is a
+standing invitation to drift. What's interesting is how the drift actually
+happens. It is almost never a bad edit. It is a perfectly correct edit that
+reached most of the copies and missed the rest. In the case that motivated
+this, two separate corrections were made weeks apart, and each one reached
+four of the six places the sentence lived. Both times, searching for the
+phrase reported everything as clean, because every stale variant still
+contained the words being searched for.
+
+So the check compares the whole sentence rather than looking for a
+fragment of it, after tidying up the differences that don't carry meaning.
+Runs of spaces and line breaks are flattened, because a paragraph that a
+formatter has re-wrapped means exactly what it meant before and has none
+of the same line breaks — that's the single most common way a sentence
+hides from a search that works line by line. Optionally, quotation marks
+and emphasis characters get stripped too, for when the same sentence sits
+inside a quoted block in one file and plain in another.
+
+The part worth remembering is what happens when one of the named files
+has gone missing. It counts as a failure. That is the opposite of the rule
+for the check that looks for a decommissioned environment variable, and
+the asymmetry is deliberate. There, a file that doesn't exist obviously
+can't contain the variable, so its absence tells you nothing and calling
+it clean would be a lie. Here, the claim is that a specific list of places
+all state this sentence, so a place that no longer exists hasn't become
+unknown — it has stopped stating it. Any other answer would make deleting
+a file the easiest way to make the check go green, which would be absurd
+for a tool built to stop people from quietly making problems disappear.
+
+The seventh and last decision is the most self-referential one, and it
+came out of the project catching itself. Every assertion carries a
+pointer back to the sentence it came from — a file name and a line
+number — and that pointer is what lets a failure be traced to the exact
+sentence that made the false claim. It's also what the pull-request
+markers are anchored to. But that pointer is itself a claim about the
+repository, and it decays more quietly than any other. Add a paragraph
+near the top of a context file, and every line number below it shifts by
+one. Every assertion still passes, because the checks read the code, not
+the citation. Nothing anywhere notices that the whole file is now
+pointing one line off.
+
+When a check for this was finally written and run against groundtruth's
+own repository, nine of its fifteen citations turned out to be wrong, and
+the pull-request markers had been landing on the wrong lines for months.
+For a project whose entire argument is that unchecked claims rot in
+silence, that was not a comfortable thing to discover, and it settled the
+question of whether the check was worth building.
+
+Two things had to be decided about how it works. The first is how strictly
+to compare. The obvious answer, demanding that the quoted sentence appear
+exactly as written, turns out to be unusable, because these quotes are
+copied by hand and routinely shortened, re-punctuated or paraphrased. A
+strict comparison would have complained about more correct citations than
+broken ones, and a check that cries wolf gets switched off within a week.
+So it compares vocabulary instead — roughly, does the cited passage share
+most of its distinctive words with the claim — which answers the question
+actually worth asking, namely whether the cited lines are even about this
+claim at all. When a citation is wrong, the file is searched again to find
+where the sentence has moved to, and that location is reported alongside
+the complaint, so fixing it takes no detective work.
+
+The second decision is what a wrong citation should do to a build, and the
+answer is: on its own, nothing. A stale pointer is a flaw in the
+assertions file, not evidence that the repository has drifted, and those
+are genuinely different problems. Failing builds over it would mean that
+everyone who upgraded would suddenly find their pipeline red over a
+documentation nitpick, which is how a project teaches its users never to
+upgrade again. So it is reported as a warning, and there's a switch to
+turn it into a failure for anyone who wants that. groundtruth's own
+repository runs with the switch on, for the obvious reason that editing
+its context file is precisely what shifts the line numbers its own
+assertions depend on. During the change that introduced the check, it
+caught that happening twice.

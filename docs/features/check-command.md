@@ -30,7 +30,7 @@ per-kind checkers), and `report.ts` (format + exit code).
 
 | File | Role |
 |---|---|
-| `src/cli.ts` | Arg parsing (`--repo`, `--file`, `--json`), orchestration |
+| `src/cli.ts` | Arg parsing (`--repo`, `--file`, `--json`, `--strict-sources`, `--version`), orchestration |
 | `src/manual/schema.ts` | Zod schema for `.groundtruth.jsonc` |
 | `src/manual/load.ts` | Loads + validates the assertions file |
 | `src/assertions/index.ts` | Kind → checker registry, dispatch |
@@ -50,6 +50,7 @@ cp .groundtruth.jsonc.example .groundtruth.jsonc   # then edit it
 groundtruth check                                   # human-readable table
 groundtruth check --json                            # machine-readable
 groundtruth check --repo ../other-repo --file custom.jsonc
+groundtruth check --strict-sources                  # fail on a drifted citation
 ```
 
 Exit code `1` if any assertion is `failing`, `0` otherwise —

@@ -19,7 +19,7 @@ body:
     id: version
     attributes:
       label: groundtruth version / commit
-      description: Output of `groundtruth --help` header, or the git commit if installed from a local checkout.
+      description: Output of `groundtruth --version`, or the git commit if installed from a local checkout.
     validations:
       required: true
   - type: input

@@ -1,7 +1,11 @@
 // .groundtruth.jsonc — groundtruth's assertions about itself.
 //
-// Every `source` below points at a real line of this repo's own CLAUDE.md.
-// The `action` job in .github/workflows/ci.yml runs these on every pull
+// Every `source` below points at a real line of this repo's own CLAUDE.md,
+// and `groundtruth check` verifies that too — a citation is a claim about
+// the repo like any other, and 9 of these 15 had silently drifted before
+// anything checked them (see src/manual/verify-source.ts).
+//
+// The `self-check` job in .github/workflows/ci.yml runs these on every pull
 // request, using the Action from the local checkout against the freshly built
 // CLI — so the tool, the Action, and this repo's agent-context file are all
 // verified by the same pass.
@@ -48,61 +52,61 @@
       "claim": "The canonical list is `ASSERTION_KINDS` in `src/types.ts`.",
       "kind": "symbol_at_path",
       "args": { "symbol": "ASSERTION_KINDS", "path": "src/types.ts" },
-      "source": "CLAUDE.md#L34"
+      "source": "CLAUDE.md#L34-35"
     },
     {
       "claim": "`symbol_at_path` is regex-based, not an AST parse. Deliberate, see ADR-0003.",
       "kind": "path_exists",
       "args": { "path": "docs/adr/0003-regex-based-symbol-matching-for-mvp.md" },
-      "source": "CLAUDE.md#L38"
+      "source": "CLAUDE.md#L42-44"
     },
     {
       "claim": "Releases are manual — no release automation workflow exists.",
       "kind": "path_absent",
       "args": { "path": ".github/workflows/release.yml" },
-      "source": "CLAUDE.md#L43-44"
+      "source": "CLAUDE.md#L48-50"
     },
     {
       "claim": "A dependency-free runner at `action/run.mjs` that shells out to the published CLI.",
       "kind": "path_exists",
       "args": { "path": "action/run.mjs" },
-      "source": "CLAUDE.md#L45-46"
+      "source": "CLAUDE.md#L51-53"
     },
     {
       "claim": "Why, and what that costs: ADR-0005.",
       "kind": "path_exists",
       "args": { "path": "docs/adr/0005-composite-action-wrapping-the-published-cli.md" },
-      "source": "CLAUDE.md#L49"
+      "source": "CLAUDE.md#L55"
     },
     {
       "claim": "pnpm build — tsc -> dist/",
       "kind": "script_exists",
       "args": { "name": "build" },
-      "source": "CLAUDE.md#L69"
+      "source": "CLAUDE.md#L84"
     },
     {
       "claim": "pnpm test — pretest runs tsc, then vitest against test/fixtures/sample-repo",
       "kind": "script_exists",
       "args": { "name": "test" },
-      "source": "CLAUDE.md#L70"
+      "source": "CLAUDE.md#L85"
     },
     {
       "claim": "pnpm typecheck — tsc --noEmit",
       "kind": "script_exists",
       "args": { "name": "typecheck" },
-      "source": "CLAUDE.md#L71"
+      "source": "CLAUDE.md#L86"
     },
     {
       "claim": "Step 3 (registering the checker in `src/assertions/index.ts`) is enforced at compile time if skipped.",
       "kind": "symbol_at_path",
       "args": { "symbol": "checkAssertions", "path": "src/assertions/index.ts" },
-      "source": "CLAUDE.md#L78"
+      "source": "CLAUDE.md#L92-93"
     },
     {
       "claim": "Architecture and request flow: `docs/architecture/overview.md`.",
       "kind": "path_exists",
       "args": { "path": "docs/architecture/overview.md" },
-      "source": "CLAUDE.md#L82"
+      "source": "CLAUDE.md#L97"
     },
     // The version claim, and the first assertion here that could not be
     // written before text_matches_across existed. CLAUDE.md says action.yml's
@@ -116,13 +120,22 @@
     // and it is the right trade here: the third edit is in the same commit as
     // the other two, and it is caught by CI rather than by a user.
     {
-      "claim": "`action.yml`'s `version` input ... must be bumped to match `package.json` in the same release commit.",
+      "claim": "`action.yml`'s `version` input ... must be bumped to match `package.json` in the same release commit. The `README.md` Action snippets pin the same version.",
       "kind": "text_matches_across",
       "args": {
         "text": "0.2.1",
-        "files": ["package.json", "action.yml"]
+        "files": ["package.json", "action.yml", "README.md"]
       },
       "source": "CLAUDE.md#L56-58"
+    },
+    // The checker that verifies these very citations. Named here so that
+    // deleting it cannot quietly restore the state this file was in before it
+    // existed — 9 of 15 pointers wrong, and nothing saying so.
+    {
+      "claim": "An assertion's `source` ... is verified too, by `src/manual/verify-source.ts`.",
+      "kind": "symbol_at_path",
+      "args": { "symbol": "verifyAssertionSources", "path": "src/manual/verify-source.ts" },
+      "source": "CLAUDE.md#L68-70"
     },
     {
       "claim": "Seven assertion kinds exist ... `text_matches_across`.",

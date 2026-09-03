@@ -23,6 +23,7 @@ import {
   parseSource,
   sanitizeVersion,
   summaryMarkdown,
+  renderConsole,
 } from "../action/run.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -131,6 +132,56 @@ describe("summaryMarkdown", () => {
     );
     expect(markdown).toContain("All 1 assertion(s) hold");
     expect(markdown).toContain("fail-on-unverifiable");
+  });
+
+  // A green run whose citations have drifted is the case worth surfacing:
+  // every count says "fine", and the annotations are landing on the wrong
+  // lines of the context file.
+  it("reports drifted source pointers on an otherwise clean run", () => {
+    const markdown = summaryMarkdown(
+      {
+        results: [],
+        passing: 0,
+        failing: 0,
+        unverifiable: 0,
+        sourceWarnings: [
+          {
+            source: "CLAUDE.md#L7",
+            claim: "`pnpm verify:push` runs typecheck + unit.",
+            reason: "CLAUDE.md line 7 does not state this claim",
+            suggestion: "CLAUDE.md#L9",
+          },
+        ],
+      },
+      ["CLAUDE.md"],
+      {},
+    );
+    expect(markdown).toContain("1 source pointer(s) may have drifted");
+    expect(markdown).toContain("`CLAUDE.md#L9`");
+  });
+
+  it("says nothing about sources when the report carries no warnings", () => {
+    const markdown = summaryMarkdown({ results: [], passing: 0, failing: 0, unverifiable: 0 }, [], {});
+    expect(markdown).not.toContain("source pointer");
+  });
+});
+
+describe("renderConsole", () => {
+  it("prints drifted source pointers under the report", () => {
+    const output = renderConsole(
+      {
+        results: [],
+        passing: 0,
+        failing: 0,
+        unverifiable: 0,
+        sourceWarnings: [
+          { source: "CLAUDE.md#L7", claim: "a claim", reason: "does not state this claim", suggestion: "CLAUDE.md#L9" },
+        ],
+      },
+      ["CLAUDE.md"],
+    );
+    expect(output).toContain("1 source pointer(s) may have drifted");
+    expect(output).toContain("the claim now reads at CLAUDE.md#L9");
   });
 });
 

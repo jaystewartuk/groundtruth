@@ -56,12 +56,21 @@ the site's release-process page).
 - `action.yml`'s `version` input pins which published CLI the Action installs,
   and it must be bumped to match `package.json` in the same release commit —
   an Action release pointing at an unpublished version is broken for every
-  consumer.
+  consumer. The `README.md` Action snippets pin the same version and are part
+  of that same bump; they drifted to 0.2.0 once while the site (which
+  substitutes `%%GT_VERSION%%` at build time) stayed correct, so CI now checks
+  all three agree.
 - This repo runs the Action on itself: `.groundtruth.jsonc` at the root holds
   assertions taken from this very file, and the `self-check` job in
   `.github/workflows/ci.yml` runs them against the local build on every pull
   request. If you change a claim here, expect that job to be the thing that
   tells you.
+- An assertion's `source` (`"CLAUDE.md#L42"`) is verified too, by
+  `src/manual/verify-source.ts`: it checks the cited lines still state the
+  claim, and reports where the sentence moved when they do not. Findings are
+  warnings by default and never fail a consumer's build; `--strict-sources`
+  makes them fail, and this repo's CI runs with it. Editing this file shifts
+  line numbers, so expect that check to be what tells you.
 - The docs site reports to PostHog, cookieless (`persistence: "memory"`, so
   there is no consent banner and a returning reader counts as a new person),
   wired in `site/.vitepress/theme/index.ts`. The project key reaches the build

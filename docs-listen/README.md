@@ -20,9 +20,9 @@ What's here:
 - [`architecture-overview.md`](architecture-overview.md) — how the pieces
   fit together, without the Mermaid diagrams (those don't survive being
   read aloud — this describes the same flow in words).
-- [`adr-summary.md`](adr-summary.md) — a walk through the five
+- [`adr-summary.md`](adr-summary.md) — a walk through the seven
   architecture decisions in `docs/adr/`, as one continuous episode rather
-  than five formal records.
+  than seven formal records.
 
 Not every document gets a listening edition — the naming-conventions doc,
 the glossary, and the feature reference table are exactly as useful read

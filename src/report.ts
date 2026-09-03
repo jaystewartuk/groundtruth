@@ -1,4 +1,5 @@
 import type { CheckResult, CheckSummary } from "./types.js";
+import type { SourceWarning } from "./manual/verify-source.js";
 
 export function summarize(results: CheckResult[]): CheckSummary {
   return {
@@ -15,9 +16,32 @@ const MARK: Record<CheckResult["status"], string> = {
   unverifiable: "?",
 };
 
+/** Rendered under the report rather than beside the assertions: a drifted
+ * citation says nothing about the repo being checked, only about the
+ * assertions file describing it. Keeping the two apart stops a documentation
+ * bug from reading like a finding. */
+function sourceWarningLines(warnings: SourceWarning[]): string[] {
+  if (warnings.length === 0) return [];
+  const lines = ["", `${warnings.length} source pointer(s) may have drifted:`];
+  for (const w of warnings) {
+    lines.push(`! ${w.source}  ${JSON.stringify(w.claim)}`);
+    const extra = w.alsoAffects
+      ? ` (and ${w.alsoAffects} other assertion(s) citing it)`
+      : w.suggestion
+        ? ` — the claim now reads at ${w.suggestion}`
+        : "";
+    lines.push(`  ${w.reason}${extra}`);
+  }
+  return lines;
+}
+
 /** Human-readable table, worst-first: failing, then unverifiable, then
  * passing — the operator's eye should land on what needs action. */
-export function formatTable(summary: CheckSummary, contextFiles: string[]): string {
+export function formatTable(
+  summary: CheckSummary,
+  contextFiles: string[],
+  sourceWarnings: SourceWarning[] = [],
+): string {
   const order: CheckResult["status"][] = ["failing", "unverifiable", "passing"];
   const lines: string[] = [];
 
@@ -39,9 +63,15 @@ export function formatTable(summary: CheckSummary, contextFiles: string[]): stri
     }
   }
 
+  lines.push(...sourceWarningLines(sourceWarnings));
+
   return lines.join("\n");
 }
 
-export function formatJson(summary: CheckSummary, contextFiles: string[]): string {
-  return JSON.stringify({ contextFiles, ...summary }, null, 2);
+export function formatJson(
+  summary: CheckSummary,
+  contextFiles: string[],
+  sourceWarnings: SourceWarning[] = [],
+): string {
+  return JSON.stringify({ contextFiles, ...summary, sourceWarnings }, null, 2);
 }

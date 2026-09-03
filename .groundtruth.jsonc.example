@@ -7,7 +7,7 @@
 //
 // Every entry has:
 //   claim   — the sentence from your context file, verbatim, for humans
-//   kind    — one of the 6 supported assertion kinds (README has the full list)
+//   kind    — one of the 7 supported assertion kinds (README has the full list)
 //   args    — kind-specific arguments (see README for each kind's shape)
 //   source  — "<file>#L<line>" so a failure traces back to the exact sentence
 //

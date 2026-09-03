@@ -95,12 +95,40 @@ exists to prevent.
 Options:
 
 ```
-groundtruth check [--repo <path>] [--file <path>] [--json]
+groundtruth check [--repo <path>] [--file <path>] [--json] [--strict-sources]
 
-  --repo <path>   Repo root to check against (default: cwd)
-  --file <path>   Assertions file (default: .groundtruth.jsonc)
-  --json          Machine-readable output instead of a table
+  --repo <path>      Repo root to check against (default: cwd)
+  --file <path>      Assertions file (default: .groundtruth.jsonc)
+  --json             Machine-readable output instead of a table
+  --strict-sources   Also exit non-zero when a `source` pointer has drifted
+  -v, --version      Print the version and exit
+  -h, --help         Print usage and exit
 ```
+
+An unrecognised flag is a usage error (exit `2`), not a silently ignored
+argument. A green build from a run that never happened because `--jsonn` was
+quietly dropped is the same class of failure this tool exists to prevent.
+
+### Citations get checked too
+
+Every assertion's `source` — `"CLAUDE.md#L42"` — is itself a claim about the
+repo, and it rots the way every other claim does: someone adds a paragraph,
+every line number below it shifts, and the assertions keep passing while
+pointing at the wrong sentence. So `groundtruth check` verifies the citation
+as well, and tells you where the sentence actually moved to:
+
+```
+1 source pointer(s) may have drifted:
+! CLAUDE.md#L69  "pnpm build — tsc -> dist/"
+  CLAUDE.md line 69 does not state this claim — the claim now reads at CLAUDE.md#L75
+```
+
+This is a warning, not a failure — a stale citation is a bug in your
+assertions file, not drift in the repo it describes — so it never breaks a
+build on upgrade. Pass `--strict-sources` to make it one. This repo runs
+with it on: when the check was first written it found that **9 of its own 15
+citations had drifted**, and the Action had been annotating the wrong lines
+of `CLAUDE.md` the whole time.
 
 ## In CI: the GitHub Action
 
@@ -120,7 +148,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: jaystewartuk/groundtruth@v0.2.0
+      - uses: jaystewartuk/groundtruth@v0.2.1
 ```
 
 That's the whole setup — no `setup-node` step, no install step. All inputs are
@@ -128,7 +156,7 @@ optional:
 
 | input | default | meaning |
 |---|---|---|
-| `version` | `0.2.0` | Which published CLI version to run. `latest` tracks the registry |
+| `version` | `0.2.1` | Which published CLI version to run. `latest` tracks the registry |
 | `file` | `.groundtruth.jsonc` | Assertions file, relative to `working-directory` |
 | `working-directory` | `.` | Repo root to check against — point it at a package in a monorepo |
 | `fail-on-unverifiable` | `false` | Also fail the job when an assertion can't be mechanically checked |
@@ -140,7 +168,7 @@ Outputs — `total`, `passing`, `failing`, `unverifiable`, and `report-path`
 (the full JSON report on disk) — let a later step act on the result:
 
 ```yaml
-      - uses: jaystewartuk/groundtruth@v0.2.0
+      - uses: jaystewartuk/groundtruth@v0.2.1
         id: check
         continue-on-error: true
       - run: echo "${{ steps.check.outputs.failing }} claims have gone stale"
@@ -163,7 +191,7 @@ An array of assertions, each with:
 | field | meaning |
 |---|---|
 | `claim` | The sentence from your context file, verbatim — for humans reading the report |
-| `kind` | One of the 6 kinds below |
+| `kind` | One of the 7 kinds below |
 | `args` | Kind-specific arguments |
 | `source` | `"<file>#L<line>"` — traces a failure back to the exact sentence that made the claim |
 
@@ -229,8 +257,10 @@ pnpm test       # builds first (pretest), then runs vitest against
 pnpm typecheck  # tsc --noEmit
 ```
 
-Every push and pull request runs typecheck + test via
-[`.github/workflows/ci.yml`](.github/workflows/ci.yml). See
+Every push and pull request runs typecheck, tests, and
+`check --strict-sources` via
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) — plus a `self-check`
+job that runs the Action from the checkout against the freshly built CLI. See
 [`CONTRIBUTING.md`](CONTRIBUTING.md) before opening a PR.
 
 ## Roadmap
@@ -262,6 +292,17 @@ figures, as
 [a public case study](https://jaystewart.co.uk/work/agent-operated-codebase/) —
 and it is the same check the author runs against his own repositories in CI,
 as part of a measured practice of AI-native engineering.
+
+## Security
+
+`groundtruth check` only ever reads: no network calls, no execution of
+anything from the repo it checks, no writes. Reporting process and the
+honest threat model (a `.groundtruth.jsonc` file is trusted input, at the
+same level as your build config) are in [`SECURITY.md`](SECURITY.md).
+
+## Changelog
+
+Release notes are in [`CHANGELOG.md`](CHANGELOG.md).
 
 ## License
 

@@ -14,14 +14,15 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, "..");
 const CLI = resolve(ROOT, "dist", "cli.js");
 const SAMPLE_REPO = resolve(HERE, "fixtures", "sample-repo");
+const DRIFTED_SOURCE_REPO = resolve(HERE, "fixtures", "drifted-source");
 
-function run(args: string[]): { stdout: string; status: number } {
+function run(args: string[]): { stdout: string; stderr: string; status: number } {
   try {
-    const stdout = execFileSync("node", [CLI, ...args], { encoding: "utf8" });
-    return { stdout, status: 0 };
+    const stdout = execFileSync("node", [CLI, ...args], { encoding: "utf8", stdio: "pipe" });
+    return { stdout, stderr: "", status: 0 };
   } catch (err) {
-    const e = err as { stdout?: string; status?: number };
-    return { stdout: e.stdout ?? "", status: e.status ?? 1 };
+    const e = err as { stdout?: string; stderr?: string; status?: number };
+    return { stdout: e.stdout ?? "", stderr: e.stderr ?? "", status: e.status ?? 1 };
   }
 }
 
@@ -60,5 +61,57 @@ describe("groundtruth check (e2e)", () => {
   it("exits 2 with a helpful message when no assertions file is found", () => {
     const { status } = run(["check", "--repo", ROOT, "--file", "does-not-exist.jsonc"]);
     expect(status).toBe(2);
+  });
+});
+
+// A checker that never silently skips what it cannot verify must not
+// silently skip an argument it does not understand either: a mistyped flag
+// used to be dropped, and the run exited 0 having checked something other
+// than what was asked for.
+describe("argument handling is fail-closed", () => {
+  it("rejects an unknown flag instead of ignoring it", () => {
+    const { status, stderr } = run(["check", "--jsonn"]);
+    expect(status).toBe(2);
+    expect(stderr).toContain("Unknown option");
+  });
+
+  it("rejects a flag whose value is missing", () => {
+    const { status, stderr } = run(["check", "--repo"]);
+    expect(status).toBe(2);
+    expect(stderr).toContain("requires a value");
+  });
+
+  it("rejects a flag whose value was swallowed by the next flag", () => {
+    const { status } = run(["check", "--file", "--json"]);
+    expect(status).toBe(2);
+  });
+
+  it("prints the package version for --version", () => {
+    const { stdout, status } = run(["--version"]);
+    expect(status).toBe(0);
+    expect(stdout.trim()).toMatch(/^\d+\.\d+\.\d+/);
+  });
+});
+
+describe("source pointers", () => {
+  it("warns about a drifted citation without failing the run", () => {
+    const { stdout, status } = run(["check", "--repo", DRIFTED_SOURCE_REPO]);
+    expect(status).toBe(0);
+    expect(stdout).toContain("source pointer(s) may have drifted");
+  });
+
+  it("fails the run under --strict-sources", () => {
+    const { status } = run(["check", "--repo", DRIFTED_SOURCE_REPO, "--strict-sources"]);
+    expect(status).toBe(1);
+  });
+
+  it("reports the warnings in --json output", () => {
+    const { stdout } = run(["check", "--repo", DRIFTED_SOURCE_REPO, "--json"]);
+    expect(JSON.parse(stdout).sourceWarnings).toHaveLength(1);
+  });
+
+  it("says nothing about sources when every citation is accurate", () => {
+    const { stdout } = run(["check", "--repo", SAMPLE_REPO]);
+    expect(stdout).not.toContain("source pointer");
   });
 });

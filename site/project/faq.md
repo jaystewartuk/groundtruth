@@ -1,5 +1,5 @@
 ---
-description: "Short answers on LLM extraction, network access, unverifiable claims, re-exported symbols, npm packaging, and API stability."
+description: "Short answers on LLM extraction, network access, unverifiable claims, re-exported symbols, stale source pointers, npm packaging, and API stability."
 ---
 
 # FAQ
@@ -39,11 +39,21 @@ declarations, not an AST parse, and reports `failing` (not a false
 [Assertion kinds](/reference/assertion-kinds#symbol-at-path) and
 [ADR-0003](/architecture/decisions#adr-0003-regex-based-symbol-matching-for-mvp).
 
-### Can I check something that isn't one of the six kinds?
+### Can I check something that isn't one of the seven kinds?
 
 Not without writing a checker for it — see
 [Development → Adding an assertion kind](/project/development#adding-an-assertion-kind).
 There's no plugin system; every kind lives in `src/assertions/`.
+
+### What if my `source` line numbers go stale?
+
+`groundtruth check` tells you, and says where the sentence moved to. A
+citation is a claim about the repo like any other — insert a paragraph
+into `CLAUDE.md` and every line number below it shifts while the
+assertions keep passing against the wrong sentence. It is reported as a
+warning rather than a failure, because a stale citation is a bug in your
+assertions file, not drift in the repo it describes; `--strict-sources`
+makes it fail. See [CLI reference → Source pointers](/reference/cli#source-pointers).
 
 ### Is groundtruth on npm?
 

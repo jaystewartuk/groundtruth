@@ -14,11 +14,6 @@ document links to what it depends on and what depends on it — follow links
 rather than searching, and prefer the shortest doc that answers your
 question over the biggest one.
 
-If you're listening rather than reading (e.g. via Speechify), use
-[`docs-listen/`](../docs-listen/) instead — a rewritten, narrated parallel
-edition of the documents that most benefit from it. It is not a copy; read
-`docs-listen/README.md` for how the two trees relate.
-
 ## Folder taxonomy
 
 | Folder | Purpose | Status |

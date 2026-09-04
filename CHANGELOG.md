@@ -41,8 +41,8 @@ carry a breaking change, and the CLI's programmatic exports
   `0.2.0` after the 0.2.1 release. CI now checks `package.json`,
   `action.yml`, and `README.md` agree on the version.
 - The assertion-kind count read "6" in the README, the shipped example file,
-  the FAQ, the glossary, and the listening edition; there have been seven
-  kinds since `text_matches_across` landed.
+  the FAQ, and the glossary; there have been seven kinds since
+  `text_matches_across` landed.
 
 ## [0.2.1] — 2026-08-05
 

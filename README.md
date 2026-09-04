@@ -242,9 +242,8 @@ diagrams, FAQ, and troubleshooting — see the
 via [`.github/workflows/deploy-site.yml`](.github/workflows/deploy-site.yml)).
 
 The underlying repo-internal docs the site is built from — system
-architecture, ADRs explaining specific tradeoffs, and a narrated listening
-edition for Speechify — live in [`docs/`](docs/README.md) and
-[`docs-listen/`](docs-listen/README.md).
+architecture and ADRs explaining specific tradeoffs — live in
+[`docs/`](docs/README.md).
 
 ## Development
 

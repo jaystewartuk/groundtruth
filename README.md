@@ -21,7 +21,7 @@ executable assertions and checks them against your working tree — a compiler
 and CI gate for the rules you've written down for your agent to follow.
 
 This project exists because an audit of a real production repo
-([SpiralClass](https://spiralclass.com)) found four live
+([SpiralClass](https://github.com/jaystewartuk/spiralclass)) found four live
 instances of exactly this: stale `SUPABASE_*`/`VERCEL_*` env vars still
 declared in build tooling months after both were decommissioned, a leftover
 MCP server config for a torn-down database, and a memory file directly

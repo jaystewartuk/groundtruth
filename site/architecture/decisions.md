@@ -1,5 +1,5 @@
 ---
-description: "Summaries of every architecture decision record — why assertions are hand-authored, why unverifiable never fails a build, and why the Action wraps the published CLI."
+description: "Summaries of every architecture decision record — why assertions are hand-authored, why unverifiable never fails a build, why the Action wraps the published CLI, and why citations are checked too."
 ---
 
 # Architecture decisions
@@ -137,3 +137,44 @@ also sensitive to file renames, which is intended — the assertion *is* the
 list of surfaces.
 
 [Full ADR →](https://github.com/jaystewartuk/groundtruth/blob/main/docs/adr/0006-verbatim-agreement-before-relational-matching.md)
+
+## ADR-0007: Citations are checked, fuzzily, and reported as warnings {#adr-0007-citations-are-checked-as-warnings-with-fuzzy-matching}
+
+**Status:** Accepted
+
+Every assertion carries a `source` — `"CLAUDE.md#L42"` — and the report's
+central promise is that a failure traces back to the sentence that made the
+claim. The Action leans on it harder still, anchoring an inline annotation
+to that exact line. But the pointer is itself a claim about the repo, and it
+decays more quietly than any other: insert a paragraph, every line number
+below it shifts, and every assertion keeps passing while citing the wrong
+sentence. Nothing notices, because the checkers read the repo, not the
+citation.
+
+When this check was first run against groundtruth's own repository, **9 of
+its 15 citations had drifted** and the Action had been annotating the wrong
+lines of `CLAUDE.md` for months. That settled whether it was worth building.
+
+Matching is by word overlap rather than exact quotation. A `claim` is
+hand-copied and routinely elided or re-punctuated relative to the prose it
+quotes — `"pnpm build — tsc -> dist/"` cites a line reading
+`pnpm build      # tsc -> dist/` — so an exact comparison would have fired
+on more correct citations than drifted ones, and a check that cries wolf
+gets switched off. Word overlap answers the question worth asking: is the
+cited span even about this claim? When it isn't, the file is rescanned and
+the claim's current location is reported, so the fix is mechanical.
+
+A mismatch is a warning, not a failure. A stale citation is a bug in your
+assertions file, not drift in the repo it describes, and failing builds over
+it would turn a patch release into red CI for every existing user — which
+teaches people to pin an old version. `--strict-sources` opts into failing;
+this repository runs that way, because editing its `CLAUDE.md` shifts the
+very line numbers its own assertions cite.
+
+**The costs, stated plainly:** fuzzy matching cannot be precise about what
+it accepts — a citation off by a line, or pointing at a neighbouring
+sentence, usually passes. The 60% threshold is tuned against this repo's own
+assertions, not derived. A very short claim is scored on little evidence.
+And a warning that defaults to non-fatal protects nobody who never reads it.
+
+[Full ADR →](https://github.com/jaystewartuk/groundtruth/blob/main/docs/adr/0007-citations-are-checked-as-warnings-with-fuzzy-matching.md)

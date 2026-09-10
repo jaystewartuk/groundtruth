@@ -18,8 +18,8 @@ hero:
 
 features:
   - icon: 🔍
-    title: Traceable, not vibes-based
-    details: Every assertion carries a source — "<file>#L<line>" — so a failure traces straight back to the exact sentence that made the claim.
+    title: Traceable, and the trace is checked too
+    details: Every assertion carries a source — "<file>#L<line>" — so a failure traces back to the exact sentence that made the claim. That pointer is a claim as well, so groundtruth verifies it, and tells you where the sentence moved to when it goes stale.
   - icon: 🚫
     title: Fail-closed on the unknown
     details: A claim groundtruth can't mechanically check is reported as unverifiable, never silently dropped and never counted as passing.

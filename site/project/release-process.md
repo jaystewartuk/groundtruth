@@ -39,11 +39,16 @@ The order matters. npm is published **before** the tag exists, because the
 tag is what consumers point the Action at, and the Action resolves its CLI
 from npm on its very first run.
 
-1. Bump `version` in `package.json` (semver), **and the `version` input's
-   default in `action.yml` to match**. They are two halves of one number;
-   the [self-check](/guide/github-action#how-it-works) can't catch this one
-   for you, because it runs the local build rather than the published
-   package.
+1. Bump `version` in `package.json` (semver), **the `version` input's
+   default in `action.yml`, and the pinned `@vX.Y.Z` refs plus the `version`
+   row in `README.md`** — three halves of one number. The
+   [self-check](/guide/github-action#how-it-works) does catch a disagreement
+   between those three files, via a `text_matches_across` assertion in
+   [`.groundtruth.jsonc`](https://github.com/jaystewartuk/groundtruth/blob/main/.groundtruth.jsonc);
+   the README was added to it after drifting to `0.2.0` and staying there
+   through a release. What no check can catch is whether that version was
+   actually published to npm, because CI runs the local build rather than
+   the published package — hence the publish-before-tag order below.
 2. `pnpm test` and `pnpm typecheck` green; `npm pack --dry-run` to eyeball
    exactly what ships — the `files` field restricts the tarball to `dist/`
    (compiled CLI + library) and `.groundtruth.jsonc.example`. The Action's
@@ -96,5 +101,8 @@ the docs pin a released ref — the `jaystewartuk/groundtruth@vX.Y.Z` lines
 in Action examples — the number is substituted at build time from the root
 `package.json`'s `version` field (the mechanism lives in
 [`site/.vitepress/config.ts`](https://github.com/jaystewartuk/groundtruth/blob/main/site/.vitepress/config.ts)).
-A release commit that bumps `package.json` and `action.yml` therefore
-updates every example on the next deploy, with no site edit to forget.
+A release commit that bumps `package.json`, `action.yml` and `README.md`
+therefore updates every site example on the next deploy, with no site edit
+to forget. The README is the one hand-maintained copy — GitHub renders it
+statically, with no build step to substitute into — which is exactly why it
+is covered by an assertion instead of by a convention.

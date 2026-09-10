@@ -17,6 +17,7 @@ instead). Use [`template.md`](template.md) for new ones.
 | [0004](0004-three-layer-roadmap.md) | Three-layer product design: verify, contradict, instrument | Proposed |
 | [0005](0005-composite-action-wrapping-the-published-cli.md) | The GitHub Action is a composite wrapper around the published CLI | Accepted |
 | [0006](0006-verbatim-agreement-before-relational-matching.md) | `text_matches_across` checks verbatim agreement, and a missing file fails | Accepted |
+| [0007](0007-citations-are-checked-as-warnings-with-fuzzy-matching.md) | Citations are checked, fuzzily, and reported as warnings | Accepted |
 
 ## When to write one
 

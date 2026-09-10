@@ -24,6 +24,12 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
 
+      # Consumers get source-pointer drift as a warning; this repo takes it as
+      # a failure. Editing CLAUDE.md shifts the line numbers its own assertions
+      # cite, and the first time anything checked, 9 of 15 were already wrong.
+      - name: Assertion citations still point at their claims
+        run: node dist/cli.js check --strict-sources
+
   # groundtruth checking groundtruth. Runs the Action from this checkout —
   # not a published ref — against the CLI just built from this branch, so a
   # pull request that breaks either the Action or this repo's own CLAUDE.md

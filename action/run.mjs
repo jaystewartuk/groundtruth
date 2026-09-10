@@ -125,6 +125,29 @@ export function summaryMarkdown(summary, contextFiles, { file = ".groundtruth.js
     );
   }
 
+  // A drifted citation is a bug in the assertions file, not in the repo it
+  // describes, so it is reported apart from the results and never affects the
+  // job's outcome — the counts above stay a statement about the repo alone.
+  const warnings = summary.sourceWarnings ?? [];
+  if (warnings.length > 0) {
+    lines.push(
+      `### ${warnings.length} source pointer(s) may have drifted`,
+      "",
+      "| Cited | Claim | What is wrong |",
+      "|---|---|---|",
+      ...warnings.map(
+        (w) =>
+          `| \`${cell(w.source)}\` | ${cell(w.claim)} | ${cell(w.reason)}${
+            w.suggestion ? ` — now reads at \`${cell(w.suggestion)}\`` : ""
+          } |`,
+      ),
+      "",
+      "> The citation no longer points at the sentence that makes the claim. This",
+      "> does not fail the job — it means the report is annotating the wrong line.",
+      "",
+    );
+  }
+
   return lines.join("\n");
 }
 
@@ -147,6 +170,19 @@ export function renderConsole(summary, contextFiles) {
     for (const r of (summary.results ?? []).filter((x) => x.status === status)) {
       lines.push(`${MARK[status]} ${r.assertion?.source}  ${JSON.stringify(r.assertion?.claim ?? "")}`);
       lines.push(`  ${r.detail ?? ""}`);
+    }
+  }
+  const warnings = summary.sourceWarnings ?? [];
+  if (warnings.length > 0) {
+    lines.push("", `${warnings.length} source pointer(s) may have drifted:`);
+    for (const w of warnings) {
+      lines.push(`! ${w.source}  ${JSON.stringify(w.claim ?? "")}`);
+      const extra = w.alsoAffects
+        ? ` (and ${w.alsoAffects} other assertion(s) citing it)`
+        : w.suggestion
+          ? ` — the claim now reads at ${w.suggestion}`
+          : "";
+      lines.push(`  ${w.reason ?? ""}${extra}`);
     }
   }
   return lines.join("\n");

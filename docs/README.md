@@ -14,7 +14,6 @@ document links to what it depends on and what depends on it — follow links
 rather than searching, and prefer the shortest doc that answers your
 question over the biggest one.
 
-
 ## Folder taxonomy
 
 | Folder | Purpose | Status |

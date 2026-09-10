@@ -34,6 +34,10 @@ this page should start linking to real issues instead of restating prose.
 - ✅ A [GitHub Action](/guide/github-action) *(shipped in 0.2.0)* — the same check on
   every pull request, with inline annotations on the exact context-file
   line that made a false claim, a job summary, and step outputs.
+- ✅ [Source-pointer checking](/reference/cli#source-pointers) — an
+  assertion's citation is a claim too, so it is verified, and the report
+  says where the sentence moved to when it goes stale
+  ([ADR-0007](/architecture/decisions#adr-0007-citations-are-checked-as-warnings-with-fuzzy-matching)).
 
 ## Planned — three-layer design
 

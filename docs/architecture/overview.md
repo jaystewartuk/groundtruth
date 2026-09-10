@@ -23,6 +23,7 @@ those folders would document.
 | Entry point | [`src/cli.ts`](../../src/cli.ts) | Arg parsing, orchestration, exit code |
 | Context discovery | [`src/discover.ts`](../../src/discover.ts) | Finds which agent-context file(s) exist (informational only — see [ADR-0001](../adr/0001-hand-authored-assertions-before-llm-extraction.md)) |
 | Assertion loading | [`src/manual/load.ts`](../../src/manual/load.ts), [`src/manual/schema.ts`](../../src/manual/schema.ts) | Parses and validates `.groundtruth.jsonc` |
+| Citation checking | [`src/manual/verify-source.ts`](../../src/manual/verify-source.ts) | Verifies each assertion's `source` still points at the line making its claim |
 | Checker registry | [`src/assertions/index.ts`](../../src/assertions/index.ts) | Dispatches each assertion to its kind-specific checker |
 | Checkers | [`src/assertions/*.ts`](../../src/assertions/) | One file per assertion kind (see [`features/check-command.md`](../features/check-command.md) for the list) |
 | Reporting | [`src/report.ts`](../../src/report.ts) | Aggregates results, formats table/JSON output |
@@ -37,6 +38,7 @@ sequenceDiagram
     participant discover.ts
     participant manual/load.ts
     participant assertions/index.ts
+    participant manual/verify-source.ts
     participant report.ts
 
     User->>cli.ts: groundtruth check [--repo] [--file] [--json]
@@ -50,6 +52,8 @@ sequenceDiagram
         assertions/index.ts->>assertions/index.ts: REGISTRY[kind](repoRoot, args)
     end
     assertions/index.ts-->>cli.ts: CheckResult[]
+    cli.ts->>manual/verify-source.ts: verifyAssertionSources(repoRoot, assertions)
+    manual/verify-source.ts-->>cli.ts: SourceWarning[]
     cli.ts->>report.ts: summarize + formatTable/formatJson
     report.ts-->>cli.ts: formatted string
     cli.ts->>User: stdout + exit(failing > 0 ? 1 : 0)

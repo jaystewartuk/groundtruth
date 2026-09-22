@@ -1,0 +1,12 @@
+name: checks
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok

@@ -1,0 +1,65 @@
+name: deploy-site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - ".github/workflows/deploy-site.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Full history, not a shallow clone: VitePress derives each page's
+      # "Last updated" timestamp from git log, and a depth-1 checkout would
+      # stamp every page with the date of whatever commit triggered the
+      # deploy.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: site/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+        working-directory: site
+
+      # POSTHOG_KEY is a repository *variable*, not a secret: PostHog project
+      # keys are public by design and ship in the client bundle. Leaving it
+      # unset is a supported state — the site just builds without analytics.
+      - run: pnpm run build
+        working-directory: site
+        env:
+          POSTHOG_KEY: ${{ vars.POSTHOG_KEY }}
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/.vitepress/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,58 @@
+{
+  "assertions": [
+    {
+      "claim": "Do NOT reintroduce a Supabase/Vercel code path or env var.",
+      "kind": "env_var_absent",
+      "args": { "name": "VERCEL_ENV" },
+      "source": "CLAUDE.md#L7"
+    },
+    {
+      "claim": "Do NOT reintroduce a Supabase/Vercel code path or env var.",
+      "kind": "env_var_absent",
+      "args": { "name": "VERCEL_GIT_COMMIT_REF" },
+      "source": "CLAUDE.md#L7"
+    },
+    {
+      "claim": "Do NOT reintroduce a Supabase/Vercel code path or env var.",
+      "kind": "env_var_absent",
+      "args": { "name": "SUPABASE_URL" },
+      "source": "CLAUDE.md#L7"
+    },
+    {
+      "claim": "Do NOT reintroduce a Supabase/Vercel code path or env var.",
+      "kind": "env_var_absent",
+      "args": { "name": "SUPABASE_ANON_KEY" },
+      "source": "CLAUDE.md#L7"
+    },
+    {
+      "claim": "Do NOT reintroduce a Supabase/Vercel code path or env var.",
+      "kind": "env_var_absent",
+      "args": { "name": "SUPABASE_SERVICE_ROLE_KEY" },
+      "source": "CLAUDE.md#L7"
+    },
+    {
+      "claim": "The Supabase project is torn down; do not add an MCP server for it.",
+      "kind": "path_absent",
+      "args": { "path": ".mcp.json" },
+      "source": "CLAUDE.md#L8"
+    },
+    {
+      "claim": "`pnpm verify:push` runs typecheck + unit.",
+      "kind": "script_exists",
+      "args": { "name": "verify:push" },
+      "source": "CLAUDE.md#L9"
+    },
+    {
+      "claim": "`entitlementsFor()` in `src/lib/subscriptions/entitlements.ts` is the single place tier logic is decided.",
+      "kind": "symbol_at_path",
+      "args": { "symbol": "entitlementsFor", "path": "apps/web/src/lib/subscriptions/entitlements.ts" },
+      "source": "CLAUDE.md#L10-11"
+    },
+    {
+      "claim": "`checks.yml` runs on every pull request into `main`.",
+      "kind": "workflow_trigger",
+      "args": { "workflow": "checks.yml", "trigger": "pull_request", "target": "main" },
+      "source": "CLAUDE.md#L12"
+    }
+  ]
+}

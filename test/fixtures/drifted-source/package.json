@@ -1,0 +1,7 @@
+{
+  "name": "drifted-source-fixture",
+  "private": true,
+  "scripts": {
+    "verify:push": "pnpm typecheck && pnpm test"
+  }
+}

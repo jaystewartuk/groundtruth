@@ -1,0 +1,20 @@
+// Both assertions pass — the repo genuinely matches what the context file
+// says. Only the *citation* on the first one has gone stale, which is the
+// whole point of this fixture: a run that is green in every way the checker
+// can see, while still pointing a reader at the wrong sentence.
+{
+  "assertions": [
+    {
+      "claim": "`pnpm verify:push` runs typecheck + unit.",
+      "kind": "script_exists",
+      "args": { "name": "verify:push" },
+      "source": "CLAUDE.md#L7"
+    },
+    {
+      "claim": "`checks.yml` runs on every pull request into `main`.",
+      "kind": "path_exists",
+      "args": { "path": "CLAUDE.md" },
+      "source": "CLAUDE.md#L9"
+    }
+  ]
+}

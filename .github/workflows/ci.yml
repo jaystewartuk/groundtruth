@@ -1,0 +1,77 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test
+
+      # Consumers get source-pointer drift as a warning; this repo takes it as
+      # a failure. Editing CLAUDE.md shifts the line numbers its own assertions
+      # cite, and the first time anything checked, 9 of 15 were already wrong.
+      - name: Assertion citations still point at their claims
+        run: node dist/cli.js check --strict-sources
+
+  # groundtruth checking groundtruth. Runs the Action from this checkout —
+  # not a published ref — against the CLI just built from this branch, so a
+  # pull request that breaks either the Action or this repo's own CLAUDE.md
+  # says so here, in the diff, before it ships. `cli-path` is the escape
+  # hatch that makes testing an unreleased build possible; consumers leave it
+  # unset and get the published package.
+  self-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      - uses: ./
+        with:
+          cli-path: dist/cli.js
+
+      # The other half: the path every consumer actually takes, where the CLI
+      # comes from the registry instead of the working tree. Nothing local can
+      # exercise it, and it broke once already — npx's bin resolution differs
+      # across npm majors, so v0.2.0 failed on a default runner while passing
+      # everywhere it was tested (ADR-0005). This runs against the drift
+      # fixture, which fails by design, so the assertion is only that the
+      # published CLI installed and produced a report at all.
+      - uses: ./
+        id: published
+        continue-on-error: true
+        with:
+          version: latest
+          working-directory: test/fixtures/sample-repo
+
+      - name: The published CLI installed and reported
+        run: |
+          test "${{ steps.published.outputs.total }}" -gt 0 \
+            || { echo "::error::the published CLI produced no report"; exit 1; }

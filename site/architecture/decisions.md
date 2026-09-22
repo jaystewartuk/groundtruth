@@ -1,0 +1,180 @@
+---
+description: "Summaries of every architecture decision record — why assertions are hand-authored, why unverifiable never fails a build, why the Action wraps the published CLI, and why citations are checked too."
+---
+
+# Architecture decisions
+
+The full Architecture Decision Records live in
+[`docs/adr/`](https://github.com/jaystewartuk/groundtruth/tree/main/docs/adr)
+in the repository — this page is a summary for site readers, with a
+permalink per decision for cross-linking from the rest of the docs. Read
+the linked ADR for the complete context, consequences, and alternatives
+considered.
+
+## ADR-0001: Hand-authored assertions before LLM extraction {#adr-0001-hand-authored-assertions-before-llm-extraction}
+
+**Decision:** Ship the assertion format and checker first, with
+assertions hand-authored in `.groundtruth.jsonc`, and defer LLM-based
+extraction from `CLAUDE.md`/`AGENTS.md` to a later milestone.
+`src/discover.ts` already locates candidate context files, but only for
+display — it doesn't drive what gets checked yet.
+
+**Why:** Building extraction first would have coupled the very first
+release to LLM API access and prompt-engineering risk, before the
+checker/report core — which needs neither — was proven out. The
+hand-authored schema was deliberately designed to be the exact shape
+extraction will need to produce, so today's work isn't throwaway.
+
+[Full ADR →](https://github.com/jaystewartuk/groundtruth/blob/main/docs/adr/0001-hand-authored-assertions-before-llm-extraction.md)
+
+## ADR-0002: Unverifiable assertions never fail, but are always reported {#adr-0002-unverifiable-assertions-never-fail-but-always-report}
+
+**Decision:** A `check` run never exits non-zero because of an
+`unverifiable` result, but every `unverifiable` result is always printed
+— it can never be silently dropped or counted as passing.
+
+**Why:** The two alternatives were both worse. Treating unverifiable as
+failing would break every CI pipeline the moment a claim needs a check
+kind that doesn't exist yet. Treating it as passing — silently — is
+exactly the "context that lies gets executed" failure mode groundtruth
+exists to catch, just moved up one layer.
+
+[Full ADR →](https://github.com/jaystewartuk/groundtruth/blob/main/docs/adr/0002-unverifiable-assertions-never-fail-but-always-report.md)
+
+## ADR-0003: Regex-based symbol matching for `symbol_at_path` {#adr-0003-regex-based-symbol-matching-for-mvp}
+
+**Decision:** `symbol_at_path` matches exports with a regular expression,
+not a full TypeScript/JS AST parse. It correctly reports `failing` (not a
+false `passing`) for a symbol only reachable via re-export.
+
+**Why:** Avoids a parser dependency before the core check/report loop was
+proven out. Because every kind's checker sits behind the same swappable
+`Checker` type, replacing the regex with a real parser later is a
+contained, single-file change — not a rewrite.
+
+[Full ADR →](https://github.com/jaystewartuk/groundtruth/blob/main/docs/adr/0003-regex-based-symbol-matching-for-mvp.md)
+
+## ADR-0004: Three-layer product design {#adr-0004-three-layer-roadmap}
+
+**Status:** Proposed — layer 1 partially built, layers 2 and 3 not
+started. Treat this as documented intent, not a shipped design.
+
+**Decision:** Structure the product as three layers: (1) extract claims
+and verify them mechanically — the only layer with any code today; (2)
+detect direct contradictions between context files, which needs LLM
+judgment rather than a mechanical checker; (3) instrument real agent
+sessions to see which rules actually get cited, so a context file can be
+pruned with evidence instead of a guess.
+
+**Why:** Layer 1 needed no LLM at all and is independently useful today
+— bundling all three into one release would have blocked shipping
+anything on the hardest, most judgment-dependent layer.
+
+[Full ADR →](https://github.com/jaystewartuk/groundtruth/blob/main/docs/adr/0004-three-layer-roadmap.md) ·
+[Roadmap](/project/roadmap)
+
+## ADR-0005: The GitHub Action is a composite wrapper around the published CLI {#adr-0005-the-github-action-is-a-composite-wrapper-around-the-published-cli}
+
+**Decision:** Ship the [GitHub Action](/guide/github-action) as a
+*composite* action — `action.yml` at the repo root plus a
+dependency-free Node runner — that installs the published
+`@groundtruth-sh/cli` to a temp prefix and shells out to it. Not a bundled
+JavaScript action, not a Docker action, and not a second implementation of
+the checks. The runner deliberately avoids `@actions/core` too: with no
+bundling step, that dependency would have to be vendored into the repo.
+
+**Why:** The repo already publishes the thing the Action needs to run, and
+every GitHub-hosted runner already has Node and npm — so there is nothing
+to bundle that isn't already distributed. A bundled action would buy a few
+seconds of cold start in exchange for a committed build artifact that can
+silently drift from its own source, which is a strange bargain for a tool
+whose whole subject is drift.
+
+**The cost, stated plainly:** the Action's default `version` input names a
+CLI version that must already exist on npm when the ref is tagged, so
+releases must publish to npm *before* tagging. There is also a network
+dependency at run time — if npm is unreachable, the check fails to run
+rather than reporting drift.
+
+[Full ADR →](https://github.com/jaystewartuk/groundtruth/blob/main/docs/adr/0005-composite-action-wrapping-the-published-cli.md) ·
+[Release process](/project/release-process)
+
+## ADR-0006: `text_matches_across` checks verbatim agreement, and a missing file fails {#adr-0006-verbatim-agreement-before-relational-matching}
+
+**Decision:** `text_matches_across` takes a **literal** string and a list of
+files, and passes only when every file contains it after normalization. The
+literal lives in the assertion, which makes `.groundtruth.jsonc` the single
+home for a sentence that has to appear in several places. A **missing file
+fails** rather than reporting `unverifiable`.
+
+**Why:** The motivating case was a sentence duplicated across a CV, a
+LinkedIn draft, a booking message, a website page and a profile README. Two
+separate corrections each reached four of the six copies — neither was a bad
+edit, both were correct edits that failed to enumerate their surfaces. Both
+times a substring search reported the stragglers as clean, because every
+drifted variant still contained the phrase being searched for. A literal
+comparison over normalized text is the smallest thing that cannot make that
+mistake, and it needs none of the LLM judgment that
+[ADR-0004](#adr-0004-three-layer-roadmap) reserves for semantic
+contradiction.
+
+Whitespace normalization is on by default because hard-wrapped prose is the
+most common way a sentence hides from a line-oriented search; re-wrapping a
+paragraph changes none of its meaning and all of its line breaks.
+
+The missing-file rule is the opposite of `env_var_absent`'s, and the
+asymmetry is the point: there, a file that does not exist cannot contain the
+variable, so absence tells you nothing. Here, a surface that no longer exists
+is not an unknown — it has stopped stating the sentence. Reporting
+`unverifiable` would make deleting a file the cheapest way to go green.
+
+**The cost, stated plainly:** it cannot express a relational claim — "the
+version in `action.yml` equals the version in `package.json`" needs a pattern
+with a capture group, not a literal. This repo has exactly that claim in its
+own `CLAUDE.md`, so the gap is felt rather than theoretical; the literal
+workaround is used, at the price of a third edit at release time. The kind is
+also sensitive to file renames, which is intended — the assertion *is* the
+list of surfaces.
+
+[Full ADR →](https://github.com/jaystewartuk/groundtruth/blob/main/docs/adr/0006-verbatim-agreement-before-relational-matching.md)
+
+## ADR-0007: Citations are checked, fuzzily, and reported as warnings {#adr-0007-citations-are-checked-as-warnings-with-fuzzy-matching}
+
+**Status:** Accepted
+
+Every assertion carries a `source` — `"CLAUDE.md#L42"` — and the report's
+central promise is that a failure traces back to the sentence that made the
+claim. The Action leans on it harder still, anchoring an inline annotation
+to that exact line. But the pointer is itself a claim about the repo, and it
+decays more quietly than any other: insert a paragraph, every line number
+below it shifts, and every assertion keeps passing while citing the wrong
+sentence. Nothing notices, because the checkers read the repo, not the
+citation.
+
+When this check was first run against groundtruth's own repository, **9 of
+its 15 citations had drifted** and the Action had been annotating the wrong
+lines of `CLAUDE.md` for months. That settled whether it was worth building.
+
+Matching is by word overlap rather than exact quotation. A `claim` is
+hand-copied and routinely elided or re-punctuated relative to the prose it
+quotes — `"pnpm build — tsc -> dist/"` cites a line reading
+`pnpm build      # tsc -> dist/` — so an exact comparison would have fired
+on more correct citations than drifted ones, and a check that cries wolf
+gets switched off. Word overlap answers the question worth asking: is the
+cited span even about this claim? When it isn't, the file is rescanned and
+the claim's current location is reported, so the fix is mechanical.
+
+A mismatch is a warning, not a failure. A stale citation is a bug in your
+assertions file, not drift in the repo it describes, and failing builds over
+it would turn a patch release into red CI for every existing user — which
+teaches people to pin an old version. `--strict-sources` opts into failing;
+this repository runs that way, because editing its `CLAUDE.md` shifts the
+very line numbers its own assertions cite.
+
+**The costs, stated plainly:** fuzzy matching cannot be precise about what
+it accepts — a citation off by a line, or pointing at a neighbouring
+sentence, usually passes. The 60% threshold is tuned against this repo's own
+assertions, not derived. A very short claim is scored on little evidence.
+And a warning that defaults to non-fatal protects nobody who never reads it.
+
+[Full ADR →](https://github.com/jaystewartuk/groundtruth/blob/main/docs/adr/0007-citations-are-checked-as-warnings-with-fuzzy-matching.md)

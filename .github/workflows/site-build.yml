@@ -1,0 +1,40 @@
+name: site-build
+
+# The deploy workflow only runs after a merge to main, which means a broken
+# site build used to be discovered when the deploy failed — after the pull
+# request that broke it had already landed. This runs the exact same build on
+# the pull request instead. Paths mirror deploy-site.yml's, plus the root
+# package.json: the site build reads the released version from it.
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "package.json"
+      - ".github/workflows/site-build.yml"
+      - ".github/workflows/deploy-site.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: site/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+        working-directory: site
+
+      # Deliberately no POSTHOG_KEY here: pull-request builds are the
+      # untracked path, and building without the key is a supported state
+      # that this check should keep exercising.
+      - run: pnpm run build
+        working-directory: site

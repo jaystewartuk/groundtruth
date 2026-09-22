@@ -1,0 +1,13 @@
+# Marks this directory as its own pnpm workspace root, the same way the
+# parent repo's own pnpm-workspace.yaml does — otherwise `pnpm install`
+# here walks up past ../pnpm-workspace.yaml and conflates this site's deps
+# with groundtruth's own package.json.
+
+allowBuilds:
+  # posthog-js pulls in core-js, whose install script only prints a funding
+  # banner. Nothing here needs it to run.
+  core-js: false
+  esbuild: true
+
+onlyBuiltDependencies:
+  - esbuild

@@ -1,4 +1,4 @@
-name: "groundtruth — agent-context check"
+name: "groundtruth — agent context drift check"
 description: "Verify CLAUDE.md / AGENTS.md claims against the actual repo, and fail the build when your agent context has drifted."
 author: "Jay Stewart"
 

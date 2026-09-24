@@ -123,7 +123,7 @@
       "claim": "`action.yml`'s `version` input ... must be bumped to match `package.json` in the same release commit. The `README.md` Action snippets pin the same version.",
       "kind": "text_matches_across",
       "args": {
-        "text": "0.2.1",
+        "text": "0.3.0",
         "files": ["package.json", "action.yml", "README.md"]
       },
       "source": "CLAUDE.md#L56-58"

@@ -148,7 +148,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: jaystewartuk/groundtruth@v0.2.1
+      - uses: jaystewartuk/groundtruth@v0.3.0
 ```
 
 That's the whole setup — no `setup-node` step, no install step. All inputs are
@@ -156,7 +156,7 @@ optional:
 
 | input | default | meaning |
 |---|---|---|
-| `version` | `0.2.1` | Which published CLI version to run. `latest` tracks the registry |
+| `version` | `0.3.0` | Which published CLI version to run. `latest` tracks the registry |
 | `file` | `.groundtruth.jsonc` | Assertions file, relative to `working-directory` |
 | `working-directory` | `.` | Repo root to check against — point it at a package in a monorepo |
 | `fail-on-unverifiable` | `false` | Also fail the job when an assertion can't be mechanically checked |
@@ -168,7 +168,7 @@ Outputs — `total`, `passing`, `failing`, `unverifiable`, and `report-path`
 (the full JSON report on disk) — let a later step act on the result:
 
 ```yaml
-      - uses: jaystewartuk/groundtruth@v0.2.1
+      - uses: jaystewartuk/groundtruth@v0.3.0
         id: check
         continue-on-error: true
       - run: echo "${{ steps.check.outputs.failing }} claims have gone stale"

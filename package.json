@@ -1,6 +1,6 @@
 {
   "name": "@groundtruth-sh/cli",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Verify CLAUDE.md / AGENTS.md against the actual repo — a compiler and CI gate for agent-context assertions.",
   "type": "module",
   "license": "MIT",

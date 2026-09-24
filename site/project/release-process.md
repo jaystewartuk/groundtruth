@@ -41,7 +41,8 @@ from npm on its very first run.
 
 1. Bump `version` in `package.json` (semver), **the `version` input's
    default in `action.yml`, and the pinned `@vX.Y.Z` refs plus the `version`
-   row in `README.md`** — three halves of one number. The
+   row in `README.md`**, plus the `text` literal in the version assertion
+   in `.groundtruth.jsonc` — four copies of one number. The
    [self-check](/guide/github-action#how-it-works) does catch a disagreement
    between those three files, via a `text_matches_across` assertion in
    [`.groundtruth.jsonc`](https://github.com/jaystewartuk/groundtruth/blob/main/.groundtruth.jsonc);

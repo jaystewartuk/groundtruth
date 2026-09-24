@@ -10,6 +10,8 @@ carry a breaking change, and the CLI's programmatic exports
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-09-24
+
 ### Added
 
 - Assertion citations are now checked. Every assertion's `source`
@@ -40,6 +42,9 @@ carry a breaking change, and the CLI's programmatic exports
 - The `version` input and pinned Action refs in `README.md` still said
   `0.2.0` after the 0.2.1 release. CI now checks `package.json`,
   `action.yml`, and `README.md` agree on the version.
+- The npm package page linked to the old `jaystewart-dev/groundtruth`
+  repository, so its README badges all read "repo not found". The package
+  metadata and README now point at `jaystewartuk/groundtruth`.
 - The assertion-kind count read "6" in the README, the shipped example file,
   the FAQ, and the glossary; there have been seven kinds since
   `text_matches_across` landed.
@@ -87,7 +92,8 @@ existing `ground-truth` package. The installed command is plain
   LLM extraction will need to produce later
   ([ADR-0001](docs/adr/0001-hand-authored-assertions-before-llm-extraction.md)).
 
-[Unreleased]: https://github.com/jaystewartuk/groundtruth/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/jaystewartuk/groundtruth/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/jaystewartuk/groundtruth/releases/tag/v0.3.0
 [0.2.1]: https://github.com/jaystewartuk/groundtruth/releases/tag/v0.2.1
 [0.2.0]: https://www.npmjs.com/package/@groundtruth-sh/cli/v/0.2.0
 [0.1.0]: https://www.npmjs.com/package/@groundtruth-sh/cli/v/0.1.0

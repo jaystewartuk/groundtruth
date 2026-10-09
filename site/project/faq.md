@@ -57,14 +57,10 @@ makes it fail. See [CLI reference → Source pointers](/reference/cli#source-poi
 
 ### Is groundtruth on npm?
 
-Yes — as [`@groundtruth-sh/cli`](https://www.npmjs.com/package/@groundtruth-sh/cli),
-published since v0.1.0 (July 2026): `pnpm add -D @groundtruth-sh/cli`. The
-name is scoped because npm's name-similarity rule reserves unscoped
-`groundtruth` against the unrelated existing `ground-truth` package, but the
-command it installs is plain `groundtruth`. Installing straight from git
-(`pnpm add -D github:jaystewartuk/groundtruth`) still works when you want
-to pin an unreleased commit — see
-[Getting started](/guide/getting-started#_1-install) and the
+Not at the moment. `@groundtruth-sh/cli` returns 404 on the npm registry, so
+install from GitHub: `npm install -D github:jaystewartuk/groundtruth` (or run
+`npx github:jaystewartuk/groundtruth check`). The command it installs is plain
+`groundtruth`. See [Getting started](/guide/getting-started#_1-install) and the
 [release process](/project/release-process).
 
 ### Is the programmatic API (`import { ... } from "@groundtruth-sh/cli"`) stable?

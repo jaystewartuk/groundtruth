@@ -178,7 +178,6 @@ export default withMermaid(
 
       socialLinks: [
         { icon: "github", link: "https://github.com/jaystewartuk/groundtruth" },
-        { icon: "npm", link: "https://www.npmjs.com/package/@groundtruth-sh/cli" },
       ],
 
       search: {
@@ -261,7 +260,7 @@ export default withMermaid(
         "",
         `> ${DESCRIPTION}`,
         "",
-        `Current release: v${CLI_VERSION} (npm: @groundtruth-sh/cli · GitHub Action: jaystewartuk/groundtruth@v${CLI_VERSION})`,
+        `Current release: v${CLI_VERSION} (GitHub: @groundtruth-sh/cli · GitHub Action: jaystewartuk/groundtruth@v${CLI_VERSION})`,
         "",
         "## Docs",
         "",

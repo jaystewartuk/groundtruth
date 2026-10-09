@@ -27,6 +27,12 @@ jobs:
       - uses: jaystewartuk/groundtruth@v%%GT_VERSION%%
 ```
 
+::: warning Currently broken: the CLI isn't on npm
+The Action installs the CLI from the npm registry, where `@groundtruth-sh/cli`
+is not published at the moment, so it fails on its install step. Use
+`cli-path` with a local build until the package is published again.
+:::
+
 That is the whole setup. No `setup-node` step and no install step: the Action
 fetches the published CLI itself, and every GitHub-hosted runner already has
 the Node and npm it needs.

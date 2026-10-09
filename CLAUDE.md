@@ -7,10 +7,12 @@ groundtruth to check itself). Full docs: [`docs/README.md`](docs/README.md).
 
 A CLI (`groundtruth check`) that verifies claims in `CLAUDE.md`/`AGENTS.md`
 against the actual repo. One command exists today; nothing is a running
-service. It ships two ways, both from this repo: on npm as
-`@groundtruth-sh/cli` (first published as 0.1.0 on 2026-07-31; the installed
-command is still plain `groundtruth`), and as a GitHub Action defined by
-`action.yml` at the repo root.
+service. It ships two ways, both from this repo: as
+`@groundtruth-sh/cli`, installed from GitHub (the npm registry returns 404 for
+it as of 2026-10-09, though 0.1.0 was published there on 2026-07-31; the
+installed command is plain `groundtruth`), and as a GitHub Action defined by
+`action.yml` at the repo root (its install step fetches from npm, so it fails
+until the package is republished).
 
 ## How changes land
 
@@ -42,9 +44,9 @@ the site's release-process page).
 - `symbol_at_path` is regex-based, not an AST parse — it false-negatives
   on re-exported symbols. Deliberate, see
   [ADR-0003](docs/adr/0003-regex-based-symbol-matching-for-mvp.md).
-- Published to npm as `@groundtruth-sh/cli` since 0.1.0 (2026-07-31); install
-  is `pnpm add -D @groundtruth-sh/cli`; the bin it installs is plain
-  `groundtruth`. Unscoped `groundtruth` is permanently blocked by npm's
+- Not on the npm registry as of 2026-10-09 (published as 0.1.0 on 2026-07-31,
+  now 404); install is `npm install -D github:jaystewartuk/groundtruth`; the
+  bin it installs is plain `groundtruth`. Unscoped `groundtruth` is permanently blocked by npm's
   name-similarity rule (the unrelated `ground-truth` exists). Releases are
   manual — no release automation workflow exists (see the site's
   release-process page).

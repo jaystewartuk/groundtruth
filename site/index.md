@@ -41,7 +41,6 @@ features:
 
 [![GitHub stars](https://img.shields.io/github/stars/jaystewartuk/groundtruth?style=flat-square&color=16a34a)](https://github.com/jaystewartuk/groundtruth/stargazers)
 [![Latest release](https://img.shields.io/github/v/release/jaystewartuk/groundtruth?style=flat-square&color=0ea5e9)](https://github.com/jaystewartuk/groundtruth/releases)
-[![npm](https://img.shields.io/npm/v/@groundtruth-sh/cli?style=flat-square&color=cb3837)](https://www.npmjs.com/package/@groundtruth-sh/cli)
 [![CI](https://img.shields.io/github/actions/workflow/status/jaystewartuk/groundtruth/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/jaystewartuk/groundtruth/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/github/license/jaystewartuk/groundtruth?style=flat-square&color=64748b)](https://github.com/jaystewartuk/groundtruth/blob/main/LICENSE)
 
@@ -127,10 +126,18 @@ flowchart LR
 One process, one pass over the filesystem, no network calls, no database.
 Full breakdown of every component: [Architecture overview](/architecture/overview).
 
+::: info Status: paused at layer 1
+The CLI works and is maintained, but active development is paused. A survey of
+61 public repos found real stale references in about 8% of them, and
+auto-extracting claims was too imprecise to trust, so I'm not building more
+until someone other than me needs it. See the
+[roadmap](/project/roadmap).
+:::
+
 ## Try it in under five minutes
 
 ```bash
-pnpm add -D @groundtruth-sh/cli
+npm install -D github:jaystewartuk/groundtruth   # not on the npm registry at the moment
 cp node_modules/@groundtruth-sh/cli/.groundtruth.jsonc.example .groundtruth.jsonc
 # edit .groundtruth.jsonc to match claims in your own CLAUDE.md
 groundtruth check

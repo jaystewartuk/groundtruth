@@ -2,7 +2,6 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/jaystewartuk/groundtruth?style=flat-square&color=16a34a)](https://github.com/jaystewartuk/groundtruth/stargazers)
 [![Latest release](https://img.shields.io/github/v/release/jaystewartuk/groundtruth?style=flat-square&color=0ea5e9)](https://github.com/jaystewartuk/groundtruth/releases)
-[![npm](https://img.shields.io/npm/v/@groundtruth-sh/cli?style=flat-square&color=cb3837)](https://www.npmjs.com/package/@groundtruth-sh/cli)
 [![CI](https://img.shields.io/github/actions/workflow/status/jaystewartuk/groundtruth/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/jaystewartuk/groundtruth/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/github/license/jaystewartuk/groundtruth?style=flat-square&color=64748b)](https://github.com/jaystewartuk/groundtruth/blob/main/LICENSE)
 
@@ -37,26 +36,35 @@ LLM-based extraction straight from `CLAUDE.md`/`AGENTS.md` is not built yet
 produce, so nothing here is throwaway, and `groundtruth check` is fully
 useful today without any API key.
 
-Development is currently **paused at layer 1**. The CLI and the Action are
+Development is currently **paused at layer 1** (a survey of 61 public repos found
+real stale references in about 8% of them, and naive auto-extraction was too
+imprecise to trust, so nothing more gets built until someone other than the
+author needs it). The CLI and the Action are
 maintained — breakage gets fixed and releases stay installable — and the
 roadmap below is direction, not a schedule; later layers get built when a
 real user's need pulls them.
 
 ## Install
 
+> **Not on the npm registry at the moment** — `@groundtruth-sh/cli` returns
+> 404 there, so `npm install @groundtruth-sh/cli` fails. Install from GitHub
+> instead.
+
 ```bash
-pnpm add -D @groundtruth-sh/cli   # or: npm install -D @groundtruth-sh/cli
+npm install -D github:jaystewartuk/groundtruth
 ```
 
 Or run it without adding a dependency:
 
 ```bash
-pnpm dlx @groundtruth-sh/cli check   # or: npx @groundtruth-sh/cli check
+npx github:jaystewartuk/groundtruth check
 ```
 
-The package is scoped because npm's name-similarity rule reserves unscoped
-`groundtruth` against the unrelated existing `ground-truth` package — but
-the command it installs is plain `groundtruth`.
+The package builds itself on install (`prepare` runs `tsc`), so the first
+install takes a few seconds longer than a registry package. Use `npm` or `npx`:
+pnpm 10+ blocks the build script of a git dependency unless you allow it with
+`allowBuilds` in `pnpm-workspace.yaml`. The command it installs is plain
+`groundtruth`.
 
 For fast local iteration while developing groundtruth itself:
 
@@ -150,6 +158,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: jaystewartuk/groundtruth@v0.3.0
 ```
+
+> **Heads up:** the Action installs the CLI from the npm registry, where it is
+> currently not published, so it fails on its install step until the package
+> is published again (or you point `cli-path` at a local build).
 
 That's the whole setup — no `setup-node` step, no install step. All inputs are
 optional:

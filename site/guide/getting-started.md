@@ -9,15 +9,21 @@ check, read the report.
 
 ## 1. Install
 
+::: warning Not on the npm registry at the moment
+`@groundtruth-sh/cli` returns 404 on npm, so `npm install @groundtruth-sh/cli`
+fails. Install from GitHub instead.
+:::
+
 ```bash
-pnpm add -D @groundtruth-sh/cli   # or: npm install -D @groundtruth-sh/cli
+npm install -D github:jaystewartuk/groundtruth
 ```
 
-Or run it without adding a dependency: `pnpm dlx @groundtruth-sh/cli check`
-(`npx @groundtruth-sh/cli check` works too). The published package is
-[`@groundtruth-sh/cli`](https://www.npmjs.com/package/@groundtruth-sh/cli) —
-scoped because npm's name-similarity rule reserves unscoped `groundtruth` —
-but the command it installs is plain `groundtruth`.
+Or run it without adding a dependency: `npx github:jaystewartuk/groundtruth check`.
+
+The package builds itself on install, so the first install takes a few
+seconds longer. Use `npm` or `npx`: pnpm 10+ blocks a git dependency's build
+script unless you allow it with `allowBuilds` in `pnpm-workspace.yaml`. The
+command it installs is plain `groundtruth`.
 
 Iterating on groundtruth itself instead of consuming it? Link your local
 checkout so `groundtruth check` runs your working copy:

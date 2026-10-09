@@ -4,11 +4,12 @@ description: "How a groundtruth release ships: npm publish before the tag, one v
 
 # Release process
 
-::: tip First release cut
-v0.1.0 was published to npm as
-[`@groundtruth-sh/cli`](https://www.npmjs.com/package/@groundtruth-sh/cli) on
-July 31, 2026. The process below is now a description of what actually
-happens, not an intention — it is still manual and single-maintainer.
+::: warning Not currently on npm
+v0.1.0 was published to npm as `@groundtruth-sh/cli` on July 31, 2026, but
+the registry now returns 404 for it, so consumers install from GitHub (see
+below). The Action's install step is affected for the same reason. The process
+below describes how a release is meant to go once the package is published
+again — it is still manual and single-maintainer.
 The name is scoped because npm's name-similarity rule permanently
 reserves unscoped `groundtruth` against the unrelated, long-dormant
 `ground-truth` package, and the bare `groundtruth` org name was already
@@ -25,13 +26,13 @@ every consumer on its first run.
 ## How consumers install
 
 ```bash
-pnpm add -D @groundtruth-sh/cli
+npm install -D github:jaystewartuk/groundtruth
 ```
 
-Standard semver resolution against the npm registry. Installing straight
-from git (`pnpm add -D github:jaystewartuk/groundtruth`) still works
-and pins an exact commit instead of a published version — useful for
-trying an unreleased `main`.
+Installs straight from git and pins an exact commit. Use `npm`: pnpm 10+
+blocks the build script of a git dependency unless you allow it with
+`allowBuilds`. Once the package is published to npm again, `npm install -D
+@groundtruth-sh/cli` is the standard semver install.
 
 ## Cutting a release
 

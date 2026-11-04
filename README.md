@@ -7,8 +7,6 @@
 
 Verify `CLAUDE.md` / `AGENTS.md` against the actual repo.
 
-**[📖 Documentation site →](https://groundtruth.sh/)**
-
 Agent-context files rot the same way any other doc rots — except nothing
 catches it. Code that lies gets caught by a compiler. Agent context that lies
 gets executed: an agent reads "the Supabase project is torn down" as ground
@@ -29,20 +27,13 @@ is modeled on those real findings.
 
 ## Status
 
-**Early MVP.** Assertions are hand-authored in a `.groundtruth.jsonc` file —
-LLM-based extraction straight from `CLAUDE.md`/`AGENTS.md` is not built yet
-(see [Roadmap](#roadmap)). The point of shipping it this way first: the
-`.groundtruth.jsonc` format is exactly the shape extraction will need to
-produce, so nothing here is throwaway, and `groundtruth check` is fully
-useful today without any API key.
+**Archived experiment, no longer maintained.** Surveyed 61 public repos, found
+real stale references in about 8%, and naive auto-extraction was too imprecise
+to trust, so I stopped.
 
-Development is currently **paused at layer 1** (a survey of 61 public repos found
-real stale references in about 8% of them, and naive auto-extraction was too
-imprecise to trust, so nothing more gets built until someone other than the
-author needs it). The CLI and the Action are
-maintained — breakage gets fixed and releases stay installable — and the
-roadmap below is direction, not a schedule; later layers get built when a
-real user's need pulls them.
+What exists is layer 1 of the [roadmap](#roadmap): assertions are hand-authored
+in a `.groundtruth.jsonc` file, and LLM-based extraction was never built. The
+documentation site is offline; its source is in [`site/`](site/).
 
 ## Install
 
@@ -190,7 +181,7 @@ The Action is a composite wrapper around the published CLI, not a
 reimplementation of it — it shells out to exactly what you'd run locally
 ([ADR-0005](docs/adr/0005-composite-action-wrapping-the-published-cli.md)).
 It needs Node and npm on the runner, which every GitHub-hosted runner has.
-Full reference: [groundtruth.sh/guide/github-action](https://groundtruth.sh/guide/github-action).
+Full reference: [`docs/features/github-action.md`](docs/features/github-action.md).
 
 This repo runs the Action on itself: [`.groundtruth.jsonc`](./.groundtruth.jsonc)
 holds assertions taken from its own `CLAUDE.md`, checked on every pull request
@@ -246,16 +237,9 @@ commented example (the SpiralClass findings, encoded as real assertions).
 
 ## Documentation
 
-This README covers install and day-to-day usage. For everything else —
-guided quick start, full CLI/assertion-kind reference, architecture
-diagrams, FAQ, and troubleshooting — see the
-**[documentation site](https://groundtruth.sh/)**
-(source: [`site/`](site/), deploys automatically on every push to `main`
-via [`.github/workflows/deploy-site.yml`](.github/workflows/deploy-site.yml)).
-
-The underlying repo-internal docs the site is built from — system
-architecture and ADRs explaining specific tradeoffs — live in
-[`docs/`](docs/README.md).
+This README covers install and day-to-day usage. The longer guides are the
+source of the old documentation site, in [`site/`](site/). System architecture
+and ADRs explaining specific tradeoffs live in [`docs/`](docs/README.md).
 
 ## Development
 
@@ -276,33 +260,23 @@ job that runs the Action from the checkout against the freshly built CLI. See
 
 ## Roadmap
 
-This MVP is layer 1 of a three-layer design (see the source audit for the
-full reasoning):
+The original three-layer design. Only part of layer 1 was built, and no more
+will be:
 
-1. **Extract & verify** *(this repo, partially)* — turn context-file
-   statements into checkable assertions and verify them. Hand-authored today;
-   LLM-based extraction straight from `CLAUDE.md`/`AGENTS.md` is next.
-2. **Contradiction detection** — cross-check every context file against every
-   other (and against a decision log, if one exists) for direct
+1. **Extract & verify** *(partially built)* — turn context-file statements into
+   checkable assertions and verify them. Hand-authored only; LLM-based
+   extraction was never built.
+2. **Contradiction detection** *(not built)* — cross-check every context file
+   against every other (and against a decision log, if one exists) for direct
    contradictions, not just individually-false claims.
-3. **Context economics** — instrument agent sessions (a Claude Code
-   `SessionStart` hook is the natural delivery mechanism) to report which
-   rules are ever actually cited, so a growing context file can be pruned
+3. **Context economics** *(not built)* — instrument agent sessions to report
+   which rules are ever actually cited, so a growing context file can be pruned
    with evidence instead of guesswork.
-
-The GitHub Action shipped in 0.2.0 (see [In CI](#in-ci-the-github-action)
-above). Sketched, not scheduled: a `--inject`-style mode for a
-session-start hook, so an agent starts every session already told which of
-its own instructions are currently false.
 
 ## Who's behind it
 
-Maintained by [Jay Stewart](https://jaystewart.co.uk). groundtruth came out of
-an audit of a real agent-operated production repo — written up, with counted
-figures, as
-[a public case study](https://jaystewart.co.uk/work/agent-operated-codebase/) —
-and it is the same check the author runs against his own repositories in CI,
-as part of a measured practice of AI-native engineering.
+Built by [Jay Stewart](https://jaystewart.co.uk). groundtruth came out of an
+audit of a real agent-operated production repo.
 
 ## Security
 

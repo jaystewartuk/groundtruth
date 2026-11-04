@@ -37,7 +37,7 @@
       // required check does run on pull requests into main.
       "kind": "workflow_trigger",
       "args": { "workflow": "ci.yml", "trigger": "pull_request", "target": "main" },
-      "source": "CLAUDE.md#L17-18"
+      "source": "CLAUDE.md#L19-20"
     },
     {
       "claim": "No LLM-based extraction from `CLAUDE.md`/`AGENTS.md` exists yet.",
@@ -46,13 +46,13 @@
       // exactly when the sentence above stops being true.
       "kind": "path_absent",
       "args": { "path": "src/extract" },
-      "source": "CLAUDE.md#L29-30"
+      "source": "CLAUDE.md#L30-31"
     },
     {
       "claim": "The canonical list is `ASSERTION_KINDS` in `src/types.ts`.",
       "kind": "symbol_at_path",
       "args": { "symbol": "ASSERTION_KINDS", "path": "src/types.ts" },
-      "source": "CLAUDE.md#L34-35"
+      "source": "CLAUDE.md#L36-37"
     },
     {
       "claim": "`symbol_at_path` is regex-based, not an AST parse. Deliberate, see ADR-0003.",
@@ -64,49 +64,49 @@
       "claim": "Releases are manual — no release automation workflow exists.",
       "kind": "path_absent",
       "args": { "path": ".github/workflows/release.yml" },
-      "source": "CLAUDE.md#L48-50"
+      "source": "CLAUDE.md#L49-51"
     },
     {
       "claim": "A dependency-free runner at `action/run.mjs` that shells out to the published CLI.",
       "kind": "path_exists",
       "args": { "path": "action/run.mjs" },
-      "source": "CLAUDE.md#L51-53"
+      "source": "CLAUDE.md#L53-55"
     },
     {
       "claim": "Why, and what that costs: ADR-0005.",
       "kind": "path_exists",
       "args": { "path": "docs/adr/0005-composite-action-wrapping-the-published-cli.md" },
-      "source": "CLAUDE.md#L55"
+      "source": "CLAUDE.md#L57"
     },
     {
       "claim": "pnpm build — tsc -> dist/",
       "kind": "script_exists",
       "args": { "name": "build" },
-      "source": "CLAUDE.md#L84"
+      "source": "CLAUDE.md#L86"
     },
     {
       "claim": "pnpm test — pretest runs tsc, then vitest against test/fixtures/sample-repo",
       "kind": "script_exists",
       "args": { "name": "test" },
-      "source": "CLAUDE.md#L85"
+      "source": "CLAUDE.md#L87"
     },
     {
       "claim": "pnpm typecheck — tsc --noEmit",
       "kind": "script_exists",
       "args": { "name": "typecheck" },
-      "source": "CLAUDE.md#L86"
+      "source": "CLAUDE.md#L88"
     },
     {
       "claim": "Step 3 (registering the checker in `src/assertions/index.ts`) is enforced at compile time if skipped.",
       "kind": "symbol_at_path",
       "args": { "symbol": "checkAssertions", "path": "src/assertions/index.ts" },
-      "source": "CLAUDE.md#L92-93"
+      "source": "CLAUDE.md#L94-95"
     },
     {
       "claim": "Architecture and request flow: `docs/architecture/overview.md`.",
       "kind": "path_exists",
       "args": { "path": "docs/architecture/overview.md" },
-      "source": "CLAUDE.md#L97"
+      "source": "CLAUDE.md#L99"
     },
     // The version claim, and the first assertion here that could not be
     // written before text_matches_across existed. CLAUDE.md says action.yml's
